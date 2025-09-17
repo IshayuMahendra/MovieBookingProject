@@ -63,4 +63,9 @@ public class MovieService {
         return matchingMovies;
     }
 
+    public Optional<Movie> getMovieById(String id) {
+        return movieRepository.findById(new ObjectId(id));
+    }
+
+
 }
