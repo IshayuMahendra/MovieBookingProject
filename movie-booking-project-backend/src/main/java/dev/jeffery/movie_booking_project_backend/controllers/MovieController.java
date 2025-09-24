@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -25,9 +27,11 @@ public class MovieController {
         return new ResponseEntity<List<Movie>>(movieService.allMovies(), HttpStatus.OK);
     }
 
-    @GetMapping("/{input}/{genre}")
-    public ResponseEntity<List<Movie>> getMovie(@PathVariable String input, @PathVariable String genre){
-        return new ResponseEntity<List<Movie>>(movieService.searchMovies(input, genre), HttpStatus.OK);
+    @GetMapping("/search")
+    public ResponseEntity<List<Movie>> searchMovies(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String genre) {
+        return new ResponseEntity<>(movieService.searchMovies(title, genre), HttpStatus.OK);
     }
 
     @GetMapping("/id/{id}")
