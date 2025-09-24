@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Page</title>
+    <link rel="stylesheet" href="booking.css">
+</head>
+<body>
+    <h1>Booking Page</h1>
+
+    <div class="booking-info">
+        <p><strong>Movie:</strong> <span id="movieTitle"></span></p>
+        <p><strong>Showtime:</strong> <span id="showtime"></span></p>
+
+        <label for="name">Your Name</label>
+        <input type="text" id="name" placeholder="Enter your name">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email">
+
+        <label for="tickets">Number of Tickets</label>
+        <input type="number" id="tickets" min="1" max="10" value="1">
+
+        <button id="confirmBtn">Confirm Booking</button>
+    </div>
+
+    <script>
+        // movie times
+        const params = new URLSearchParams(window.location.search);
+        document.getElementById('movieTitle').textContent = params.get('movie') || 'Unknown';
+        document.getElementById('showtime').textContent = params.get('time') || 'Unknown';
+
+        // button to confirm
+        document.getElementById('confirmBtn').addEventListener('click', () => {
+            alert('Booking confirmed (UI only).');
+        });
+    </script>
+</body>
+</html>

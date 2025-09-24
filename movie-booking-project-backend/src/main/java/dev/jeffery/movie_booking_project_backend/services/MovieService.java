@@ -67,5 +67,16 @@ public class MovieService {
         return movieRepository.findById(new ObjectId(id));
     }
 
+    // MovieService.java
+    public Optional<Movie> getMovieByTimestamp(long timestamp) {
+        List<Movie> all = allMovies(); // fetch all movies
+        for (Movie m : all) {
+            if (m.getId().getTimestamp() == timestamp) {
+                return Optional.of(m);
+            }
+        }
+        return Optional.empty();
+    }
+
 
 }
