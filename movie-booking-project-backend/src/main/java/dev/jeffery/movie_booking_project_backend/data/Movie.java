@@ -24,6 +24,10 @@ public class Movie {
     private List<String> showtimes;
     private String description;
     private int rating;
+    // private List<String> cast;
+    // private String director;
+    // private String producer;
+    // private String maturityRating;
     private boolean isRunning;
 
     public ObjectId getId() {
