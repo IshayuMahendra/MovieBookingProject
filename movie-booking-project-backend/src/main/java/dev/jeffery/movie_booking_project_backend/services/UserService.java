@@ -23,6 +23,7 @@ public class UserService {
 
         User user = new User(userID, passwordEncoder.encode(password), isAdmin, email, firstName, lastName,
                 User.accountStatus.Active, cards, street, city, state, zipCode);
+        userRepository.save(user);
 
         return user;
     }
