@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -18,7 +20,6 @@ public class User {
     private ObjectId id;
     private String userID;
     private String password;
-    private boolean isAdmin;
     private String email;
     private String firstName;
     private String lastName;
@@ -28,15 +29,18 @@ public class User {
     private String city;
     private String state;
     private String zipCode;
+    private boolean promotions;
     public enum accountStatus{
         Active, Inactive, Suspended
     }
 
-    public User(String userID, String password, boolean isAdmin, String email, String firstName, String lastName,
-                accountStatus customerStatus, List<PaymentCard> cards, String street, String city, String state, String zipCode) {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public User(String userID, String password, String email, String firstName, String lastName,
+                accountStatus customerStatus, List<PaymentCard> cards, String street, String city, String state, String zipCode, boolean promotions) {
         this.userID = userID;
-        this.password = password;
-        this.isAdmin = isAdmin;
+        this.password = passwordEncoder.encode(password);
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -46,6 +50,7 @@ public class User {
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
+        this.promotions = promotions;
     }
 
     public ObjectId getId() { return id; }
@@ -55,10 +60,7 @@ public class User {
     public void setUserID(String userID) { this.userID = userID; }
 
     public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
-    public boolean isAdmin() { return isAdmin; }
-    public void setAdmin(boolean admin) { isAdmin = admin; }
+    public void setPassword(String password) { this.password = passwordEncoder.encode(password); }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
@@ -86,4 +88,7 @@ public class User {
 
     public String getZipCode() { return zipCode; }
     public void setZipCode(String zipCode) { this.zipCode = zipCode; }
+
+    public boolean getPromotions() { return promotions; }
+    public void setPromotions(boolean promotions) { this.promotions = promotions; }
 }

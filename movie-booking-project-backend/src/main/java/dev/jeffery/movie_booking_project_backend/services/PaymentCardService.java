@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService {
+public class PaymentCardService {
     @Autowired
     private UserRepository userRepository;
 
@@ -31,7 +31,7 @@ public class UserService {
 
         //set and save user info (encrypts password in contructor)
         User user = new User(userID, password, email, firstName, lastName,
-                User.accountStatus.Inactive, cards, street, city, state, zipCode, promotions);
+                User.accountStatus.Active, cards, street, city, state, zipCode, promotions);
         userRepository.save(user);
 
         return user;
