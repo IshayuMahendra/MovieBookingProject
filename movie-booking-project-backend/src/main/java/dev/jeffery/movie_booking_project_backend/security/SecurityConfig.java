@@ -16,6 +16,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/user/login", "/user/register", "/user/logout").permitAll()   // allow your endpoint
+                        .anyRequest().permitAll()                      // keep open for now
+                );
         return http.build();
     }
 }

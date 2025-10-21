@@ -40,7 +40,7 @@ public class User {
     public User(String userID, String password, String email, String firstName, String lastName,
                 accountStatus customerStatus, List<PaymentCard> cards, String street, String city, String state, String zipCode, boolean promotions) {
         this.userID = userID;
-        this.password = passwordEncoder.encode(password);
+        this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -60,7 +60,7 @@ public class User {
     public void setUserID(String userID) { this.userID = userID; }
 
     public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = passwordEncoder.encode(password); }
+    public void setPassword(String password) { this.password = password; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }

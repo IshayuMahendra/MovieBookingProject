@@ -30,7 +30,7 @@ public class UserService {
 //        }
 
         //set and save user info (encrypts password in contructor)
-        User user = new User(userID, password, email, firstName, lastName,
+        User user = new User(userID, passwordEncoder.encode(password), email, firstName, lastName,
                 User.accountStatus.Inactive, cards, street, city, state, zipCode, promotions);
         userRepository.save(user);
 
