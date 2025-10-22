@@ -5,12 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @SpringBootApplication
 public class MovieBookingProjectBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MovieBookingProjectBackendApplication.class, args);
 	}
-
-
-}
+} 		

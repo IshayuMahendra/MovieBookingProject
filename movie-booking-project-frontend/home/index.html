@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CES Movies Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>CES Movies</h1>
+        <input type="text" id="searchInput" placeholder="Search movies...">
+        <select id="genreFilter">
+            <option value="">All Genres</option>
+            <option value="Drama">Drama</option>
+            <option value="Crime">Crime</option>
+            <option value="Western">Western</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Animation">Animation</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Science Fiction">Science Fiction</option>
+            <option value="Family">Family</option>
+            <option value="Comedy">Comedy</option>
+        </select>
+        <button id="searchBtn">GO</button>
+</header>
+
+
+    <main>
+        <section>
+            <h2>Currently Running</h2>
+            <div id="runningMovies" class="movies-container"></div>
+        </section>
+
+        <section>
+            <h2>Coming Soon</h2>
+            <div id="comingSoonMovies" class="movies-container"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
