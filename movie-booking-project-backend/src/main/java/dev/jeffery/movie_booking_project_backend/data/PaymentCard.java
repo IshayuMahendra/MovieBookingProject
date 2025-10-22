@@ -19,7 +19,7 @@ public class PaymentCard {
     }
 
     public PaymentCard(String cardNumber, String nameOnCard, String expirationDate, String ccv) {
-        this.nameOnCard = passwordEncoder.encode(cardNumber);
+        this.cardNumber = passwordEncoder.encode(cardNumber);
         this.nameOnCard = passwordEncoder.encode(nameOnCard);
         this.expirationDate = passwordEncoder.encode(expirationDate);
         this.ccv = passwordEncoder.encode(ccv);

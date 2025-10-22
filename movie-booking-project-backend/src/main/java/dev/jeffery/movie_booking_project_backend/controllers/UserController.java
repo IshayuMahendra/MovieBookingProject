@@ -56,4 +56,14 @@ public class UserController {
         return ResponseEntity.ok("Logout successful. Session ended.");
     }
 
+    @PostMapping("/edit-profile")
+    public ResponseEntity<?> editProfile(@RequestBody User updatedInfoTemplate) {
+        try {
+            userService.updateUserInformation(updatedInfoTemplate);
+            return ResponseEntity.ok();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error editing user information: " + e.getMessage());
+        }
+    }
+
 }

@@ -43,4 +43,33 @@ public class UserService {
 
         return passwordEncoder.matches(rawPassword, user.getPassword());
     }
+
+    public void updateUserInformation(User updatedInfoTemplate) {
+        String email = updatedInfoTemplate.getEmail();
+        User user = UserRepository.findByEmail(email);
+
+        user.setFirstName(updatedInfoTemplate.getFirstName());
+        user.setLastName(updatedInfoTemplate.getLastName());
+        user.setStreet(updatedInfoTemplate.getStreet());
+        user.setCity(updatedInfoTemplate.getCity());
+        user.setState(updatedInfoTemplate.getState());
+        user.setZipCode(updatedInfoTemplate.getZipCode());
+        user.setPromotions(updatedInfoTemplate.getPromotions());
+
+        String newPassword = passwordEncoder.encode(updatedInfoTemplate.getPassword());
+        user.setPassword(newPassword);
+
+        for (PaymentCard paymentCard : updatedInfoTemplate.getCards()) {
+            paymentCard.setCardNumber(passwordEncoder.encode(paymentCard.getCardNumber()));
+            paymentCard.setNameOnCard(passwordEncoder.encode(paymentCard.getNameOnCard));
+            paymentCard.setExpirationDate(passwordEncoder.encode(paymentCard.getExpirationDate));
+            paymentCard.setCcv(passwordEncoder.encode(paymentCard.getCcv));
+        }
+        if updatedInfoTemplate.getCards().size() > 4 {
+            throw new RuntimeException("Cannot store more than 4 payment cards")
+        }
+        else {
+            user.setCards(updatedInfoTemplate.getCards());
+        }
+    }
 }
