@@ -12,26 +12,44 @@ import java.util.List;
 
 @Document(collection = "Movies")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Movie {
     @Id
-    private ObjectId id;
+    private ObjectId id = new ObjectId();
     private String title;
     private List<String> genre;
     private String poster;
     private String trailer;
-    private List<String> showtimes;
     private String description;
     private int rating;
+    private boolean isRunning;
     // private List<String> cast;
     // private String director;
     // private String producer;
     // private String maturityRating;
-    private boolean isRunning;
+
+    public Movie(String title,
+                 List<String> genre,
+                 String poster,
+                 String trailer,
+                 String description,
+                 int rating,
+                 boolean isRunning) {
+        this.title = title;
+        this.genre = genre;
+        this.poster = poster;
+        this.trailer = trailer;
+        this.description = description;
+        this.rating = rating;
+        this.isRunning = isRunning;
+    }
 
     public ObjectId getId() {
         return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -50,10 +68,6 @@ public class Movie {
         return trailer;
     }
 
-    public List<String> getShowtimes() {
-        return showtimes;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -62,7 +76,7 @@ public class Movie {
         return rating;
     }
 
-    public boolean isRunning() {
+    public boolean getIsRunning() {
         return isRunning;
     }
 }

@@ -9,11 +9,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "Promotion")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Promotion {
     @Id
-    private ObjectId id;
+    private ObjectId id = new ObjectId();
     private String description;
     private String expirationDate;
 
@@ -24,6 +23,10 @@ public class Promotion {
 
     public ObjectId getId() {
         return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public String getDescription() {

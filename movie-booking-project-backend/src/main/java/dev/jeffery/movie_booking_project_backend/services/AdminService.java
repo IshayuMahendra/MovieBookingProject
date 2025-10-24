@@ -19,7 +19,7 @@ public class AdminService {
 
     public Admin createNewAdmin(String userID, String password) {
 
-        Admin admin = new Admin(userID, password);
+        Admin admin = new Admin(userID, passwordEncoder.encode(password));
         adminRepository.save(admin);
 
         return admin;

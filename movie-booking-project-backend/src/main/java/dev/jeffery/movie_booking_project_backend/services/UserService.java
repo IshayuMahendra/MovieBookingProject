@@ -18,20 +18,19 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+//    not sure if this is needed, may be able to just create a UserRepository object in frontend and call queries from there
+//    public User getUser(String email){
+//        User user = userRepository.findByEmail(email)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//        return user;
+//    }
+
     public User createNewUser(String userID, String password, String email, String firstName, String lastName,
-                              List<PaymentCard> cards, String street, String city, String state, String zipCode, boolean promotions) {
+                              String street, String city, String state, String zipCode, boolean promotions) {
 
-//        //encrypt all payment info
-//        for(PaymentCard c : cards){
-//            c.setCardNumber(passwordEncoder.encode(c.getCardNumber()));
-//            c.setNameOnCard(passwordEncoder.encode(c.getNameOnCard()));
-//            c.setExpirationDate(passwordEncoder.encode(c.getExpirationDate()));
-//            c.setCcv();
-//        }
-
-        //set and save user info (encrypts password in contructor)
+        //set and save user info
         User user = new User(userID, passwordEncoder.encode(password), email, firstName, lastName,
-                User.accountStatus.Inactive, cards, street, city, state, zipCode, promotions);
+                User.accountStatus.Inactive, street, city, state, zipCode, promotions);
         userRepository.save(user);
 
         return user;
@@ -46,7 +45,8 @@ public class UserService {
 
     public void updateUserInformation(User updatedInfoTemplate) {
         String email = updatedInfoTemplate.getEmail();
-        User user = UserRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));;
 
         user.setFirstName(updatedInfoTemplate.getFirstName());
         user.setLastName(updatedInfoTemplate.getLastName());
@@ -55,21 +55,6 @@ public class UserService {
         user.setState(updatedInfoTemplate.getState());
         user.setZipCode(updatedInfoTemplate.getZipCode());
         user.setPromotions(updatedInfoTemplate.getPromotions());
-
-        String newPassword = passwordEncoder.encode(updatedInfoTemplate.getPassword());
-        user.setPassword(newPassword);
-
-        for (PaymentCard paymentCard : updatedInfoTemplate.getCards()) {
-            paymentCard.setCardNumber(passwordEncoder.encode(paymentCard.getCardNumber()));
-            paymentCard.setNameOnCard(passwordEncoder.encode(paymentCard.getNameOnCard));
-            paymentCard.setExpirationDate(passwordEncoder.encode(paymentCard.getExpirationDate));
-            paymentCard.setCcv(passwordEncoder.encode(paymentCard.getCcv));
-        }
-        if updatedInfoTemplate.getCards().size() > 4 {
-            throw new RuntimeException("Cannot store more than 4 payment cards")
-        }
-        else {
-            user.setCards(updatedInfoTemplate.getCards());
-        }
+        user.setPassword(passwordEncoder.encode(updatedInfoTemplate.getPassword()));
     }
 }

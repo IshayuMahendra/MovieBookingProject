@@ -1,6 +1,8 @@
 package dev.jeffery.movie_booking_project_backend.controllers;
 
+import dev.jeffery.movie_booking_project_backend.data.PaymentCard;
 import dev.jeffery.movie_booking_project_backend.data.User;
+import dev.jeffery.movie_booking_project_backend.services.PaymentCardService;
 import dev.jeffery.movie_booking_project_backend.services.UserService;
 import dev.jeffery.movie_booking_project_backend.dto.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +14,17 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PaymentCardService paymentCardService;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
@@ -28,7 +35,6 @@ public class UserController {
                     user.getEmail(),
                     user.getFirstName(),
                     user.getLastName(),
-                    user.getCards(),
                     user.getStreet(),
                     user.getCity(),
                     user.getState(),
@@ -57,10 +63,11 @@ public class UserController {
     }
 
     @PostMapping("/edit-profile")
-    public ResponseEntity<?> editProfile(@RequestBody User updatedInfoTemplate) {
+    public ResponseEntity<String> editProfile(@RequestBody User updatedInfoTemplate, @RequestBody List<PaymentCard> cards) {
         try {
             userService.updateUserInformation(updatedInfoTemplate);
-            return ResponseEntity.ok();
+            paymentCardService.updatePaymentInformation(cards, updatedInfoTemplate.getId());
+            return ResponseEntity.ok("Successfully edited profile.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error editing user information: " + e.getMessage());
         }

@@ -7,30 +7,41 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Document(collection = "Booking")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Booking {
     @Id
-    private ObjectId id;
-
-    private String dateCreated;
+    private ObjectId id = new ObjectId();
+    private Date dateCreated;
     private String typeOfPayment;
     private double total;
+    private ObjectId userObjectID;
+    private ObjectId paymentCardID;
 
-    public Booking(String dateCreated, String typeOfPayment, double total) {
+    public Booking(Date dateCreated, String typeOfPayment, double total, ObjectId userObjectID, ObjectId paymentCardID) {
         this.dateCreated = dateCreated;
         this.typeOfPayment = typeOfPayment;
         this.total = total;
+        this.userObjectID = userObjectID;
+        this.paymentCardID = paymentCardID;
     }
 
+    public ObjectId getId() {
+        return id;
+    }
 
-    public String getDateCreated() {
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(String dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
@@ -48,5 +59,13 @@ public class Booking {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public ObjectId getUserObjectID() {
+        return userObjectID;
+    }
+
+    public ObjectId getPaymentCardID() {
+        return paymentCardID;
     }
 }

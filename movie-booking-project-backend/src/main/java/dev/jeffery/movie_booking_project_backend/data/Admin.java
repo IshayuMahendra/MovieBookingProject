@@ -11,26 +11,29 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Document(collection = "Admin")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Admin {
     @Id
-    private ObjectId id;
+    private ObjectId id = new ObjectId();
     private String userID;
     private String password;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     public Admin(String userID, String password) {
         this.userID = userID;
-        this.password = passwordEncoder.encode(password);
+        this.password = password;
     }
 
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
 
     public String getUserID() { return userID; }
     public void setUserID(String userID) { this.userID = userID; }
 
     public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = passwordEncoder.encode(password); }
+    public void setPassword(String password) { this.password = password; }
 }
