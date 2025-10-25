@@ -46,15 +46,28 @@ public class UserService {
     public void updateUserInformation(User updatedInfoTemplate) {
         String email = updatedInfoTemplate.getEmail();
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));;
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.setFirstName(updatedInfoTemplate.getFirstName());
-        user.setLastName(updatedInfoTemplate.getLastName());
-        user.setStreet(updatedInfoTemplate.getStreet());
-        user.setCity(updatedInfoTemplate.getCity());
-        user.setState(updatedInfoTemplate.getState());
-        user.setZipCode(updatedInfoTemplate.getZipCode());
+        if (updatedInfoTemplate.getFirstName() != null && !updatedInfoTemplate.getFirstName().isBlank()) {
+            user.setFirstName(updatedInfoTemplate.getFirstName());
+        }
+        if (updatedInfoTemplate.getLastName() != null && !updatedInfoTemplate.getLastName().isBlank()) {
+            user.setLastName(updatedInfoTemplate.getLastName());
+        }
+        if (updatedInfoTemplate.getStreet() != null && !updatedInfoTemplate.getStreet().isBlank()) {
+            user.setStreet(updatedInfoTemplate.getStreet());
+        }
+        if (updatedInfoTemplate.getCity() != null && !updatedInfoTemplate.getCity().isBlank()) {
+            user.setCity(updatedInfoTemplate.getCity());
+        }
+        if (updatedInfoTemplate.getState() != null && !updatedInfoTemplate.getState().isBlank()) {
+            user.setState(updatedInfoTemplate.getState());
+        }
+        if (updatedInfoTemplate.getZipCode() != null && !updatedInfoTemplate.getZipCode().isBlank()) {
+            user.setZipCode(updatedInfoTemplate.getZipCode());
+        }
         user.setPromotions(updatedInfoTemplate.getPromotions());
-        user.setPassword(passwordEncoder.encode(updatedInfoTemplate.getPassword()));
+        userRepository.save(user);
     }
+
 }
