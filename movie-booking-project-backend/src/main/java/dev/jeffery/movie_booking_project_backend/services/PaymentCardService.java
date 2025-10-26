@@ -35,7 +35,11 @@ public class PaymentCardService {
     public void updatePaymentInformation(List<PaymentCard> newCards, ObjectId userObjectID){
         List<PaymentCard> currentCards = paymentCardRepository.findByUserObjectID(userObjectID);
         int count = 0;
-
+        int existing = currentCards.size();
+        int incoming = (newCards != null) ? newCards.size() : 0;
+        if (existing + incoming > 3) {
+            throw new IllegalArgumentException("Cannot store more than 3 payment cards total.");
+        }
         for (PaymentCard newCard : newCards){
             if(count >= currentCards.size()){
                 try {

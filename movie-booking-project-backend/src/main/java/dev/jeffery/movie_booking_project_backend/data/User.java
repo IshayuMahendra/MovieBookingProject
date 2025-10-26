@@ -1,15 +1,10 @@
 package dev.jeffery.movie_booking_project_backend.data;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.List;
 
 @Document(collection = "User")
 @Data

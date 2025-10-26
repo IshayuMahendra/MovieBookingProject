@@ -3,10 +3,12 @@ package dev.jeffery.movie_booking_project_backend.controllers;
 import dev.jeffery.movie_booking_project_backend.data.PaymentCard;
 import dev.jeffery.movie_booking_project_backend.data.User;
 import dev.jeffery.movie_booking_project_backend.dto.ForgotPasswordRequest;
+import dev.jeffery.movie_booking_project_backend.repositories.UserRepository;
 import dev.jeffery.movie_booking_project_backend.services.PasswordResetService;
 import dev.jeffery.movie_booking_project_backend.services.PaymentCardService;
 import dev.jeffery.movie_booking_project_backend.services.UserService;
 import dev.jeffery.movie_booking_project_backend.dto.LoginRequest;
+import dev.jeffery.movie_booking_project_backend.dto.ChangePasswordRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,8 @@ public class UserController {
 
     @Autowired
     private PasswordResetService passwordResetService;
+
+    @Autowired private UserRepository userRepository;
 
 
     @PostMapping("/register")
@@ -109,6 +113,25 @@ public class UserController {
             default:
                 return ResponseEntity.status(404).body("User not found for this token.");
         }
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest req) {
+        try {
+            userService.changePassword(req);
+            return ResponseEntity.ok("Password changed successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/edit-cards")
+    public ResponseEntity<String> editCards(@RequestParam String email, @RequestBody List<PaymentCard> cards) {
+        var user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        paymentCardService.updatePaymentInformation(cards, user.getId());
+        return ResponseEntity.ok("Cards updated.");
     }
 
 }
