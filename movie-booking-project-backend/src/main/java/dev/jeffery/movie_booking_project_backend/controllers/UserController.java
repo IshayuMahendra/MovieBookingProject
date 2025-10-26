@@ -10,9 +10,6 @@ import dev.jeffery.movie_booking_project_backend.services.UserService;
 import dev.jeffery.movie_booking_project_backend.dto.LoginRequest;
 import dev.jeffery.movie_booking_project_backend.dto.ChangePasswordRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -132,6 +129,13 @@ public class UserController {
         var user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
         paymentCardService.updatePaymentInformation(cards, user.getId());
         return ResponseEntity.ok("Cards updated.");
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
+        boolean ok = userService.verifyTokenAndActivate(token);
+        if (!ok) return ResponseEntity.badRequest().body("Invalid or expired verification link.");
+        return ResponseEntity.ok("Email verified! You can log in now.");
     }
 
 }

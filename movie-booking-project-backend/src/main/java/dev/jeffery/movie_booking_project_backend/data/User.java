@@ -23,6 +23,10 @@ public class User {
     private String state;
     private String zipCode;
     private boolean promotions;
+    private String emailVerificationToken;
+    private Long   emailVerificationExpiresAt;
+    private Boolean emailVerified = false;
+
     public enum accountStatus{
         Active, Inactive, Suspended
     }
@@ -80,4 +84,13 @@ public class User {
 
     public boolean getPromotions() { return promotions; }
     public void setPromotions(boolean promotions) { this.promotions = promotions; }
+
+    public String getEmailVerificationToken() { return emailVerificationToken; }
+    public void setEmailVerificationToken(String emailVerificationToken) { this.emailVerificationToken = emailVerificationToken; }
+
+    public Long getEmailVerificationExpiresAt() { return emailVerificationExpiresAt; }
+    public void setEmailVerificationExpiresAt(Long emailVerificationExpiresAt) { this.emailVerificationExpiresAt = emailVerificationExpiresAt; }
+
+    public Boolean getEmailVerified() { return emailVerified; }
+    public void setEmailVerified(Boolean emailVerified) { this.emailVerified = emailVerified; }
 }

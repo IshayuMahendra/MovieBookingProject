@@ -18,6 +18,14 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired 
+    private VerificationService verificationService;
+
+    @Autowired 
+    private EmailService emailService;
+
+
+
 //    not sure if this is needed, may be able to just create a UserRepository object in frontend and call queries from there
 //    public User getUser(String email){
 //        User user = userRepository.findByEmail(email)
@@ -42,10 +50,18 @@ public class UserService {
                 street, city, state, zipCode,
                 promotions
         );
-
+        
         userRepository.save(user);
+        String token = verificationService.issueToken(user);
+        emailService.sendVerificationEmail(user.getEmail(), token);
         return user;
     }
+
+    public boolean verifyTokenAndActivate(String token) {
+        return verificationService.verifyAndActivate(token);
+    }
+
+
 
     public boolean authenticateUser(String email, String rawPassword) {
         User user = userRepository.findByEmail(email)
