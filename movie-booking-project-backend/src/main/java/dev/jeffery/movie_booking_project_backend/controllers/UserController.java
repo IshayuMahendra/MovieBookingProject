@@ -14,12 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import java.util.NoSuchElementException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "hromptttp://127.0.0.1:5500")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -56,12 +56,19 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest req) {
-        boolean ok = userService.authenticateUser(req.getEmail(), req.getPassword());
-        if (!ok) {
+        try {
+            boolean ok = userService.authenticateUser(req.getEmail(), req.getPassword());
+            if (!ok) {
+                return ResponseEntity.status(401).body("Invalid email or password");
+            }
+            return ResponseEntity.ok("Login successful");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(403).body("Account not verified. Please check your email.");
+        } catch (NoSuchElementException e) {
             return ResponseEntity.status(401).body("Invalid email or password");
         }
-        return ResponseEntity.ok("Login successful");
     }
+
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {

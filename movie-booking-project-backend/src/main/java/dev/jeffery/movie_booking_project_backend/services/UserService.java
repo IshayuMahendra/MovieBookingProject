@@ -62,10 +62,13 @@ public class UserService {
     }
 
 
-
     public boolean authenticateUser(String email, String rawPassword) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        var user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+
+        if (user.getCustomerStatus() != User.accountStatus.Active) {
+            throw new IllegalStateException("Account not verified");
+        }
 
         return passwordEncoder.matches(rawPassword, user.getPassword());
     }
