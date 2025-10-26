@@ -22,11 +22,12 @@ public class EmailService {
 
 
     private final String subject = "Email Verification";
-    private final String path = "/user/verify"; // <-- this is your backend endpoint
+    private final String path = "/user/verify"; 
+    private static final String BRAND = "Movie Booker";
 
     public void sendVerificationEmail(String email, String verificationToken) {
         try {
-            // Builds full URL like: http://localhost:8080/user/verify?token=abc123
+            
             String actionUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path(path)
                     .queryParam("token", verificationToken)
@@ -57,4 +58,31 @@ public class EmailService {
             System.err.println(email);
         }
     }
+
+     public void sendProfileUpdatedEmail(String email) {
+        try {
+            String subject = "Your profile was updated";
+            String content = """
+                <div style="font-family: Arial, sans-serif; max-width:600px;margin:auto;padding:20px;border-radius:8px;background:#f9f9f9;">
+                  <h2 style="margin:0 0 10px 0;color:#333;">%s</h2>
+                  <p style="font-size:15px;color:#444;">We wanted to let you know your profile information was updated.</p>
+                  <p style="font-size:13px;color:#666;">If you didn’t make this change, please reply to this email or reset your password immediately.</p>
+                  <p style="font-size:12px;color:#999;margin-top:20px;">This is an automated message.</p>
+                </div>
+            """.formatted(BRAND);
+
+            MimeMessage msg = mailSender.createMimeMessage();
+            MimeMessageHelper h = new MimeMessageHelper(msg, true, "UTF-8");
+            h.setTo(email);
+            h.setSubject(subject);
+            h.setFrom(from);
+            h.setText(content, true);
+
+            mailSender.send(msg);
+            System.out.println("Profile update email sent to " + email);
+        } catch (Exception e) {
+            System.err.println("Failed to send profile update email: " + e.getMessage());
+        }
+    }
+
 }

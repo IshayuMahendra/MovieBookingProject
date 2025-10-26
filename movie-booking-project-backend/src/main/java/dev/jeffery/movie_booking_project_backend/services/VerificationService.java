@@ -14,10 +14,10 @@ public class VerificationService {
 
     private static final SecureRandom RNG = new SecureRandom();
     private static final Base64.Encoder B64 = Base64.getUrlEncoder().withoutPadding();
-    private static final long TTL = 15 * 60_000L; // 15 minutes
+    private static final long TTL = 60 * 60_000L; // 60 minutes
 
     private String generateToken() {
-        byte[] b = new byte[32]; // 256-bit
+        byte[] b = new byte[32];
         RNG.nextBytes(b);
         return B64.encodeToString(b);
     }

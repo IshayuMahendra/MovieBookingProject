@@ -95,6 +95,12 @@ public class UserService {
         }
         user.setPromotions(updatedInfoTemplate.getPromotions());
         userRepository.save(user);
+        try {
+        emailService.sendProfileUpdatedEmail(user.getEmail());
+        } catch (Exception ignored) {
+            System.out.println("Failed to send profile update email.");
+        }
+        
     }
 
     public void changePassword(ChangePasswordRequest req) {
