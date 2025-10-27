@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,7 +20,6 @@ public class PaymentCardService {
 
     public PaymentCard createNewPaymentCard(String cardNumber, String expirationDate, String billingAddress, ObjectId userID) {
 
-        // encryption is done in the contructor.
         PaymentCard newCard = null;
         try {
             newCard = new PaymentCard(SecurityConfig.encrypt(cardNumber), SecurityConfig.encrypt(expirationDate),
@@ -34,11 +34,27 @@ public class PaymentCardService {
 
     
     public List<PaymentCard> getCardsByUser(ObjectId userObjectID) {
-        return paymentCardRepository.findByUserObjectID(userObjectID);
+        List<PaymentCard> cards = paymentCardRepository.findByUserObjectID(userObjectID);
+        List<PaymentCard> decryptedCards = new ArrayList<>();
+
+        for(PaymentCard c : cards){
+            try {
+                System.out.println(SecurityConfig.decrypt(c.getCardNumber()));
+                System.out.println(SecurityConfig.decrypt(c.getExpirationDate()));
+                System.out.println(SecurityConfig.decrypt(c.getBillingAddress()));
+
+                decryptedCards.add(new PaymentCard(SecurityConfig.decrypt(c.getCardNumber()),
+                        SecurityConfig.decrypt(c.getExpirationDate()), SecurityConfig.decrypt(c.getBillingAddress()), userObjectID));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return decryptedCards;
     }
 
     public void updatePaymentInformation(List<PaymentCard> newCards, ObjectId userObjectID){
-        List<PaymentCard> currentCards = paymentCardRepository.findByUserObjectID(userObjectID);
+        List<PaymentCard> currentCards = getCardsByUser(userObjectID);
         int count = 0;
         int existing = currentCards.size();
         int incoming = (newCards != null) ? newCards.size() : 0;

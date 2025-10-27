@@ -50,15 +50,10 @@ public class PasswordResetService {
         PasswordResetToken prt = new PasswordResetToken(email, token, expiresAt, false);
         tokenRepository.save(prt);
 
-        // now you can call emailService safely
         emailService.sendResetPasswordEmail(email, token);
 
         return Optional.of(token);
     }
-
-    // ... rest of your methods
-
-
 
     public ResetOutcome resetWithToken(String token, String newPassword) {
         Optional<PasswordResetToken> prtOpt = tokenRepository.findByToken(token);

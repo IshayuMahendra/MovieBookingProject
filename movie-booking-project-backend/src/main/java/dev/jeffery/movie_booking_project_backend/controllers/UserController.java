@@ -3,12 +3,14 @@ package dev.jeffery.movie_booking_project_backend.controllers;
 import dev.jeffery.movie_booking_project_backend.data.PaymentCard;
 import dev.jeffery.movie_booking_project_backend.data.User;
 import dev.jeffery.movie_booking_project_backend.dto.ForgotPasswordRequest;
+import dev.jeffery.movie_booking_project_backend.repositories.PaymentCardRepository;
 import dev.jeffery.movie_booking_project_backend.repositories.UserRepository;
 import dev.jeffery.movie_booking_project_backend.services.PasswordResetService;
 import dev.jeffery.movie_booking_project_backend.services.PaymentCardService;
 import dev.jeffery.movie_booking_project_backend.services.UserService;
 import dev.jeffery.movie_booking_project_backend.dto.LoginRequest;
 import dev.jeffery.movie_booking_project_backend.dto.ChangePasswordRequest;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +32,11 @@ public class UserController {
     @Autowired
     private PasswordResetService passwordResetService;
 
-    @Autowired private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PaymentCardRepository paymentCardRepository;
 
 
     @PostMapping("/register")
@@ -159,4 +165,12 @@ public class UserController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return paymentCardService.getCardsByUser(user.getId());
     }
+
+    @PostMapping("/delete-card")
+    public ResponseEntity<String> deleteCard(@RequestParam String email, @RequestBody ObjectId cardID) {
+        var user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        paymentCardRepository.deleteById(cardID);
+        return ResponseEntity.ok("Card deleted.");
+    }
+
 }
