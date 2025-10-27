@@ -1,128 +1,176 @@
-const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
-const form = document.getElementById('editProfileForm');
-const statusMessage = document.getElementById('statusMessage');
+/*I added seperators here since it was getting way too crowded - Ishayu */
+
+
+// =================== ELEMENTS ===================
+const emailInput = document.getElementById('email');
+const firstNameInput = document.getElementById('firstName');
+const lastNameInput = document.getElementById('lastName');
+const streetInput = document.getElementById('street');
+const cityInput = document.getElementById('city');
+const stateInput = document.getElementById('state');
+const zipInput = document.getElementById('zip');
+const promotionsInput = document.getElementById('promotions');
+
+const currentPasswordInput = document.getElementById('currentPassword');
+const newPasswordInput = document.getElementById('newPassword');
+const confirmPasswordInput = document.getElementById('confirmPassword');
+
 const cardsContainer = document.getElementById('cardsContainer');
 const addCardBtn = document.getElementById('addCardBtn');
+const editProfileForm = document.getElementById('editProfileForm');
+const statusMessage = document.getElementById('statusMessage');
+const returnProfileBtn = document.getElementById('returnProfileBtn');
 
-let cards = []; // array to hold card objects: { cardNumber, expirationDate, billingAddress }
+// =================== SESSION ===================
+const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+const admin = JSON.parse(sessionStorage.getItem('loggedInAdmin'));
 
-// Fetch user info and populate form
-async function populateForm() {
+// =================== EMAIL FIELD ===================
+if (admin && emailInput) {
+    emailInput.disabled = false;
+    emailInput.value = admin.userID; // admin email/ID stored in session
+} else if (loggedInUser && emailInput) {
+    emailInput.disabled = true;
+    emailInput.value = loggedInUser.email;
+}
+
+// =================== FETCH EXISTING USER DATA ===================
+async function loadProfile() {
+    const email = emailInput.value;
     try {
-        const res = await fetch(`http://localhost:8080/user/${encodeURIComponent(user.email)}`);
+        const res = await fetch(`http://localhost:8080/user/profile?email=${encodeURIComponent(email)}`);
+        if (!res.ok) throw new Error('Failed to load profile');
         const data = await res.json();
 
-        document.getElementById('email').value = data.email;
-        document.getElementById('firstName').value = data.firstName || '';
-        document.getElementById('lastName').value = data.lastName || '';
-        document.getElementById('street').value = data.street || '';
-        document.getElementById('city').value = data.city || '';
-        document.getElementById('state').value = data.state || '';
-        document.getElementById('zip').value = data.zipCode || '';
-        document.getElementById('promotions').checked = data.promotions;
+        firstNameInput.value = data.firstName || '';
+        lastNameInput.value = data.lastName || '';
+        streetInput.value = data.street || '';
+        cityInput.value = data.city || '';
+        stateInput.value = data.state || '';
+        zipInput.value = data.zip || '';
+        promotionsInput.checked = !!data.promotions;
 
-        // Fetch cards from backend
-        const resCards = await fetch(`http://localhost:8080/user/cards?email=${encodeURIComponent(user.email)}`);
-        const cardData = await resCards.json();
-        cards = cardData.map(c => ({
-            cardNumber: c.cardNumber, // encrypted or decrypted depending on backend
-            expirationDate: c.expirationDate,
-            billingAddress: c.billingAddress
-        }));
-        renderCards();
+        // Load payment cards
+        loadCards(email);
     } catch (err) {
-        console.error('Failed to fetch user data:', err);
+        console.error(err);
+        if (statusMessage) statusMessage.textContent = 'Failed to load profile';
     }
 }
 
-// Render cards in container
-function renderCards() {
+// =================== PAYMENT CARDS ===================
+async function loadCards(email) {
+    try {
+        const res = await fetch(`http://localhost:8080/user/cards?email=${encodeURIComponent(email)}`);
+        if (!res.ok) throw new Error('Failed to fetch cards');
+        const cards = await res.json();
+        renderCards(cards);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function renderCards(cards) {
+    if (!cardsContainer) return;
     cardsContainer.innerHTML = '';
-    cards.forEach((card, index) => {
+
+    cards.forEach((card, idx) => {
         const div = document.createElement('div');
-        div.className = 'card';
+        div.className = 'card-entry';
         div.innerHTML = `
-            <input type="text" value="**** **** **** ${card.cardNumber.slice(-4)}" readonly>
-            <input type="text" value="${card.expirationDate}" readonly>
-            <input type="text" value="${card.billingAddress}" readonly>
-            <button type="button" class="removeCardBtn" data-index="${index}">Remove</button>
+            <input type="text" class="cardNumber" placeholder="Card Number" value="${card.cardNumber}">
+            <input type="text" class="expirationDate" placeholder="MM/YY" value="${card.expirationDate}">
+            <input type="text" class="billingAddress" placeholder="Billing Address" value="${card.billingAddress}">
+            <button type="button" class="deleteCardBtn">Delete</button>
         `;
+        // Delete button
+        div.querySelector('.deleteCardBtn').addEventListener('click', () => {
+            div.remove();
+        });
         cardsContainer.appendChild(div);
     });
+}
 
-    document.querySelectorAll('.removeCardBtn').forEach(btn => {
-        btn.addEventListener('click', e => {
-            const i = e.target.dataset.index;
-            cards.splice(i, 1);
-            renderCards();
-        });
+if (addCardBtn) {
+    addCardBtn.addEventListener('click', () => {
+        if (!cardsContainer) return;
+        const currentCards = cardsContainer.querySelectorAll('.card-entry').length;
+        if (currentCards >= 4) return alert('Max 4 cards allowed');
+        const div = document.createElement('div');
+        div.className = 'card-entry';
+        div.innerHTML = `
+            <input type="text" class="cardNumber" placeholder="Card Number">
+            <input type="text" class="expirationDate" placeholder="MM/YY">
+            <input type="text" class="billingAddress" placeholder="Billing Address">
+            <button type="button" class="deleteCardBtn">Delete</button>
+        `;
+        div.querySelector('.deleteCardBtn').addEventListener('click', () => div.remove());
+        cardsContainer.appendChild(div);
     });
 }
 
-// Add card
-addCardBtn.addEventListener('click', () => {
-    if (cards.length >= 3) {
-        alert('You can only store up to 3 cards.');
-        return;
-    }
-    const cardNumber = prompt('Enter card number (16 digits):');
-    const expiration = prompt('Enter expiration date (MM/YY):');
-    const billing = prompt('Enter billing address:');
+// =================== SAVE CHANGES ===================
+if (editProfileForm) {
+    editProfileForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!emailInput) return;
 
-    if (!cardNumber || cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
-        alert('Invalid card number.');
-        return;
-    }
-    if (!expiration || !billing) {
-        alert('Expiration date and billing address required.');
-        return;
-    }
+        const email = emailInput.value.trim();
+        const payload = {
+            firstName: firstNameInput.value.trim(),
+            lastName: lastNameInput.value.trim(),
+            street: streetInput.value.trim(),
+            city: cityInput.value.trim(),
+            state: stateInput.value.trim(),
+            zip: zipInput.value.trim(),
+            promotions: promotionsInput.checked,
+            email: email
+        };
 
-    cards.push({ cardNumber, expirationDate: expiration, billingAddress: billing });
-    renderCards();
-});
+        // Collect payment cards
+        const cards = [];
+        if (cardsContainer) {
+            cardsContainer.querySelectorAll('.card-entry').forEach(cardDiv => {
+                const cardNumber = cardDiv.querySelector('.cardNumber')?.value.trim();
+                const expirationDate = cardDiv.querySelector('.expirationDate')?.value.trim();
+                const billingAddress = cardDiv.querySelector('.billingAddress')?.value.trim();
+                if (cardNumber && expirationDate && billingAddress) {
+                    cards.push({ cardNumber, expirationDate, billingAddress });
+                }
+            });
+        }
 
-// Submit form
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+        try {
+            // Update profile
+            const resProfile = await fetch(`http://localhost:8080/user/edit-profile?email=${encodeURIComponent(email)}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!resProfile.ok) throw new Error('Failed to update profile');
 
-    const updatedUser = {
-        email: user.email,
-        firstName: document.getElementById('firstName').value.trim(),
-        lastName: document.getElementById('lastName').value.trim(),
-        street: document.getElementById('street').value.trim(),
-        city: document.getElementById('city').value.trim(),
-        state: document.getElementById('state').value.trim(),
-        zipCode: document.getElementById('zip').value.trim(),
-        promotions: document.getElementById('promotions').checked
-    };
+            // Update cards
+            const resCards = await fetch(`http://localhost:8080/user/edit-cards?email=${encodeURIComponent(email)}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(cards)
+            });
+            if (!resCards.ok) throw new Error('Failed to update cards');
 
-    try {
-        // Update profile info
-        const res = await fetch('http://localhost:8080/user/edit-profile', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedUser)
-        });
-        if (!res.ok) throw new Error(await res.text());
+            if (statusMessage) statusMessage.textContent = 'Profile updated successfully!';
+        } catch (err) {
+            console.error(err);
+            if (statusMessage) statusMessage.textContent = 'Error updating profile';
+        }
+    });
+}
 
-        // Update cards
-        await fetch(`http://localhost:8080/user/edit-cards?email=${encodeURIComponent(user.email)}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(cards)
-        });
+// =================== RETURN BUTTON ===================
+if (returnProfileBtn) {
+    returnProfileBtn.addEventListener('click', () => {
+        window.location.href = '../profile/profile.html';
+    });
+}
 
-        statusMessage.textContent = "Profile updated successfully!";
-    } catch (err) {
-        statusMessage.textContent = err.message;
-    }
-});
-
-// Navigate back
-document.getElementById('returnProfileBtn').addEventListener('click', () => {
-    window.location.href = '../profile/profile.html';
-});
-
-// Initialize
-populateForm();
+// =================== INITIAL LOAD ===================
+loadProfile();

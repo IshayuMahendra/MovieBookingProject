@@ -3,48 +3,61 @@ const comingSoonContainer = document.getElementById('comingSoonMovies');
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
 const genreFilter = document.getElementById('genreFilter');
-
-// render movies to the page
-
 const userControls = document.getElementById('userControls');
 const loginBtn = document.getElementById('loginBtn');
 
-// Check if user is logged in
-const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+// --- Update header for user or admin ---
+function updateHeaderForUserOrAdmin() {
+    if (!userControls) return; // prevent null errors
 
-const admin = JSON.parse(sessionStorage.getItem('loggedInAdmin'));
-if (admin) {
-    document.getElementById('welcomeMessage').textContent = `Welcome Admin ${admin.userID}`;
+    const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+    const admin = JSON.parse(sessionStorage.getItem('loggedInAdmin'));
+
+    if (admin) {
+        userControls.innerHTML = `
+            <span>Welcome Admin ${admin.userID}</span>
+            <button id="logoutBtn">Logout</button>
+            <button id="profileBtn">My Profile</button>
+        `;
+    } else if (loggedInUser) {
+        userControls.innerHTML = `
+            <span>Welcome ${loggedInUser.email}</span>
+            <button id="logoutBtn">Logout</button>
+            <button id="profileBtn">My Profile</button>
+        `;
+    } else {
+        // Not logged in
+        if (loginBtn) {
+            loginBtn.addEventListener('click', () => {
+                window.location.href = '../login/login.html';
+            });
+        }
+        return;
+    }
+
+    // Common logout
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('loggedInUser');
+            sessionStorage.removeItem('loggedInAdmin');
+            location.reload();
+        });
+    }
+
+    // Profile button
+    const profileBtn = document.getElementById('profileBtn');
+    if (profileBtn) {
+        profileBtn.addEventListener('click', () => {
+            window.location.href = '../profile/profile.html';
+        });
+    }
 }
 
-
-function updateHeaderForLogin(user) {
-    userControls.innerHTML = `
-        <span>Welcome</span>
-        <button id="logoutBtn">Logout</button>
-        <button id="profileBtn">My Profile</button>
-    `;
-
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        sessionStorage.removeItem('loggedInUser');
-        location.reload(); // reload page to show login button again
-    });
-
-    document.getElementById('profileBtn').addEventListener('click', () => {
-        window.location.href = '../profile/profile.html';
-    });
-}
-
-// Update header based on login state
-if (loggedInUser) {
-    updateHeaderForLogin(loggedInUser);
-} else {
-    loginBtn.addEventListener('click', () => {
-        window.location.href = '../login/login.html';
-    });
-}
-
+// --- Render movies ---
 function renderMovies(movies) {
+    if (!runningContainer || !comingSoonContainer) return;
+
     runningContainer.innerHTML = '';
     comingSoonContainer.innerHTML = '';
 
@@ -58,14 +71,10 @@ function renderMovies(movies) {
             <div class="showtimes">Showtimes: ${movie.showtimes.join(', ')}</div>
         `;
 
-        // to go to Movie Details
         card.addEventListener('click', () => {
-            // clicked movie in sessionStorage
             sessionStorage.setItem('selectedMovie', JSON.stringify(movie));
-            // to movie details page
             window.location.href = '../movie-details/movie.html';
         });
-
 
         if (movie.running) {
             runningContainer.appendChild(card);
@@ -75,7 +84,7 @@ function renderMovies(movies) {
     });
 }
 
-// get all movies 
+// --- Fetch all movies ---
 async function fetchAllMovies() {
     try {
         const res = await fetch('http://localhost:8080/movies');
@@ -86,13 +95,14 @@ async function fetchAllMovies() {
     }
 }
 
-// search  triggered by GO button
+// --- Search movies ---
 async function searchMovies() {
+    if (!searchInput || !genreFilter) return;
+
     const input = searchInput.value.trim();
     const genre = genreFilter.value;
 
     let url = '';
-
     if (!input && !genre) {
         url = 'http://localhost:8080/movies';
     } else if (!input && genre) {
@@ -112,21 +122,16 @@ async function searchMovies() {
     }
 }
 
-// event listeners
-searchBtn.addEventListener('click', searchMovies);
+// --- Event listeners ---
+if (searchBtn) searchBtn.addEventListener('click', searchMovies);
+if (searchInput) {
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') searchMovies();
+    });
+}
 
-//  enter to trigger search
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') searchMovies();
-});
+// Update header on page load
+updateHeaderForUserOrAdmin();
 
-
-loginBtn.addEventListener('click', () => {
-    window.location.href = '../login/login.html';
-});
-
-
-
-
-// fetch all
+// Fetch movies on page load
 fetchAllMovies();
