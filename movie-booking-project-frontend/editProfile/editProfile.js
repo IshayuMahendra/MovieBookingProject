@@ -1,7 +1,4 @@
-/*I added seperators here since it was getting way too crowded - Ishayu */
-
-
-// =================== ELEMENTS ===================
+/* =================== ELEMENTS =================== */
 const emailInput = document.getElementById('email');
 const firstNameInput = document.getElementById('firstName');
 const lastNameInput = document.getElementById('lastName');
@@ -11,21 +8,17 @@ const stateInput = document.getElementById('state');
 const zipInput = document.getElementById('zip');
 const promotionsInput = document.getElementById('promotions');
 
-const currentPasswordInput = document.getElementById('currentPassword');
-const newPasswordInput = document.getElementById('newPassword');
-const confirmPasswordInput = document.getElementById('confirmPassword');
-
 const cardsContainer = document.getElementById('cardsContainer');
 const addCardBtn = document.getElementById('addCardBtn');
 const editProfileForm = document.getElementById('editProfileForm');
 const statusMessage = document.getElementById('statusMessage');
 const returnProfileBtn = document.getElementById('returnProfileBtn');
 
-// =================== SESSION ===================
+/* =================== SESSION =================== */
 const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
 const admin = JSON.parse(sessionStorage.getItem('loggedInAdmin'));
 
-// =================== EMAIL FIELD ===================
+/* =================== EMAIL FIELD =================== */
 if (admin && emailInput) {
     emailInput.disabled = false;
     emailInput.value = admin.userID; // admin email/ID stored in session
@@ -34,11 +27,11 @@ if (admin && emailInput) {
     emailInput.value = loggedInUser.email;
 }
 
-// =================== FETCH EXISTING USER DATA ===================
+/* =================== LOAD PROFILE =================== */
 async function loadProfile() {
     const email = emailInput.value;
     try {
-        const res = await fetch(`http://localhost:8080/user/profile?email=${encodeURIComponent(email)}`);
+        const res = await fetch(`http://localhost:8080/user/${encodeURIComponent(email)}`);
         if (!res.ok) throw new Error('Failed to load profile');
         const data = await res.json();
 
@@ -58,7 +51,7 @@ async function loadProfile() {
     }
 }
 
-// =================== PAYMENT CARDS ===================
+/* =================== PAYMENT CARDS =================== */
 async function loadCards(email) {
     try {
         const res = await fetch(`http://localhost:8080/user/cards?email=${encodeURIComponent(email)}`);
@@ -74,7 +67,7 @@ function renderCards(cards) {
     if (!cardsContainer) return;
     cardsContainer.innerHTML = '';
 
-    cards.forEach((card, idx) => {
+    cards.forEach(card => {
         const div = document.createElement('div');
         div.className = 'card-entry';
         div.innerHTML = `
@@ -83,10 +76,7 @@ function renderCards(cards) {
             <input type="text" class="billingAddress" placeholder="Billing Address" value="${card.billingAddress}">
             <button type="button" class="deleteCardBtn">Delete</button>
         `;
-        // Delete button
-        div.querySelector('.deleteCardBtn').addEventListener('click', () => {
-            div.remove();
-        });
+        div.querySelector('.deleteCardBtn').addEventListener('click', () => div.remove());
         cardsContainer.appendChild(div);
     });
 }
@@ -109,7 +99,7 @@ if (addCardBtn) {
     });
 }
 
-// =================== SAVE CHANGES ===================
+/* =================== SAVE CHANGES =================== */
 if (editProfileForm) {
     editProfileForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -141,9 +131,9 @@ if (editProfileForm) {
         }
 
         try {
-            // Update profile
-            const resProfile = await fetch(`http://localhost:8080/user/edit-profile?email=${encodeURIComponent(email)}`, {
-                method: 'PUT',
+            // Update profile (POST, not PUT)
+            const resProfile = await fetch(`http://localhost:8080/user/edit-profile`, {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
@@ -165,12 +155,12 @@ if (editProfileForm) {
     });
 }
 
-// =================== RETURN BUTTON ===================
+/* =================== RETURN BUTTON =================== */
 if (returnProfileBtn) {
     returnProfileBtn.addEventListener('click', () => {
         window.location.href = '../profile/profile.html';
     });
 }
 
-// =================== INITIAL LOAD ===================
+/* =================== INITIAL LOAD =================== */
 loadProfile();
