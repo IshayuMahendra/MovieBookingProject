@@ -29,11 +29,11 @@ public class SecurityConfig {
         return http.build();
     }
 
-    private static final String ALGORITHM = "AES";
+    private static final String ALGORITHM = "AES/ECB/PKCS5Padding";
     private static final String SECRET_KEY = "paymentcardkey12";
 
     public static String encrypt(String plainText) throws Exception {
-        SecretKeySpec keySpec = new SecretKeySpec(SECRET_KEY.getBytes(), ALGORITHM);
+        SecretKeySpec keySpec = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, keySpec);
         byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
@@ -41,7 +41,7 @@ public class SecurityConfig {
     }
 
     public static String decrypt(String encryptedText) throws Exception {
-        SecretKeySpec keySpec = new SecretKeySpec(SECRET_KEY.getBytes(), ALGORITHM);
+        SecretKeySpec keySpec = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, keySpec);
         byte[] decodedBytes = Base64.getDecoder().decode(encryptedText);

@@ -85,7 +85,7 @@ if (addCardBtn) {
     addCardBtn.addEventListener('click', () => {
         if (!cardsContainer) return;
         const currentCards = cardsContainer.querySelectorAll('.card-entry').length;
-        if (currentCards >= 4) return alert('Max 4 cards allowed');
+        if (currentCards >= 3) return alert('Max 3 cards allowed');
         const div = document.createElement('div');
         div.className = 'card-entry';
         div.innerHTML = `
