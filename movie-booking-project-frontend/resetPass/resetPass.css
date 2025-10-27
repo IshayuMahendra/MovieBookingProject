@@ -1,0 +1,77 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.reset-container {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    width: 350px;
+    text-align: center;
+}
+
+.reset-container h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.reset-container label {
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px 0;
+    font-weight: bold;
+}
+
+.reset-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.reset-container button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.reset-container button:hover {
+    background-color: #0056b3;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+.back-login {
+    margin-top: 15px;
+}
+
+.back-login a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.back-login a:hover {
+    text-decoration: underline;
+}

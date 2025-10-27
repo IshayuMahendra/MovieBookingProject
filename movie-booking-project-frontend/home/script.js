@@ -5,6 +5,45 @@ const searchBtn = document.getElementById('searchBtn');
 const genreFilter = document.getElementById('genreFilter');
 
 // render movies to the page
+
+const userControls = document.getElementById('userControls');
+const loginBtn = document.getElementById('loginBtn');
+
+// Check if user is logged in
+const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+
+const admin = JSON.parse(sessionStorage.getItem('loggedInAdmin'));
+if (admin) {
+    document.getElementById('welcomeMessage').textContent = `Welcome Admin ${admin.userID}`;
+}
+
+
+function updateHeaderForLogin(user) {
+    userControls.innerHTML = `
+        <span>Welcome</span>
+        <button id="logoutBtn">Logout</button>
+        <button id="profileBtn">My Profile</button>
+    `;
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        sessionStorage.removeItem('loggedInUser');
+        location.reload(); // reload page to show login button again
+    });
+
+    document.getElementById('profileBtn').addEventListener('click', () => {
+        window.location.href = '../profile/profile.html';
+    });
+}
+
+// Update header based on login state
+if (loggedInUser) {
+    updateHeaderForLogin(loggedInUser);
+} else {
+    loginBtn.addEventListener('click', () => {
+        window.location.href = '../login/login.html';
+    });
+}
+
 function renderMovies(movies) {
     runningContainer.innerHTML = '';
     comingSoonContainer.innerHTML = '';
@@ -80,6 +119,14 @@ searchBtn.addEventListener('click', searchMovies);
 searchInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') searchMovies();
 });
+
+
+loginBtn.addEventListener('click', () => {
+    window.location.href = '../login/login.html';
+});
+
+
+
 
 // fetch all
 fetchAllMovies();

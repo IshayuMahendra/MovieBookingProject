@@ -1,0 +1,56 @@
+const signupForm = document.getElementById('signupForm');
+const errorBox = document.getElementById('errorBox');
+const loginRedirect = document.getElementById('loginRedirect');
+
+signupForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorBox.classList.add('hidden');
+
+    const userID = document.getElementById('userID').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName = document.getElementById('lastName').value.trim();
+    const street = document.getElementById('street').value.trim();
+    const city = document.getElementById('city').value.trim();
+    const state = document.getElementById('state').value.trim();
+    const zipCode = document.getElementById('zipCode').value.trim();
+    const promotions = document.getElementById('promotions').checked;
+
+    // Frontend validation
+    if (password !== confirmPassword) {
+        errorBox.textContent = "Passwords do not match.";
+        errorBox.classList.remove('hidden');
+        return;
+    }
+
+    const payload = {
+        userID, password, email, firstName, lastName, street, city, state, zipCode, promotions
+    };
+
+    try {
+        const res = await fetch('http://localhost:8080/user/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+            const text = await res.text();
+            errorBox.textContent = text;
+            errorBox.classList.remove('hidden');
+        } else {
+            window.location.href = './thankyou.html';
+
+        }
+    } catch (err) {
+        errorBox.textContent = "Failed to register. Try again later.";
+        errorBox.classList.remove('hidden');
+    }
+});
+
+// redirect to login page
+loginRedirect.addEventListener('click', () => {
+    window.location.href = '../login/login.html';
+});

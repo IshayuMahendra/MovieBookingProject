@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up - CES Movies</title>
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Up for CES Movies</h1>
+
+        <form id="signupForm">
+            <label for="userID">Username:</label>
+            <input type="text" id="userID" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" required>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" required>
+
+            <label for="street">Street:</label>
+            <input type="text" id="street" required>
+
+            <label for="city">City:</label>
+            <input type="text" id="city" required>
+
+            <label for="state">State:</label>
+            <input type="text" id="state" required>
+
+            <label for="zipCode">Zip Code:</label>
+            <input type="text" id="zipCode" required>
+
+            <div class="checkbox-container">
+                <input type="checkbox" id="promotions">
+                <label for="promotions">Subscribe to promotions</label>
+            </div>
+
+            <button type="submit" id="signupBtn">Sign Up</button>
+            <button type="button" id="loginRedirect">Already have an account? Sign in</button>
+        </form>
+
+        <div id="errorBox" class="hidden"></div>
+    </div>
+
+    <script src="signup.js"></script>
+</body>
+</html>

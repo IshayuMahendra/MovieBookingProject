@@ -4,6 +4,7 @@ import dev.jeffery.movie_booking_project_backend.data.PasswordResetToken;
 import dev.jeffery.movie_booking_project_backend.data.User;
 import dev.jeffery.movie_booking_project_backend.repositories.PasswordResetTokenRepository;
 import dev.jeffery.movie_booking_project_backend.repositories.UserRepository;
+import dev.jeffery.movie_booking_project_backend.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,18 @@ public class PasswordResetService {
 
     private static final long EXPIRY_SECONDS = 60L * 60L; // 1 hour
 
-    @Autowired private UserRepository userRepository;
-    @Autowired private PasswordResetTokenRepository tokenRepository;
-    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired 
+    private UserRepository userRepository;
+
+    @Autowired 
+    private PasswordResetTokenRepository tokenRepository;
+
+    @Autowired 
+    private PasswordEncoder passwordEncoder;
+
+    // **Add this**
+    @Autowired
+    private EmailService emailService;
 
     public enum ResetOutcome { SUCCESS, INVALID_TOKEN, EXPIRED_TOKEN, USED_TOKEN, USER_NOT_FOUND }
 
@@ -30,7 +40,7 @@ public class PasswordResetService {
         if (userOpt.isEmpty()) {
             return Optional.empty();
         }
-        // Optional: ensure only one active token per user
+
         tokenRepository.deleteByUserEmail(email);
 
         String token = UUID.randomUUID().toString();
@@ -39,15 +49,16 @@ public class PasswordResetService {
 
         PasswordResetToken prt = new PasswordResetToken(email, token, expiresAt, false);
         tokenRepository.save(prt);
+
+        // now you can call emailService safely
+        emailService.sendResetPasswordEmail(email, token);
+
         return Optional.of(token);
     }
 
-    public boolean isTokenValid(String token) {
-        return tokenRepository.findByToken(token)
-                .filter(t -> !t.isUsed())
-                .filter(t -> t.getExpiresAt().isAfter(Instant.now()))
-                .isPresent();
-    }
+    // ... rest of your methods
+
+
 
     public ResetOutcome resetWithToken(String token, String newPassword) {
         Optional<PasswordResetToken> prtOpt = tokenRepository.findByToken(token);

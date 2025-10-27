@@ -32,6 +32,11 @@ public class PaymentCardService {
         return newCard;
     }
 
+    
+    public List<PaymentCard> getCardsByUser(ObjectId userObjectID) {
+        return paymentCardRepository.findByUserObjectID(userObjectID);
+    }
+
     public void updatePaymentInformation(List<PaymentCard> newCards, ObjectId userObjectID){
         List<PaymentCard> currentCards = paymentCardRepository.findByUserObjectID(userObjectID);
         int count = 0;

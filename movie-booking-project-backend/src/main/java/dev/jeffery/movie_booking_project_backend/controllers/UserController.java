@@ -17,9 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.NoSuchElementException;
 import java.util.List;
 
+@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "hromptttp://127.0.0.1:5500")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -54,6 +54,7 @@ public class UserController {
         }
     }
 
+    
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest req) {
         try {
@@ -67,6 +68,13 @@ public class UserController {
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(401).body("Invalid email or password");
         }
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return ResponseEntity.ok(user);
     }
 
 
@@ -144,5 +152,11 @@ public class UserController {
         if (!ok) return ResponseEntity.badRequest().body("Invalid or expired verification link.");
         return ResponseEntity.ok("Email verified! You can log in now.");
     }
-
+    
+     @GetMapping("/cards")
+    public List<PaymentCard> getUserCards(@RequestParam String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return paymentCardService.getCardsByUser(user.getId());
+    }
 }

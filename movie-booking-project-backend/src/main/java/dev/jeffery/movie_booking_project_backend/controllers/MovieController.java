@@ -1,63 +1,46 @@
 package dev.jeffery.movie_booking_project_backend.controllers;
 
-import dev.jeffery.movie_booking_project_backend.data.Movie;
+import dev.jeffery.movie_booking_project_backend.dto.MovieDTO;
 import dev.jeffery.movie_booking_project_backend.services.MovieService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/movies")
-@CrossOrigin(origins = "http://127.0.0.1:5500")
-
+@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
 public class MovieController {
+
     @Autowired
     private MovieService movieService;
 
+    // Get all movies with showtimes
     @GetMapping
-    public ResponseEntity<List<Movie>> getAllMovies(){
-        return new ResponseEntity<List<Movie>>(movieService.allMovies(), HttpStatus.OK);
+    public ResponseEntity<List<MovieDTO>> getAllMovies() {
+        return new ResponseEntity<>(movieService.allMoviesWithShowtimes(), HttpStatus.OK);
     }
 
+    // Search by title (with showtimes)
     @GetMapping("/title/{input}")
-    public ResponseEntity<List<Movie>> getMovieByTitle(@PathVariable String input) {
-        List<Movie> result = movieService.searchMoviesByTitle(movieService.allMovies(), input);
+    public ResponseEntity<List<MovieDTO>> getMovieByTitle(@PathVariable String input) {
+        List<MovieDTO> result = movieService.searchMoviesWithShowtimes(input, null);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    // Search by genre (with showtimes)
     @GetMapping("/genre/{genre}")
-    public ResponseEntity<List<Movie>> getMovieByGenre(@PathVariable String genre) {
-        List<Movie> result = movieService.searchMoviesByGenre(movieService.allMovies(), genre);
+    public ResponseEntity<List<MovieDTO>> getMovieByGenre(@PathVariable String genre) {
+        List<MovieDTO> result = movieService.searchMoviesWithShowtimes(null, genre);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-
-
+    // Search by title + genre
     @GetMapping("/{input}/{genre}")
-    public ResponseEntity<List<Movie>> getMovie(@PathVariable String input, @PathVariable String genre){
-        return new ResponseEntity<List<Movie>>(movieService.searchMovies(input, genre), HttpStatus.OK);
+    public ResponseEntity<List<MovieDTO>> getMovie(@PathVariable String input, @PathVariable String genre) {
+        List<MovieDTO> result = movieService.searchMoviesWithShowtimes(input, genre);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
-    @GetMapping("/id/{id}")
-    public ResponseEntity<Optional<Movie>> getMovieById(@PathVariable String id){
-        return new ResponseEntity<>(movieService.getMovieById(id), HttpStatus.OK);
-    }
-
-    @GetMapping("/timestamp/{timestamp}")
-    public ResponseEntity<Movie> getMovieByTimestamp(@PathVariable long timestamp) {
-        Optional<Movie> movie = movieService.getMovieByTimestamp(timestamp);
-        return movie.map(m -> ResponseEntity.ok(m))
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-
 }

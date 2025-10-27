@@ -1,43 +1,43 @@
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\controllers\AdminController.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\controllers\MovieController.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\controllers\UserController.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Address.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Admin.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Booking.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Cinema.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Movie.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\PasswordResetToken.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\PaymentCard.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Promotion.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Seat.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Show.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Showroom.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Theater.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Ticket.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\User.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\dto\ChangePasswordRequest.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\dto\ForgotPasswordRequest.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\dto\LoginRequest.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\dto\ResetPasswordRequest.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\MovieBookingProjectBackendApplication.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\AdminRepository.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\BookingRepository.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\CinemaRepository.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\MovieRepository.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\PasswordResetTokenRepository.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\PaymentCardRepository.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\PromotionRepository.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\SeatRepository.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\ShowRepository.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\ShowroomRepository.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\TheaterRepository.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\TicketRepository.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\UserRepository.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\security\SecurityConfig.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\AdminService.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\EmailService.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\MovieService.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\PasswordResetService.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\PaymentCardService.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\UserService.java
-C:\Users\bzubi\Escritorio\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\VerificationService.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\controllers\AdminController.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\controllers\MovieController.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\controllers\UserController.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Address.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Admin.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Booking.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Cinema.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Movie.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\PasswordResetToken.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\PaymentCard.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Promotion.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Seat.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Show.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Showroom.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Theater.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\Ticket.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\data\User.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\dto\ChangePasswordRequest.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\dto\ForgotPasswordRequest.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\dto\LoginRequest.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\dto\ResetPasswordRequest.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\MovieBookingProjectBackendApplication.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\AdminRepository.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\BookingRepository.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\CinemaRepository.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\MovieRepository.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\PasswordResetTokenRepository.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\PaymentCardRepository.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\PromotionRepository.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\SeatRepository.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\ShowRepository.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\ShowroomRepository.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\TheaterRepository.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\TicketRepository.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\repositories\UserRepository.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\security\SecurityConfig.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\AdminService.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\EmailService.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\MovieService.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\PasswordResetService.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\PaymentCardService.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\UserService.java
+C:\Users\risha\Documents\Important Documents\Semester 6\SWE\Deliverable 3\MovieBookingProject\movie-booking-project-backend\src\main\java\dev\jeffery\movie_booking_project_backend\services\VerificationService.java
