@@ -55,6 +55,10 @@ public class PaymentCard {
         return userObjectID;
     }
 
+    public void setUserObjectID(ObjectId userObjectID) {
+        this.userObjectID = userObjectID;
+    }
+
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }

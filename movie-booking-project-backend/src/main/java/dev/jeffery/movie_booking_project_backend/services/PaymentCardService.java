@@ -22,19 +22,6 @@ public class PaymentCardService {
 
         PaymentCard newCard = null;
         try {
-            String encrypted1 = SecurityConfig.encrypt("cardNumber");
-            String decrypted1 = SecurityConfig.decrypt(encrypted1);
-
-            System.out.println("Original:  " + cardNumber);
-            System.out.println("Encrypted: " + encrypted1);
-            System.out.println("Decrypted: " + decrypted1);
-
-            String encrypted = SecurityConfig.encrypt(cardNumber);
-            String decrypted = SecurityConfig.decrypt(encrypted);
-
-            System.out.println("Original:  " + cardNumber);
-            System.out.println("Encrypted: " + encrypted);
-            System.out.println("Decrypted: " + decrypted);
             newCard = new PaymentCard(SecurityConfig.encrypt(cardNumber), SecurityConfig.encrypt(expirationDate),
                     SecurityConfig.encrypt(billingAddress), userID);
             paymentCardRepository.save(newCard);
@@ -49,28 +36,52 @@ public class PaymentCardService {
     
     public List<PaymentCard> getCardsByUser(ObjectId userObjectID) {
         List<PaymentCard> cards = paymentCardRepository.findByUserObjectID(userObjectID);
-        List<PaymentCard> decryptedCards = new ArrayList<>();
 
         for(PaymentCard c : cards){
             try {
-                decryptedCards.add(new PaymentCard(SecurityConfig.decrypt(c.getCardNumber()),
-                        SecurityConfig.decrypt(c.getExpirationDate()), SecurityConfig.decrypt(c.getBillingAddress()), userObjectID));
+                c.setCardNumber(SecurityConfig.decrypt(c.getCardNumber()));
+                c.setExpirationDate(SecurityConfig.decrypt(c.getExpirationDate()));
+                c.setBillingAddress(SecurityConfig.decrypt(c.getBillingAddress()));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
 
-        return decryptedCards;
+        return cards;
     }
 
     public void updatePaymentInformation(List<PaymentCard> newCards, ObjectId userObjectID){
         List<PaymentCard> currentCards = getCardsByUser(userObjectID);
         int count = 0;
         int incoming = (newCards != null) ? newCards.size() : 0;
-        System.out.println("Incoming" + incoming);
         if (incoming > 3) {
             throw new IllegalArgumentException("Cannot store more than 3 payment cards total.");
         }
+
+        boolean unassociateUser;
+        for (PaymentCard currentCard : currentCards){
+            unassociateUser = true;
+            for (PaymentCard newCard : newCards){
+                if(newCard.getId().equals(currentCard.getId())){
+                    unassociateUser = false;
+                    break;
+                }
+            }
+            if(unassociateUser){
+                try {
+                    currentCard.setBillingAddress(SecurityConfig.encrypt(currentCard.getBillingAddress()));
+                    currentCard.setCardNumber(SecurityConfig.encrypt(currentCard.getCardNumber()));
+                    currentCard.setExpirationDate(SecurityConfig.encrypt(currentCard.getExpirationDate()));
+                    currentCard.setUserObjectID(null);
+                    paymentCardRepository.save(currentCard);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        currentCards = getCardsByUser(userObjectID);
+
         for (PaymentCard newCard : newCards){
             if(count >= currentCards.size()){
                 try {
@@ -85,6 +96,7 @@ public class PaymentCardService {
                     c.setCardNumber(SecurityConfig.encrypt(newCard.getCardNumber()));
                     c.setExpirationDate(SecurityConfig.encrypt(newCard.getExpirationDate()));
                     c.setBillingAddress(SecurityConfig.encrypt(newCard.getBillingAddress()));
+                    paymentCardRepository.save(c);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
