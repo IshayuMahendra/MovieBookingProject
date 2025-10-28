@@ -62,24 +62,36 @@ signupForm.addEventListener('submit', async (e) => {
     const payload = {
         userID, password, email, firstName, lastName, street, city, state, zipCode, promotions, cards
     };
-
-    try {
+ try {
+        // 1️⃣ Create user first
         const res = await fetch('http://localhost:8080/user/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({ userID, password, email, firstName, lastName, street, city, state, zipCode, promotions })
         });
 
         if (!res.ok) {
             const text = await res.text();
-            errorBox.textContent = text;
-            errorBox.classList.remove('hidden');
-        } else {
-            window.location.href = './thankyou.html';
-
+            throw new Error(text);
         }
+
+        // 2️⃣ Save cards separately
+        if (cards.length > 0) {
+            const resCards = await fetch(`http://localhost:8080/user/edit-cards?email=${encodeURIComponent(email)}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(cards)
+            });
+            if (!resCards.ok) {
+                const text = await resCards.text();
+                throw new Error("Failed to save cards: " + text);
+            }
+        }
+
+        // Redirect after success
+        window.location.href = './thankyou.html';
     } catch (err) {
-        errorBox.textContent = "Failed to register. Try again later.";
+        errorBox.textContent = err.message;
         errorBox.classList.remove('hidden');
     }
 });

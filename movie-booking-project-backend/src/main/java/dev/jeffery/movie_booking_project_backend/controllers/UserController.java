@@ -54,6 +54,13 @@ public class UserController {
                     user.getZipCode(),
                     user.getPromotions()
             );
+
+              if (user.getCards() != null && !user.getCards().isEmpty()) {
+            for (PaymentCard card : user.getCards()) {
+                card.setUserObjectID(newUser.getId());
+                paymentCardRepository.save(card);
+            }
+        }
             return ResponseEntity.ok(newUser);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error creating user: " + e.getMessage());

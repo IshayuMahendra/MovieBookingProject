@@ -2,6 +2,10 @@ package dev.jeffery.movie_booking_project_backend.data;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -26,7 +30,8 @@ public class User {
     private String emailVerificationToken;
     private Long   emailVerificationExpiresAt;
     private Boolean emailVerified = false;
-
+      private List<PaymentCard> cards = new ArrayList<>();
+      
     public enum accountStatus{
         Active, Inactive, Suspended
     }
@@ -93,4 +98,11 @@ public class User {
 
     public Boolean getEmailVerified() { return emailVerified; }
     public void setEmailVerified(Boolean emailVerified) { this.emailVerified = emailVerified; }
+
+        public List<PaymentCard> getCards() {
+        return cards;
+    }
+    public void setCards(List<PaymentCard> cards) {
+        this.cards = cards;
+    }
 }
