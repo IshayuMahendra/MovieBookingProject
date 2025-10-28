@@ -62,7 +62,9 @@ public class PaymentCardService {
         for (PaymentCard currentCard : currentCards){
             unassociateUser = true;
             for (PaymentCard newCard : newCards){
-                if(newCard.getId().equals(currentCard.getId())){
+                if(newCard.getCardNumber().equals(currentCard.getCardNumber()) &&
+                        newCard.getBillingAddress().equals(currentCard.getBillingAddress()) &&
+                        newCard.getExpirationDate().equals(currentCard.getExpirationDate())){
                     unassociateUser = false;
                     break;
                 }
