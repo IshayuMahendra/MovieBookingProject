@@ -44,7 +44,7 @@ async function loadProfile() {
         streetInput.value = data.street || '';
         cityInput.value = data.city || '';
         stateInput.value = data.state || '';
-        zipInput.value = data.zip || '';
+        zipInput.value = data.zipCode || '';
         promotionsInput.checked = !!data.promotions;
 
         // Load payment cards
@@ -158,7 +158,13 @@ if (editProfileForm) {
             const newPassword = newPasswordInput?.value.trim();
             const confirmPassword = confirmPasswordInput?.value.trim();
 
-            if (currentPassword && newPassword && confirmPassword) {
+            if (currentPassword || newPassword || confirmPassword) {
+
+                if (!currentPassword || !newPassword || !confirmPassword) {
+                    statusMessage.textContent = 'Fill in all password fields to change password';
+                    return;
+                }
+
                 if (newPassword !== confirmPassword) {
                     if (statusMessage) statusMessage.textContent = 'New password and confirm password do not match';
                     return;
