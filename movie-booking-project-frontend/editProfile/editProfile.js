@@ -7,6 +7,10 @@ const cityInput = document.getElementById('city');
 const stateInput = document.getElementById('state');
 const zipInput = document.getElementById('zip');
 const promotionsInput = document.getElementById('promotions');
+const currentPasswordInput = document.getElementById('currentPassword');
+const newPasswordInput = document.getElementById('newPassword');
+const confirmPasswordInput = document.getElementById('confirmPassword');
+
 
 const cardsContainer = document.getElementById('cardsContainer');
 const addCardBtn = document.getElementById('addCardBtn');
@@ -99,6 +103,8 @@ if (addCardBtn) {
     });
 }
 
+
+
 /* =================== SAVE CHANGES =================== */
 if (editProfileForm) {
     editProfileForm.addEventListener('submit', async (e) => {
@@ -112,7 +118,7 @@ if (editProfileForm) {
             street: streetInput.value.trim(),
             city: cityInput.value.trim(),
             state: stateInput.value.trim(),
-            zip: zipInput.value.trim(),
+            zipCode: zipInput.value.trim(),
             promotions: promotionsInput.checked,
             email: email
         };
@@ -146,6 +152,37 @@ if (editProfileForm) {
                 body: JSON.stringify(cards)
             });
             if (!resCards.ok) throw new Error('Failed to update cards');
+
+            // =================== CHANGE PASSWORD ===================
+            const currentPassword = currentPasswordInput?.value.trim();
+            const newPassword = newPasswordInput?.value.trim();
+            const confirmPassword = confirmPasswordInput?.value.trim();
+
+            if (currentPassword && newPassword && confirmPassword) {
+                if (newPassword !== confirmPassword) {
+                    if (statusMessage) statusMessage.textContent = 'New password and confirm password do not match';
+                    return;
+                }
+
+                try {
+                    const resPwd = await fetch('http://localhost:8080/user/change-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email: email,
+                            currentPassword: currentPassword,
+                            newPassword: newPassword
+                        })
+                    });
+                    const text = await resPwd.text();
+                    if (!resPwd.ok) throw new Error(text);
+                    if (statusMessage) statusMessage.textContent = 'Profile and password updated successfully!';
+                } catch (err) {
+                    console.error(err);
+                    if (statusMessage) statusMessage.textContent = 'Error changing password: ' + err.message;
+                }
+            }
+
 
             if (statusMessage) statusMessage.textContent = 'Profile updated successfully!';
         } catch (err) {

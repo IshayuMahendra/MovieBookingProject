@@ -1,6 +1,29 @@
 const signupForm = document.getElementById('signupForm');
 const errorBox = document.getElementById('errorBox');
 const loginRedirect = document.getElementById('loginRedirect');
+const addCardBtn = document.getElementById('addCardBtn');
+const cardsContainer = document.getElementById('cardsContainer');
+
+/* =================== ADD CARD HANDLER =================== */
+if (addCardBtn) {
+    addCardBtn.addEventListener('click', () => {
+        const currentCards = cardsContainer.querySelectorAll('.card-entry').length;
+        if (currentCards >= 3) return alert('Max 3 cards allowed.');
+
+        const div = document.createElement('div');
+        div.className = 'card-entry';
+        div.innerHTML = `
+            <input type="text" class="cardNumber" placeholder="Card Number" required>
+            <input type="text" class="expirationDate" placeholder="MM/YY" required>
+            <input type="text" class="billingAddress" placeholder="Billing Address" required>
+            <button type="button" class="deleteCardBtn">Delete</button>
+        `;
+        div.querySelector('.deleteCardBtn').addEventListener('click', () => div.remove());
+        cardsContainer.appendChild(div);
+    });
+}
+
+/* =================== SIGN UP FORM =================== */
 
 signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -25,8 +48,19 @@ signupForm.addEventListener('submit', async (e) => {
         return;
     }
 
+    // Collect payment cards
+    const cards = [];
+    cardsContainer.querySelectorAll('.card-entry').forEach(div => {
+        const cardNumber = div.querySelector('.cardNumber')?.value.trim();
+        const expirationDate = div.querySelector('.expirationDate')?.value.trim();
+        const billingAddress = div.querySelector('.billingAddress')?.value.trim();
+        if (cardNumber && expirationDate && billingAddress) {
+            cards.push({ cardNumber, expirationDate, billingAddress });
+        }
+    });
+
     const payload = {
-        userID, password, email, firstName, lastName, street, city, state, zipCode, promotions
+        userID, password, email, firstName, lastName, street, city, state, zipCode, promotions, cards
     };
 
     try {
