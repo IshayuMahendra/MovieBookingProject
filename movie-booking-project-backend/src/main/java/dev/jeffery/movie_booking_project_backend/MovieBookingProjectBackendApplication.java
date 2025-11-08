@@ -1,5 +1,6 @@
 package dev.jeffery.movie_booking_project_backend;
 
+import dev.jeffery.movie_booking_project_backend.data.ConcreteMovie;
 import dev.jeffery.movie_booking_project_backend.data.*;
 import dev.jeffery.movie_booking_project_backend.repositories.*;
 import dev.jeffery.movie_booking_project_backend.services.AdminService;
@@ -114,7 +115,7 @@ public class MovieBookingProjectBackendApplication // implements CommandLineRunn
        );
        seatRepository.saveAll(seats);
 
-       Movie godfather = new Movie("The Godfather", List.of("Crime", "Drama"), "https://media.themoviedb.org/t/p/original/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+       ConcreteMovie godfather = new ConcreteMovie("The Godfather", List.of("Crime", "Drama"), "https://media.themoviedb.org/t/p/original/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
                "https://www.youtube.com/watch?v=UaVTIH8mujA", "Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.",
                87, true);
        movieRepository.save(godfather);
