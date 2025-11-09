@@ -2,9 +2,12 @@ package dev.jeffery.movie_booking_project_backend.services;
 
 import dev.jeffery.movie_booking_project_backend.services.MovieService;
 import dev.jeffery.movie_booking_project_backend.data.Movie;
+import dev.jeffery.movie_booking_project_backend.builders.ConcreteMovieDTOBuilder;
 import dev.jeffery.movie_booking_project_backend.data.ConcreteMovie;
 import dev.jeffery.movie_booking_project_backend.dto.MovieDTO;
 import dev.jeffery.movie_booking_project_backend.dto.ConcreteMovieDTO;
+import dev.jeffery.movie_booking_project_backend.factories.MovieDomainFactory;
+import dev.jeffery.movie_booking_project_backend.factories.ConcreteMovieDomainFactory;
 import dev.jeffery.movie_booking_project_backend.data.Show;
 import dev.jeffery.movie_booking_project_backend.repositories.MovieRepository;
 import dev.jeffery.movie_booking_project_backend.repositories.ShowRepository;
@@ -21,19 +24,28 @@ import java.util.stream.Collectors;
 @Service
 public class ConcreteMovieService implements MovieService{
 
+    private final MovieDomainFactory factory;
+
+    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
     @Autowired
     private MovieRepository movieRepository;
 
     @Autowired
     private ShowRepository showRepository;
 
-    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+    @Autowired
+    public ConcreteMovieService(MovieDomainFactory factory) {
+        this.factory = factory;
+    }
 
+    @Override
     public List<ConcreteMovie> allMovies(){
         return movieRepository.findAll();
     }
 
     // New method to return movies with showtimes
+    @Override
     public List<MovieDTO> allMoviesWithShowtimes() {
         List<ConcreteMovie> movies = movieRepository.findAll();
         return movies.stream().map(movie -> {
@@ -42,21 +54,23 @@ public class ConcreteMovieService implements MovieService{
                     .map(show -> timeFormat.format(show.getShowTime()))
                     .collect(Collectors.toList());
 
-            return new ConcreteMovieDTO( // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!factory
-                    movie.getId().toHexString(),
-                    movie.getTitle(),
-                    movie.getGenre(),
-                    movie.getPoster(),
-                    movie.getTrailer(),
-                    movie.getDescription(),
-                    movie.getRating(),
-                    movie.getIsRunning(),
-                    showtimes
-            );
+            ConcreteMovieDTOBuilder builder = (ConcreteMovieDTOBuilder) factory.createMovieDTOBuilder();
+            ConcreteMovieDTO result = builder.id(movie.getId().toHexString())           
+                                .title(movie.getTitle())
+                                .genre(movie.getGenre())
+                                .poster(movie.getPoster())
+                                .trailer(movie.getTrailer())
+                                .description(movie.getDescription())
+                                .rating(movie.getRating())
+                                .running(movie.getIsRunning())
+                                .showtimes(showtimes)        
+                                .build();
+            return result;
         }).collect(Collectors.toList());
     }
 
     // Existing search methods can stay, but if you want showtimes included, create similar versions returning MovieDTO
+    @Override
     public List<MovieDTO> searchMoviesWithShowtimes(String input, String genre) {
         List<MovieDTO> allAbstract = allMoviesWithShowtimes();
         List<ConcreteMovieDTO> all = allAbstract.stream()
@@ -81,11 +95,13 @@ public class ConcreteMovieService implements MovieService{
                    .collect(Collectors.toList());
     }
 
+    @Override
     public Optional<Movie> getMovieById(String id) {
         return movieRepository.findById(new ObjectId(id))
                    .map(movie -> (Movie) movie);
     }
 
+    @Override
     public Optional<Movie> getMovieByTimestamp(long timestamp) {
         List<ConcreteMovie> all = allMovies(); // fetch all movies
         for (ConcreteMovie m : all) {

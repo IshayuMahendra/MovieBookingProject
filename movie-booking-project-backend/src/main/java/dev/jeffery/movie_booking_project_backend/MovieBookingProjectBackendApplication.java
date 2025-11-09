@@ -1,11 +1,13 @@
 package dev.jeffery.movie_booking_project_backend;
 
 import dev.jeffery.movie_booking_project_backend.data.ConcreteMovie;
+import dev.jeffery.movie_booking_project_backend.builders.ConcreteMovieBuilder;
 import dev.jeffery.movie_booking_project_backend.data.*;
 import dev.jeffery.movie_booking_project_backend.repositories.*;
 import dev.jeffery.movie_booking_project_backend.services.AdminService;
 import dev.jeffery.movie_booking_project_backend.services.PaymentCardService;
 import dev.jeffery.movie_booking_project_backend.services.UserService;
+import dev.jeffery.movie_booking_project_backend.factories.ConcreteMovieDomainFactory;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -27,6 +29,8 @@ public class MovieBookingProjectBackendApplication // implements CommandLineRunn
 	public static void main(String[] args) {
         SpringApplication.run(MovieBookingProjectBackendApplication.class, args);
 	}
+
+   private static final ConcreteMovieDomainFactory factory = new ConcreteMovieDomainFactory();
 
    @Autowired
    private UserRepository userRepository;
@@ -115,9 +119,15 @@ public class MovieBookingProjectBackendApplication // implements CommandLineRunn
        );
        seatRepository.saveAll(seats);
 
-       ConcreteMovie godfather = new ConcreteMovie("The Godfather", List.of("Crime", "Drama"), "https://media.themoviedb.org/t/p/original/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
-               "https://www.youtube.com/watch?v=UaVTIH8mujA", "Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.",
-               87, true);
+       ConcreteMovieBuilder builder = (ConcreteMovieBuilder) factory.createMovieBuilder();
+       ConcreteMovie godfather = builder.title("The Godfather") 
+                        .genre(List.of("Crime", "Drama"))
+                        .poster("https://media.themoviedb.org/t/p/original/3bhkrj58Vtu7enYsRolD1fZdja1.jpg")
+                        .trailer("https://www.youtube.com/watch?v=UaVTIH8mujA")
+                        .description("Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.")
+                        .rating(87)
+                        .isRunning(true)
+                        .build();
        movieRepository.save(godfather);
 
        Calendar cal = Calendar.getInstance();

@@ -2,11 +2,13 @@ package dev.jeffery.movie_booking_project_backend.dto;
 
 import dev.jeffery.movie_booking_project_backend.dto.MovieDTO;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class ConcreteMovieDTO implements MovieDTO{
     private String id;
     private String title;
@@ -18,7 +20,9 @@ public class ConcreteMovieDTO implements MovieDTO{
     private boolean running;
     private List<String> showtimes;
 
-    public ConcreteMovieDTO(String id, String title, List<String> genre, String poster,
+
+
+    public void initialize(String id, String title, List<String> genre, String poster,
                     String trailer, String description, int rating,
                     boolean running, List<String> showtimes) {
         this.id = id;

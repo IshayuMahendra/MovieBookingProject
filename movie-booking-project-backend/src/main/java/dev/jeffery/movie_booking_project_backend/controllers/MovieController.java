@@ -2,7 +2,10 @@ package dev.jeffery.movie_booking_project_backend.controllers;
 
 import dev.jeffery.movie_booking_project_backend.dto.MovieDTO;
 import dev.jeffery.movie_booking_project_backend.data.Movie;
+import dev.jeffery.movie_booking_project_backend.services.MovieService;
 import dev.jeffery.movie_booking_project_backend.services.ConcreteMovieService;
+import dev.jeffery.movie_booking_project_backend.factories.MovieDomainFactory;
+import dev.jeffery.movie_booking_project_backend.factories.ConcreteMovieDomainFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +18,13 @@ import java.util.List;
 @CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
 public class MovieController {
 
+    private MovieService movieService;
+    private static final MovieDomainFactory factory = new ConcreteMovieDomainFactory();;
+
     @Autowired
-    private ConcreteMovieService movieService;
+    public MovieController() {
+        this.movieService = factory.createMovieService(factory);
+    }
 
     // Get all movies with showtimes
     @GetMapping
@@ -27,21 +35,21 @@ public class MovieController {
     // Search by title (with showtimes)
     @GetMapping("/title/{input}")
     public ResponseEntity<List<MovieDTO>> getMovieByTitle(@PathVariable String input) {
-        List<MovieDTO> result = movieService.searchMoviesWithShowtimes(input, null);
+        List<? extends MovieDTO> result = movieService.searchMoviesWithShowtimes(input, null);
         return new ResponseEntity<>((List<MovieDTO>) result, HttpStatus.OK);
     }
 
     // Search by genre (with showtimes)
     @GetMapping("/genre/{genre}")
     public ResponseEntity<List<MovieDTO>> getMovieByGenre(@PathVariable String genre) {
-        List<MovieDTO> result = movieService.searchMoviesWithShowtimes(null, genre);
+        List<? extends MovieDTO> result = movieService.searchMoviesWithShowtimes(null, genre);
         return new ResponseEntity<>((List<MovieDTO>) result, HttpStatus.OK);
     }
 
     // Search by title + genre
     @GetMapping("/{input}/{genre}")
     public ResponseEntity<List<MovieDTO>> getMovie(@PathVariable String input, @PathVariable String genre) {
-        List<MovieDTO> result = movieService.searchMoviesWithShowtimes(input, genre);
+        List<? extends MovieDTO> result = movieService.searchMoviesWithShowtimes(input, genre);
         return new ResponseEntity<>((List<MovieDTO>) result, HttpStatus.OK);
     }
 }

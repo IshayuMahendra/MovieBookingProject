@@ -1,6 +1,6 @@
 dev\jeffery\movie_booking_project_backend\data\Ticket.class
 dev\jeffery\movie_booking_project_backend\services\UserService.class
-dev\jeffery\movie_booking_project_backend\services\ConcreteMovieService.class
+dev\jeffery\movie_booking_project_backend\factories\MovieDomainFactory.class
 dev\jeffery\movie_booking_project_backend\data\Show.class
 dev\jeffery\movie_booking_project_backend\services\PasswordResetService$ResetOutcome.class
 dev\jeffery\movie_booking_project_backend\repositories\UserRepository.class
@@ -48,3 +48,4 @@ dev\jeffery\movie_booking_project_backend\repositories\PromotionRepository.class
 dev\jeffery\movie_booking_project_backend\repositories\BookingRepository.class
 dev\jeffery\movie_booking_project_backend\repositories\CinemaRepository.class
 dev\jeffery\movie_booking_project_backend\controllers\UserController$1.class
+dev\jeffery\movie_booking_project_backend\factories\ConcreteMovieDomainFactory.class
