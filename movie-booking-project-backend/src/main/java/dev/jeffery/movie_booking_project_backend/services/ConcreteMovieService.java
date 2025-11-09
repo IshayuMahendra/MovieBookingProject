@@ -24,8 +24,6 @@ import java.util.stream.Collectors;
 @Service
 public class ConcreteMovieService implements MovieService{
 
-    private final MovieDomainFactory factory;
-
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     @Autowired
@@ -35,9 +33,7 @@ public class ConcreteMovieService implements MovieService{
     private ShowRepository showRepository;
 
     @Autowired
-    public ConcreteMovieService(MovieDomainFactory factory) {
-        this.factory = factory;
-    }
+    public MovieDomainFactory factory;
 
     @Override
     public List<ConcreteMovie> allMovies(){

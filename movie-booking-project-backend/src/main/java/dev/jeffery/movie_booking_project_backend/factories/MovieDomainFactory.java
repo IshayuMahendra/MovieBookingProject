@@ -14,6 +14,4 @@ public interface MovieDomainFactory {
     public MovieBuilder createMovieBuilder();
 
     public MovieDTOBuilder createMovieDTOBuilder();
-
-    public MovieService createMovieService(MovieDomainFactory factory);
 }

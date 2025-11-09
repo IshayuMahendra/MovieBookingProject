@@ -6,7 +6,9 @@ import dev.jeffery.movie_booking_project_backend.services.MovieService;
 import dev.jeffery.movie_booking_project_backend.services.ConcreteMovieService;
 import dev.jeffery.movie_booking_project_backend.factories.MovieDomainFactory;
 import dev.jeffery.movie_booking_project_backend.factories.ConcreteMovieDomainFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +20,9 @@ import java.util.List;
 @CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
 public class MovieController {
 
-    private MovieService movieService;
-    private static final MovieDomainFactory factory = new ConcreteMovieDomainFactory();;
-
     @Autowired
-    public MovieController() {
-        this.movieService = factory.createMovieService(factory);
-    }
+    @Qualifier("concreteMovieService")
+    private MovieService movieService;
 
     // Get all movies with showtimes
     @GetMapping

@@ -26,9 +26,4 @@ public class ConcreteMovieDomainFactory implements MovieDomainFactory {
     public MovieDTOBuilder createMovieDTOBuilder() {
         return new ConcreteMovieDTOBuilder();
     }
-
-    @Override
-    public MovieService createMovieService(MovieDomainFactory factory) {
-        return new ConcreteMovieService(factory);
-    }
 }

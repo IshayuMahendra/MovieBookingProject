@@ -29,7 +29,7 @@ public class ConcreteMovie implements Movie {
     // private String producer;
     // private String maturityRating;
 
-    public void initialize(String title,
+    public ConcreteMovie(String title,
                  List<String> genre,
                  String poster,
                  String trailer,

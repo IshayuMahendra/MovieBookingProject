@@ -22,7 +22,7 @@ public class ConcreteMovieDTO implements MovieDTO{
 
 
 
-    public void initialize(String id, String title, List<String> genre, String poster,
+    public ConcreteMovieDTO(String id, String title, List<String> genre, String poster,
                     String trailer, String description, int rating,
                     boolean running, List<String> showtimes) {
         this.id = id;
