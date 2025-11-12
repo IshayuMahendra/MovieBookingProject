@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="editProfile.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Profile</h1>
+        <form id="editProfileForm">
+            <label>Email (cannot change)</label>
+            <input type="email" id="email" disabled>
+
+            <label>First Name </label>
+            <input type="text" id="firstName" >
+
+            <label>Last Name </label>
+            <input type="text" id="lastName" >
+
+            <label>Street </label>
+            <input type="text" id="street" >
+
+            <label>City </label>
+            <input type="text" id="city" >
+
+            <label>State </label>
+            <input type="text" id="state" >
+
+            <label>Zip Code </label>
+            <input type="text" id="zip" >
+
+            <label>
+                <input type="checkbox" id="promotions">
+                Subscribe to Promotions
+            </label>
+
+            <h3>Change Password</h3>
+            <label>Current Password</label>
+            <input type="password" id="currentPassword">
+            <label>New Password</label>
+            <input type="password" id="newPassword">
+            <label>Confirm New Password</label>
+            <input type="password" id="confirmPassword">
+
+            <h3>Payment Cards (Max 3)</h3>
+            <div id="cardsContainer">
+                <!-- Cards will be dynamically rendered here -->
+            </div>
+            <button type="button" id="addCardBtn">Add Card</button>
+
+            <button type="submit" class="saveBtn">Save Changes</button>
+        </form>
+
+        <button id="returnProfileBtn">Return to Profile</button>
+        <div id="statusMessage"></div>
+    </div>
+
+    <script src="editProfile.js"></script>
+</body>
+</html>

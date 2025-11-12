@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thank You for Registering</title>
+    <link rel="stylesheet" href="thankyou.css">
+</head>
+<body>
+    <div class="thankyou-container">
+        <p>Thank you for registering! Check your email for a verification link.</p>
+        <button id="loginBtn">Go to Login</button>
+    </div>
+
+    <script>
+        const loginBtn = document.getElementById('loginBtn');
+        loginBtn.addEventListener('click', () => {
+            window.location.href = '../login/login.html';
+        });
+    </script>
+</body>
+</html>

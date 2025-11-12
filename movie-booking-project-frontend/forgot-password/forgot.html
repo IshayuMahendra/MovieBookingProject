@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forgot Password - CES</title>
+    <link rel="stylesheet" href="forgot.css">
+</head>
+<body>
+    <div class="forgot-container">
+        <h1>Forgot Password</h1>
+
+        <div id="errorBox" class="error hidden"></div>
+        <div id="successBox" class="success hidden"></div>
+
+        <form id="forgotForm">
+            <label for="email">Enter your email</label>
+            <input type="email" id="email" required placeholder="you@example.com" autocomplete="email">
+            <button type="submit">Send Reset Link</button>
+        </form>
+
+        <p><a href="../login/login.html">Back to Login</a></p>
+    </div>
+
+    <script src="forgot.js"></script>
+</body>
+</html>

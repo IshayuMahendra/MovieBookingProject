@@ -11,6 +11,26 @@ header {
     display: flex;
     gap: 10px;
     align-items: center;
+    justify-content: space-between; 
+}
+
+.header-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#loginBtn {
+    background-color: #ff6600;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#loginBtn:hover {
+    background-color: #ff8533;
 }
 
 header input, header select {

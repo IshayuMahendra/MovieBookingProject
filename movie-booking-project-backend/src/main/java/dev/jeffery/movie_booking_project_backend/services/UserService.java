@@ -7,8 +7,8 @@ import dev.jeffery.movie_booking_project_backend.security.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import dev.jeffery.movie_booking_project_backend.dto.ChangePasswordRequest;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -18,58 +18,105 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired 
+    private VerificationService verificationService;
+
+    @Autowired 
+    private EmailService emailService;
+
+
+
+//    not sure if this is needed, may be able to just create a UserRepository object in frontend and call queries from there
+//    public User getUser(String email){
+//        User user = userRepository.findByEmail(email)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//        return user;
+//    }
+
     public User createNewUser(String userID, String password, String email, String firstName, String lastName,
-                              List<PaymentCard> cards, String street, String city, String state, String zipCode, boolean promotions) {
+                              String street, String city, String state, String zipCode, boolean promotions) {
 
-//        //encrypt all payment info
-//        for(PaymentCard c : cards){
-//            c.setCardNumber(passwordEncoder.encode(c.getCardNumber()));
-//            c.setNameOnCard(passwordEncoder.encode(c.getNameOnCard()));
-//            c.setExpirationDate(passwordEncoder.encode(c.getExpirationDate()));
-//            c.setCcv();
-//        }
+        if (userRepository.findByEmail(email.trim()).isPresent()) {
+            throw new RuntimeException("Email already registered.");
+        }
 
-        //set and save user info (encrypts password in contructor)
-        User user = new User(userID, passwordEncoder.encode(password), email, firstName, lastName,
-                User.accountStatus.Inactive, cards, street, city, state, zipCode, promotions);
+        User user = new User(
+                userID,
+                passwordEncoder.encode(password),
+                email.trim(),
+                firstName,
+                lastName,
+                User.accountStatus.Inactive,
+                street, city, state, zipCode,
+                promotions
+        );
+        
         userRepository.save(user);
-
+        String token = verificationService.issueToken(user);
+        emailService.sendVerificationEmail(user.getEmail(), token);
         return user;
     }
 
+    public boolean verifyTokenAndActivate(String token) {
+        return verificationService.verifyAndActivate(token);
+    }
+
+
     public boolean authenticateUser(String email, String rawPassword) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        var user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+
+        if (user.getCustomerStatus() != User.accountStatus.Active) {
+            throw new IllegalStateException("Account not verified");
+        }
 
         return passwordEncoder.matches(rawPassword, user.getPassword());
     }
 
     public void updateUserInformation(User updatedInfoTemplate) {
         String email = updatedInfoTemplate.getEmail();
-        User user = UserRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.setFirstName(updatedInfoTemplate.getFirstName());
-        user.setLastName(updatedInfoTemplate.getLastName());
+        if (updatedInfoTemplate.getFirstName() != null && !updatedInfoTemplate.getFirstName().isBlank()) {
+            user.setFirstName(updatedInfoTemplate.getFirstName());
+        }
+        if (updatedInfoTemplate.getLastName() != null && !updatedInfoTemplate.getLastName().isBlank()) {
+            user.setLastName(updatedInfoTemplate.getLastName());
+        }
+
         user.setStreet(updatedInfoTemplate.getStreet());
         user.setCity(updatedInfoTemplate.getCity());
         user.setState(updatedInfoTemplate.getState());
         user.setZipCode(updatedInfoTemplate.getZipCode());
+
         user.setPromotions(updatedInfoTemplate.getPromotions());
-
-        String newPassword = passwordEncoder.encode(updatedInfoTemplate.getPassword());
-        user.setPassword(newPassword);
-
-        for (PaymentCard paymentCard : updatedInfoTemplate.getCards()) {
-            paymentCard.setCardNumber(passwordEncoder.encode(paymentCard.getCardNumber()));
-            paymentCard.setNameOnCard(passwordEncoder.encode(paymentCard.getNameOnCard));
-            paymentCard.setExpirationDate(passwordEncoder.encode(paymentCard.getExpirationDate));
-            paymentCard.setCcv(passwordEncoder.encode(paymentCard.getCcv));
+        userRepository.save(user);
+        try {
+        emailService.sendProfileUpdatedEmail(user.getEmail());
+        } catch (Exception ignored) {
+            System.out.println("Failed to send profile update email.");
         }
-        if updatedInfoTemplate.getCards().size() > 4 {
-            throw new RuntimeException("Cannot store more than 4 payment cards")
-        }
-        else {
-            user.setCards(updatedInfoTemplate.getCards());
-        }
+        
     }
+
+    public void changePassword(ChangePasswordRequest req) {
+        if (req.getEmail() == null || req.getCurrentPassword() == null || req.getNewPassword() == null) {
+            throw new IllegalArgumentException("Missing fields");
+        }
+        var user = userRepository.findByEmail(req.getEmail().trim())
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+
+        if (!passwordEncoder.matches(req.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        if (passwordEncoder.matches(req.getNewPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("New password must be different from current");
+        }
+
+        user.setPassword(passwordEncoder.encode(req.getNewPassword()));
+        userRepository.save(user);
+    }
+
 }

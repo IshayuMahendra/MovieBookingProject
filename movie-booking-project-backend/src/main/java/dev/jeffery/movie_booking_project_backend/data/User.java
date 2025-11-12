@@ -1,51 +1,49 @@
 package dev.jeffery.movie_booking_project_backend.data;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.List;
 
 @Document(collection = "User")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class User {
     @Id
-    private ObjectId id;
+    private ObjectId id = new ObjectId();
     private String userID;
     private String password;
     private String email;
     private String firstName;
     private String lastName;
     private accountStatus customerStatus;
-    private List<PaymentCard> cards;
     private String street;
     private String city;
     private String state;
     private String zipCode;
     private boolean promotions;
+    private String emailVerificationToken;
+    private Long   emailVerificationExpiresAt;
+    private Boolean emailVerified = false;
+      private List<PaymentCard> cards = new ArrayList<>();
+      
     public enum accountStatus{
         Active, Inactive, Suspended
     }
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     public User(String userID, String password, String email, String firstName, String lastName,
-                accountStatus customerStatus, List<PaymentCard> cards, String street, String city, String state, String zipCode, boolean promotions) {
+                accountStatus customerStatus, String street, String city, String state, String zipCode, boolean promotions) {
         this.userID = userID;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.customerStatus = customerStatus;
-        this.cards = cards;
         this.street = street;
         this.city = city;
         this.state = state;
@@ -54,7 +52,10 @@ public class User {
     }
 
     public ObjectId getId() { return id; }
-    public void setId(ObjectId id) { this.id = id; }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
 
     public String getUserID() { return userID; }
     public void setUserID(String userID) { this.userID = userID; }
@@ -74,9 +75,6 @@ public class User {
     public accountStatus getCustomerStatus() { return customerStatus; }
     public void setCustomerStatus(accountStatus customerStatus) { this.customerStatus = customerStatus; }
 
-    public List<PaymentCard> getCards() { return cards; }
-    public void setCards(List<PaymentCard> cards) { this.cards = cards; }
-
     public String getStreet() { return street; }
     public void setStreet(String street) { this.street = street; }
 
@@ -91,4 +89,20 @@ public class User {
 
     public boolean getPromotions() { return promotions; }
     public void setPromotions(boolean promotions) { this.promotions = promotions; }
+
+    public String getEmailVerificationToken() { return emailVerificationToken; }
+    public void setEmailVerificationToken(String emailVerificationToken) { this.emailVerificationToken = emailVerificationToken; }
+
+    public Long getEmailVerificationExpiresAt() { return emailVerificationExpiresAt; }
+    public void setEmailVerificationExpiresAt(Long emailVerificationExpiresAt) { this.emailVerificationExpiresAt = emailVerificationExpiresAt; }
+
+    public Boolean getEmailVerified() { return emailVerified; }
+    public void setEmailVerified(Boolean emailVerified) { this.emailVerified = emailVerified; }
+
+        public List<PaymentCard> getCards() {
+        return cards;
+    }
+    public void setCards(List<PaymentCard> cards) {
+        this.cards = cards;
+    }
 }

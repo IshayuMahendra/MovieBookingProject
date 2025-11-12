@@ -1,56 +1,73 @@
 package dev.jeffery.movie_booking_project_backend.data;
 
 import dev.jeffery.movie_booking_project_backend.security.SecurityConfig;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "PaymentCard")
+@Data
+@NoArgsConstructor
 public class PaymentCard {
+    @Id
+    private ObjectId id = new ObjectId();
     private String cardNumber;
-    private String nameOnCard;
     private String expirationDate;
-    private String ccv;
+    private String billingAddress;
+    private ObjectId userObjectID;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    public PaymentCard() {
+    public PaymentCard(String cardNumber, String expirationDate, String billingAddress, ObjectId userObjectID) {
+        try {
+            this.cardNumber = cardNumber;
+            this.expirationDate = expirationDate;
+            this.billingAddress = billingAddress;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        this.userObjectID = userObjectID;
     }
 
-    public PaymentCard(String cardNumber, String nameOnCard, String expirationDate, String ccv) {
-        this.cardNumber = passwordEncoder.encode(cardNumber);
-        this.nameOnCard = passwordEncoder.encode(nameOnCard);
-        this.expirationDate = passwordEncoder.encode(expirationDate);
-        this.ccv = passwordEncoder.encode(ccv);
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public String getCardNumber() {
         return cardNumber;
     }
 
-    public String getNameOnCard() {
-        return nameOnCard;
+    public String getExpirationDate() {
+        return expirationDate;
     }
 
-    public String getExpirationDate() {return expirationDate;}
+    public String getBillingAddress() {
+        return billingAddress;
+    }
 
-    public String getCcv() { return ccv; }
+    public ObjectId getUserObjectID() {
+        return userObjectID;
+    }
+
+    public void setUserObjectID(ObjectId userObjectID) {
+        this.userObjectID = userObjectID;
+    }
 
     public void setCardNumber(String cardNumber) {
-        this.cardNumber = passwordEncoder.encode(cardNumber);
-    }
-
-    public void setNameOnCard(String nameOnCard) {
-        this.nameOnCard = passwordEncoder.encode(nameOnCard);
+        this.cardNumber = cardNumber;
     }
 
     public void setExpirationDate(String expirationDate) {
-        this.expirationDate = passwordEncoder.encode(expirationDate);
+        this.expirationDate = expirationDate;
     }
 
-    public void setCcv(String ccv){
-        this.ccv = passwordEncoder.encode(ccv);
+    public void setBillingAddress(String billingAddress) {
+        this.billingAddress = billingAddress;
     }
-
 }
