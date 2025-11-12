@@ -35,6 +35,19 @@ public class ConcreteMovieService implements MovieService{
     @Autowired
     public MovieDomainFactory factory;
 
+    // Create new movie based on admin input
+    public ConcreteMovie createMovie(String title, List<String> genre, String poster, String trailer, String description,
+                             int rating, boolean isRunning){
+        ConcreteMovie movie = new ConcreteMovie(title, genre, poster, trailer, description, rating, isRunning);
+        movieRepository.save(movie);
+        return movie;
+    }
+
+    // Add showtimes for a movie based on admin input
+    public String addShowtimes(List<Show> showtimes){
+        return "Placeholder";
+    }
+
     @Override
     public List<ConcreteMovie> allMovies(){
         return movieRepository.findAll();
@@ -43,6 +56,10 @@ public class ConcreteMovieService implements MovieService{
     // New method to return movies with showtimes
     @Override
     public List<MovieDTO> allMoviesWithShowtimes() {
+        //this bit was for testing
+//        createMovie("The Wolf of Wall Street", List.of("Crime", "Drama", "Comedy"), "https://media.themoviedb.org/t/p/w600_and_h900_bestv2/kW9LmvYHAaS9iA0tHmZVq8hQYoq.jpg",
+//                "https://www.youtube.com/watch?v=Slj4-Sv-YNA", "A New York stockbroker refuses to cooperate in a large securities fraud case involving corruption on Wall Street, corporate banking world and mob infiltration. Based on Jordan Belfort's autobiography.",
+//                80, true);
         List<ConcreteMovie> movies = movieRepository.findAll();
         return movies.stream().map(movie -> {
             List<Show> shows = showRepository.findByMovieID(movie.getId());
