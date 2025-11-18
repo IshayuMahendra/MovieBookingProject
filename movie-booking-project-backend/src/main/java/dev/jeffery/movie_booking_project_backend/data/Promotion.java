@@ -7,17 +7,19 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Document(collection = "Promotion")
 @Data
 @NoArgsConstructor
 public class Promotion {
     @Id
     private ObjectId id = new ObjectId();
-    private String description;
-    private String expirationDate;
+    private int discountPercentage;
+    private Date expirationDate;
 
-    public Promotion(String description, String expirationDate){
-        this.description = description;
+    public Promotion(int discountPercentage, Date expirationDate){
+        this.discountPercentage = discountPercentage;
         this.expirationDate = expirationDate;
     }
 
@@ -29,19 +31,19 @@ public class Promotion {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public int getDiscountPercentage() {
+        return discountPercentage;
     }
 
-    public String getExpirationDate() {
+    public Date getExpirationDate() {
         return expirationDate;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDiscountPercentage(int discountPercentage) {
+        this.discountPercentage = discountPercentage;
     }
 
-    public void setExpirationDate(String expirationDate) {
+    public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
     }
 }
