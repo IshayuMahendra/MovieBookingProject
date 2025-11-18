@@ -12,4 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface ShowRepository extends MongoRepository<Show, ObjectId> {
 
       List<Show> findByMovieID(ObjectId movieID);
+      List<Show> findByShowroomID(ObjectId showroomID);
 }

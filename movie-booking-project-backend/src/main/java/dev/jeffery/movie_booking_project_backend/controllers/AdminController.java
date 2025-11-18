@@ -1,15 +1,14 @@
 package dev.jeffery.movie_booking_project_backend.controllers;
 
-import dev.jeffery.movie_booking_project_backend.data.ConcreteMovie;
-import dev.jeffery.movie_booking_project_backend.data.PaymentCard;
-import dev.jeffery.movie_booking_project_backend.data.Show;
-import dev.jeffery.movie_booking_project_backend.data.User;
+import dev.jeffery.movie_booking_project_backend.data.*;
+import dev.jeffery.movie_booking_project_backend.dto.MovieDTO;
 import dev.jeffery.movie_booking_project_backend.services.AdminService;
 import dev.jeffery.movie_booking_project_backend.services.ConcreteMovieService;
 import dev.jeffery.movie_booking_project_backend.services.MovieService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,13 +51,33 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/add-showtimes")
-    public ResponseEntity<String> addShowtimes(@RequestBody List<Show> showtimes) {
+    @PostMapping("/get-showrooms")
+    public ResponseEntity<?> getShowrooms() {
         try {
-            String response = movieService.addShowtimes(showtimes);
+            List<Showroom> showrooms = movieService.getShowrooms();
+            return ResponseEntity.ok(showrooms);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error getting showrooms: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/add-showtime")
+    public ResponseEntity<String> addShowtime(@RequestBody Show showtime) {
+        try {
+            String response = movieService.addShowtime(showtime);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error adding showtimes: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/add-promotion")
+    public ResponseEntity<?> addPromotion(@RequestBody Promotion promotion) {
+        try {
+            Promotion response = adminService.addPromotion(promotion);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error adding promotion: " + e.getMessage());
         }
     }
 
