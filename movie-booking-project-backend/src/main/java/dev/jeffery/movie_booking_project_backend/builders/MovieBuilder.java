@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface MovieBuilder {
-    public MovieBuilder id(ObjectId id);
     public MovieBuilder title(String title);
     public MovieBuilder genre(List<String> genre);
 }

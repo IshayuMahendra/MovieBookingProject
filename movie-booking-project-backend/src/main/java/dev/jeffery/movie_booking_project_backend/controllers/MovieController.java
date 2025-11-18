@@ -1,11 +1,7 @@
 package dev.jeffery.movie_booking_project_backend.controllers;
 
 import dev.jeffery.movie_booking_project_backend.dto.MovieDTO;
-import dev.jeffery.movie_booking_project_backend.data.Movie;
 import dev.jeffery.movie_booking_project_backend.services.MovieService;
-import dev.jeffery.movie_booking_project_backend.services.ConcreteMovieService;
-import dev.jeffery.movie_booking_project_backend.factories.MovieDomainFactory;
-import dev.jeffery.movie_booking_project_backend.factories.ConcreteMovieDomainFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

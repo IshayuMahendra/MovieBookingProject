@@ -1,17 +1,20 @@
 package dev.jeffery.movie_booking_project_backend.controllers;
 
 import dev.jeffery.movie_booking_project_backend.data.ConcreteMovie;
+import dev.jeffery.movie_booking_project_backend.data.Movie;
 import dev.jeffery.movie_booking_project_backend.data.PaymentCard;
 import dev.jeffery.movie_booking_project_backend.data.Show;
 import dev.jeffery.movie_booking_project_backend.data.User;
 import dev.jeffery.movie_booking_project_backend.services.AdminService;
-import dev.jeffery.movie_booking_project_backend.services.ConcreteMovieService;
 import dev.jeffery.movie_booking_project_backend.services.MovieService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.List;
 
@@ -24,7 +27,8 @@ public class AdminController {
     private AdminService adminService;
 
     @Autowired
-    private ConcreteMovieService movieService;
+    @Qualifier("concreteMovieService")
+    private MovieService movieService;
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AdminLoginRequest request) {
@@ -41,10 +45,9 @@ public class AdminController {
     }
 
     @PostMapping("/add-movie")
-    public ResponseEntity<?> createMovie(@RequestBody ConcreteMovie movie) {
+    public ResponseEntity<?> createMovie(@RequestBody @JsonDeserialize(as = ConcreteMovie.class) Movie movie) {
         try {
-            ConcreteMovie newMovie = movieService.createMovie(movie.getTitle(), movie.getGenre(), movie.getPoster(),
-                    movie.getTrailer(), movie.getDescription(), movie.getRating(), movie.getIsRunning());
+            Movie newMovie = movieService.createMovie(movie);
 
             return ResponseEntity.ok(newMovie);
         } catch (Exception e) {

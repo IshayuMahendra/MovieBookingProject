@@ -51,7 +51,7 @@ public class ConcreteMovieDTOBuilder implements MovieDTOBuilder {
         return this;
     }
 
-    public ConcreteMovieDTOBuilder running(boolean running) {
+    public ConcreteMovieDTOBuilder isRunning(boolean running) {
         this.running = running;
         return this;
     }

@@ -1,22 +1,21 @@
 package dev.jeffery.movie_booking_project_backend.services;
 
-import dev.jeffery.movie_booking_project_backend.services.MovieService;
 import dev.jeffery.movie_booking_project_backend.data.Movie;
+import dev.jeffery.movie_booking_project_backend.builders.ConcreteMovieBuilder;
 import dev.jeffery.movie_booking_project_backend.builders.ConcreteMovieDTOBuilder;
 import dev.jeffery.movie_booking_project_backend.data.ConcreteMovie;
 import dev.jeffery.movie_booking_project_backend.dto.MovieDTO;
 import dev.jeffery.movie_booking_project_backend.dto.ConcreteMovieDTO;
 import dev.jeffery.movie_booking_project_backend.factories.MovieDomainFactory;
-import dev.jeffery.movie_booking_project_backend.factories.ConcreteMovieDomainFactory;
 import dev.jeffery.movie_booking_project_backend.data.Show;
 import dev.jeffery.movie_booking_project_backend.repositories.MovieRepository;
 import dev.jeffery.movie_booking_project_backend.repositories.ShowRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,14 +32,23 @@ public class ConcreteMovieService implements MovieService{
     private ShowRepository showRepository;
 
     @Autowired
+    @Qualifier("concreteMovieDomainFactory")
     public MovieDomainFactory factory;
 
     // Create new movie based on admin input
-    public ConcreteMovie createMovie(String title, List<String> genre, String poster, String trailer, String description,
-                             int rating, boolean isRunning){
-        ConcreteMovie movie = new ConcreteMovie(title, genre, poster, trailer, description, rating, isRunning);
-        movieRepository.save(movie);
-        return movie;
+    public ConcreteMovie createMovie(Movie movie){
+        ConcreteMovie concreteMovie = (ConcreteMovie) movie;
+        ConcreteMovieBuilder builder = (ConcreteMovieBuilder) factory.createMovieBuilder();
+        ConcreteMovie newMovie = builder.title(concreteMovie.getTitle())
+                            .genre(concreteMovie.getGenre())
+                            .poster(concreteMovie.getPoster())
+                            .trailer(concreteMovie.getTrailer())
+                            .description(concreteMovie.getDescription())
+                            .rating(concreteMovie.getRating())
+                            .isRunning(concreteMovie.getIsRunning())
+                            .build();
+        movieRepository.save(newMovie);
+        return newMovie;
     }
 
     // Add showtimes for a movie based on admin input
@@ -75,7 +83,7 @@ public class ConcreteMovieService implements MovieService{
                                 .trailer(movie.getTrailer())
                                 .description(movie.getDescription())
                                 .rating(movie.getRating())
-                                .running(movie.getIsRunning())
+                                .isRunning(movie.getIsRunning())
                                 .showtimes(showtimes)        
                                 .build();
             return result;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Component;
 
 import dev.jeffery.movie_booking_project_backend.builders.MovieBuilder;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Component
 @NoArgsConstructor
 public class ConcreteMovieBuilder implements MovieBuilder{
+    @Id
     private ObjectId id = new ObjectId();
     private String title;
     private List<String> genre = new ArrayList<>();
@@ -21,12 +23,6 @@ public class ConcreteMovieBuilder implements MovieBuilder{
     private String description;
     private int rating;
     private boolean isRunning;
-
-    @Override
-    public ConcreteMovieBuilder id(ObjectId id) {
-        this.id = id;
-        return this;
-    }
 
     @Override
     public ConcreteMovieBuilder title(String title) {
