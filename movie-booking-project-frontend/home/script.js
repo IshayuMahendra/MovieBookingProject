@@ -64,13 +64,19 @@ function renderMovies(movies) {
     movies.forEach(movie => {
         const card = document.createElement('div');
         card.className = 'movie-card';
+
+        const showtimeText = movie.showtimes && movie.showtimes.length > 0
+            ? movie.showtimes.map(st => st.time).join(", ")
+            : "None";
+
         card.innerHTML = `
             <img src="${movie.poster}" alt="${movie.title}">
             <h3>${movie.title}</h3>
             <p>Rating: ${movie.rating}%</p>
-            <div class="showtimes">Showtimes: ${movie.showtimes.join(', ')}</div>
+            <div class="showtimes">Showtimes: ${showtimeText}</div>
         `;
 
+        // store entire movie object for movie-details page
         card.addEventListener('click', () => {
             sessionStorage.setItem('selectedMovie', JSON.stringify(movie));
             window.location.href = '../movie-details/movie.html';

@@ -24,16 +24,7 @@
         <button id="confirmBtn">Confirm Booking</button>
     </div>
 
-    <script>
-        // movie times
-        const params = new URLSearchParams(window.location.search);
-        document.getElementById('movieTitle').textContent = params.get('movie') || 'Unknown';
-        document.getElementById('showtime').textContent = params.get('time') || 'Unknown';
+   <script src="booking.js"></script>
 
-        // button to confirm
-        document.getElementById('confirmBtn').addEventListener('click', () => {
-            alert('Booking confirmed (UI only).');
-        });
-    </script>
 </body>
 </html>

@@ -2,15 +2,19 @@ package dev.jeffery.movie_booking_project_backend.controllers;
 
 import dev.jeffery.movie_booking_project_backend.data.Booking;
 import dev.jeffery.movie_booking_project_backend.data.Seat;
+import dev.jeffery.movie_booking_project_backend.dto.SeatAvailabilityDTO;
 import dev.jeffery.movie_booking_project_backend.dto.SelectSeatsRequest;
 import dev.jeffery.movie_booking_project_backend.dto.StartBookingRequest;
 import dev.jeffery.movie_booking_project_backend.services.BookingService;
 import org.springframework.web.bind.annotation.*;
 
+
+
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
 @RequestMapping("/api/bookings")
 public class BookingController {
 
@@ -44,6 +48,11 @@ public class BookingController {
     @GetMapping("/{bookingId}")
     public Booking getBooking(@PathVariable String bookingId) {
         return bookingService.getBooking(bookingId);
+    }
+
+    @GetMapping("/{bookingId}/seat-map")
+    public List<SeatAvailabilityDTO> getSeatMap(@PathVariable String bookingId) {
+        return bookingService.getSeatMap(bookingId);
     }
 
 }
