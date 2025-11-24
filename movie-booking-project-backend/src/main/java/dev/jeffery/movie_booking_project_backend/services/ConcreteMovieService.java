@@ -5,6 +5,7 @@ import dev.jeffery.movie_booking_project_backend.repositories.ShowroomRepository
 import dev.jeffery.movie_booking_project_backend.services.MovieService;
 import dev.jeffery.movie_booking_project_backend.builders.ConcreteMovieDTOBuilder;
 import dev.jeffery.movie_booking_project_backend.dto.MovieDTO;
+import dev.jeffery.movie_booking_project_backend.dto.ShowtimeDTO;
 import dev.jeffery.movie_booking_project_backend.dto.ConcreteMovieDTO;
 import dev.jeffery.movie_booking_project_backend.factories.MovieDomainFactory;
 import dev.jeffery.movie_booking_project_backend.factories.ConcreteMovieDomainFactory;
@@ -41,6 +42,7 @@ public class ConcreteMovieService implements MovieService{
 
     @Autowired
     private AdminService adminService;
+
 
     // Create new movie based on admin input
     public ConcreteMovie createMovie(String title, List<String> genre, String poster, String trailer, String description,
@@ -115,9 +117,12 @@ public class ConcreteMovieService implements MovieService{
         List<ConcreteMovie> movies = movieRepository.findAll();
         return movies.stream().map(movie -> {
             List<Show> shows = showRepository.findByMovieID(movie.getId());
-            List<String> showtimes = shows.stream()
-                    .map(show -> timeFormat.format(show.getShowTime()))
-                    .collect(Collectors.toList());
+            List<ShowtimeDTO> showtimes = shows.stream()
+                            .map(show -> new ShowtimeDTO(
+                                    show.getId().toHexString(),
+                                    timeFormat.format(show.getShowTime())
+                            ))
+                            .collect(Collectors.toList());
 
             ConcreteMovieDTOBuilder builder = (ConcreteMovieDTOBuilder) factory.createMovieDTOBuilder();
             ConcreteMovieDTO result = builder.id(movie.getId().toHexString())           

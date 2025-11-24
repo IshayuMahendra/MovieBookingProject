@@ -23,17 +23,17 @@
 
         <button id="confirmBtn">Confirm Booking</button>
     </div>
+    
+    <div id="seatPreviewContainer">
+    <h2>Seat Map (Preview)</h2>
+    <div id="seatPreview"></div>
+    <p class="legend">
+      <span class="legend-box available"></span> Available
+      <span class="legend-box taken"></span> Taken
+    </p>
+    </div>
 
-    <script>
-        // movie times
-        const params = new URLSearchParams(window.location.search);
-        document.getElementById('movieTitle').textContent = params.get('movie') || 'Unknown';
-        document.getElementById('showtime').textContent = params.get('time') || 'Unknown';
+   <script src="booking.js"></script>
 
-        // button to confirm
-        document.getElementById('confirmBtn').addEventListener('click', () => {
-            alert('Booking confirmed (UI only).');
-        });
-    </script>
 </body>
 </html>

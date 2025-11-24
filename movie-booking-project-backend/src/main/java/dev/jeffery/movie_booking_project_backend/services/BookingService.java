@@ -4,6 +4,7 @@ import dev.jeffery.movie_booking_project_backend.data.Booking;
 import dev.jeffery.movie_booking_project_backend.data.Seat;
 import dev.jeffery.movie_booking_project_backend.data.Show;
 import dev.jeffery.movie_booking_project_backend.data.Ticket;
+import dev.jeffery.movie_booking_project_backend.dto.SeatAvailabilityDTO;
 import dev.jeffery.movie_booking_project_backend.dto.SelectSeatsRequest;
 import dev.jeffery.movie_booking_project_backend.dto.StartBookingRequest;
 import dev.jeffery.movie_booking_project_backend.repositories.BookingRepository;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+
 
 
 import java.util.ArrayList;
@@ -162,6 +165,67 @@ public class BookingService {
 
         bookingRepository.save(booking);
     }
+
+        public List<SeatAvailabilityDTO> getSeatMap(String bookingId) {
+        Booking booking = bookingRepository.findById(new ObjectId(bookingId))
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        ObjectId showId = booking.getShowId();
+        Show show = showRepository.findById(showId)
+                .orElseThrow(() -> new RuntimeException("Show not found"));
+
+        ObjectId showroomId = show.getShowroomID();
+
+        
+        List<Seat> allSeats = seatRepository.findAll()
+                .stream()
+                .filter(s -> s.getShowroomID().equals(showroomId))
+                .toList();
+
+        
+        List<String> takenSeatIds = ticketRepository.findAll()
+                .stream()
+                .filter(t -> t.getShowID().equals(showId))
+                .map(t -> t.getSeatID().toHexString())
+                .toList();
+
+        return allSeats.stream()
+                .map(seat -> new SeatAvailabilityDTO(
+                        seat.getId().toHexString(),
+                        seat.getRow(),
+                        seat.getNumber(),
+                        !takenSeatIds.contains(seat.getId().toHexString())
+                ))
+                .toList();
+        }
+
+        public List<SeatAvailabilityDTO> getSeatMapByShow(String showIdStr) {
+        ObjectId showId = new ObjectId(showIdStr);
+
+            Show show = showRepository.findById(showId)
+                    .orElseThrow(() -> new RuntimeException("Show not found"));
+        ObjectId showroomId = show.getShowroomID();
+
+        List<Seat> allSeats = seatRepository.findAll()
+                .stream()
+                .filter(s -> s.getShowroomID().equals(showroomId))
+                .toList();
+
+        List<String> takenSeatIds = ticketRepository.findAll()
+                .stream()
+                .filter(t -> t.getShowID().equals(showId))
+                .map(t -> t.getSeatID().toHexString())
+                .toList();
+
+        return allSeats.stream()
+                .map(seat -> new SeatAvailabilityDTO(
+                        seat.getId().toHexString(),
+                        seat.getRow(),
+                        seat.getNumber(),
+                        !takenSeatIds.contains(seat.getId().toHexString())
+                ))
+                .toList();
+        }
 
 }
 

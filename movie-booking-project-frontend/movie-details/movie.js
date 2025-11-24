@@ -21,16 +21,17 @@ if (!movie) {
 
     // render showtimes as buttons
     showtimesEl.innerHTML = '';
-    movie.showtimes.forEach(time => {
+    movie.showtimes.forEach(show => {
         const btn = document.createElement('button');
-        btn.textContent = time;
+        btn.textContent = show.time;
         btn.className = 'showtime-btn';
 
         btn.addEventListener('click', () => {
             // to booking page with query parameters
             const params = new URLSearchParams({
                 movie: movie.title,
-                time: time
+                time: show.time,
+                showId: show.id
             });
             window.location.href = `../book/booking.html?${params.toString()}`;
         });
