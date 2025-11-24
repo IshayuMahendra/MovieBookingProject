@@ -199,5 +199,33 @@ public class BookingService {
                 .toList();
         }
 
+        public List<SeatAvailabilityDTO> getSeatMapByShow(String showIdStr) {
+        ObjectId showId = new ObjectId(showIdStr);
+
+            Show show = showRepository.findById(showId)
+                    .orElseThrow(() -> new RuntimeException("Show not found"));
+        ObjectId showroomId = show.getShowroomID();
+
+        List<Seat> allSeats = seatRepository.findAll()
+                .stream()
+                .filter(s -> s.getShowroomID().equals(showroomId))
+                .toList();
+
+        List<String> takenSeatIds = ticketRepository.findAll()
+                .stream()
+                .filter(t -> t.getShowID().equals(showId))
+                .map(t -> t.getSeatID().toHexString())
+                .toList();
+
+        return allSeats.stream()
+                .map(seat -> new SeatAvailabilityDTO(
+                        seat.getId().toHexString(),
+                        seat.getRow(),
+                        seat.getNumber(),
+                        !takenSeatIds.contains(seat.getId().toHexString())
+                ))
+                .toList();
+        }
+
 }
 

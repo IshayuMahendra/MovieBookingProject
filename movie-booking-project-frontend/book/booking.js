@@ -15,6 +15,7 @@ const nameInput = document.getElementById("name");
 const emailInput = document.getElementById("email");
 const ticketsInput = document.getElementById("tickets");
 const confirmBtn = document.getElementById("confirmBtn");
+const seatPreviewContainer = document.getElementById("seatPreview");
 
 
 confirmBtn.addEventListener("click", async () => {
@@ -75,4 +76,63 @@ confirmBtn.addEventListener("click", async () => {
         console.error(err);
         alert("Error: " + err.message);
     }
+
 });
+async function loadSeatPreview() {
+    if (!showId || !seatPreviewContainer) return;
+
+    try {
+        const res = await fetch(`${API_BASE}/api/shows/${showId}/seat-map`);
+        if (!res.ok) {
+            console.error("Failed to load seat preview", await res.text());
+            return;
+        }
+        const seatMap = await res.json();
+        renderSeatPreview(seatMap);
+    } catch (err) {
+        console.error("Error loading seat preview:", err);
+    }
+}
+
+function renderSeatPreview(seatMap) {
+    seatPreviewContainer.innerHTML = "";
+
+    const rows = {};
+    seatMap.forEach(seat => {
+        if (!rows[seat.row]) rows[seat.row] = [];
+        rows[seat.row].push(seat);
+    });
+
+    const sortedRows = Object.keys(rows).sort();
+
+    sortedRows.forEach(rowKey => {
+        const rowSeats = rows[rowKey].sort((a, b) => a.number - b.number);
+
+        const rowDiv = document.createElement("div");
+        rowDiv.classList.add("seat-row");
+
+        const label = document.createElement("div");
+        label.classList.add("row-label");
+        label.textContent = rowKey;
+        rowDiv.appendChild(label);
+
+        rowSeats.forEach(seat => {
+            const seatDiv = document.createElement("div");
+            seatDiv.classList.add("seat");
+            seatDiv.textContent = seat.number;
+
+            if (seat.available) {
+                seatDiv.classList.add("available");
+            } else {
+                seatDiv.classList.add("taken");
+            }
+
+            rowDiv.appendChild(seatDiv);
+        });
+
+        seatPreviewContainer.appendChild(rowDiv);
+    });
+}
+
+// load preview on page load
+loadSeatPreview();

@@ -76,7 +76,7 @@ function renderMovies(movies) {
             <div class="showtimes">Showtimes: ${showtimeText}</div>
         `;
 
-        // store entire movie object for movie-details page
+    
         card.addEventListener('click', () => {
             sessionStorage.setItem('selectedMovie', JSON.stringify(movie));
             window.location.href = '../movie-details/movie.html';
