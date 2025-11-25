@@ -1,6 +1,7 @@
 package dev.jeffery.movie_booking_project_backend.data;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.Date;
 public class Show {
     @Id
     private ObjectId id = new ObjectId();
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private Date showTime;
     private int duration;
     private ObjectId showroomID;

@@ -1,5 +1,6 @@
 package dev.jeffery.movie_booking_project_backend.data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class Promotion {
     @Id
     private ObjectId id = new ObjectId();
     private int discountPercentage;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private Date expirationDate;
 
     public Promotion(int discountPercentage, Date expirationDate){
