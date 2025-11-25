@@ -8,6 +8,7 @@ const ticketCount = parseInt(params.get("tickets") || "1", 10);
 const movieTitle = params.get("movie") || "Unknown";
 const showtimeText = params.get("time") || "Unknown";
 
+
 document.getElementById("movieTitle").textContent = movieTitle;
 document.getElementById("showtime").textContent = showtimeText;
 document.getElementById("ticketCount").textContent = ticketCount;

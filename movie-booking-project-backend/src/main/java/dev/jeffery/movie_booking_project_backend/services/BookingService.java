@@ -46,7 +46,6 @@ public class BookingService {
     }
 
     public String startBooking(StartBookingRequest request) {
-
         Booking booking = new Booking();
 
         booking.setDateCreated(new Date());
@@ -227,5 +226,5 @@ public class BookingService {
                 .toList();
         }
 
+     
 }
-

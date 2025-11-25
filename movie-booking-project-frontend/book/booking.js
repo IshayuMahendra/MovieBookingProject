@@ -6,6 +6,7 @@ const params = new URLSearchParams(window.location.search);
 const movieTitle = params.get("movie") || "Unknown";
 const showtimeText = params.get("time") || "Unknown";
 const showId = params.get("showId");  
+let availableSeatCount = null;
 
 document.getElementById("movieTitle").textContent = movieTitle;
 document.getElementById("showtime").textContent = showtimeText;
@@ -34,7 +35,7 @@ confirmBtn.addEventListener("click", async () => {
     let hasError = false;
     
     if (!showId) {
-        setError("nameError", "Please enter your name.");
+        setError("showIdError", "Missing showtime ID.");
         hasError = true;
     }
     if (!name) {
@@ -45,15 +46,18 @@ confirmBtn.addEventListener("click", async () => {
         setError("emailError", "Please enter your email.");
         hasError = true;
     }
+
     if (totalTickets < 1) {
-        setError("ticketsError", "Enter at least one ticket.");
+        setError("ticketsError", "Please select at least one ticket.");
         hasError = true;
     }
-
-    if (hasError) {
+     if (hasError) {
+        return;   
+    }
+    if (availableSeatCount !== null && totalTickets > availableSeatCount) {
+        setError("ticketsError", `Only ${availableSeatCount} seats are available for this showtime.`);
         return;
     }
-
 
      const ticketRequests = [];
 
@@ -72,6 +76,7 @@ confirmBtn.addEventListener("click", async () => {
         tickets: ticketRequests
     };
 
+    
     try {
     const res = await fetch(`${API_BASE}/api/bookings/start`, {
         method: "POST",
@@ -123,6 +128,7 @@ async function loadSeatPreview() {
             return;
         }
         const seatMap = await res.json();
+         availableSeatCount = seatMap.filter(seat => seat.available).length;
         renderSeatPreview(seatMap);
     } catch (err) {
         console.error("Error loading seat preview:", err);
