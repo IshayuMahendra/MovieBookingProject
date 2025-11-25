@@ -13,38 +13,59 @@ document.getElementById("showtime").textContent = showtimeText;
 
 const nameInput = document.getElementById("name");
 const emailInput = document.getElementById("email");
-const ticketsInput = document.getElementById("tickets");
+const ticketType1Input = document.getElementById("ticketType1");
+const ticketType2Input = document.getElementById("ticketType2");
+const ticketType3Input = document.getElementById("ticketType3");
 const confirmBtn = document.getElementById("confirmBtn");
 const seatPreviewContainer = document.getElementById("seatPreview");
 
 
 confirmBtn.addEventListener("click", async () => {
+    clearErrors();
+
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
-    const tickets = parseInt(ticketsInput.value, 10);
+    const type1Count = parseInt(ticketType1Input.value, 10) || 0;
+    const type2Count = parseInt(ticketType2Input.value, 10) || 0;
+    const type3Count = parseInt(ticketType3Input.value, 10) || 0;
 
+    const totalTickets = type1Count + type2Count + type3Count;
+
+    let hasError = false;
     
     if (!showId) {
-        alert("Missing showtime ID.");
-        return;
+        setError("nameError", "Please enter your name.");
+        hasError = true;
     }
     if (!name) {
-        alert("Please enter your name.");
-        return;
+        setError("nameError", "Please enter your name.");
+        hasError = true;
     }
     if (!email) {
-        alert("Please enter your email.");
-        return;
+        setError("emailError", "Please enter your email.");
+        hasError = true;
     }
-    if (!tickets || tickets < 1) {
-        alert("Enter a valid number of tickets.");
+    if (totalTickets < 1) {
+        setError("ticketsError", "Enter at least one ticket.");
+        hasError = true;
+    }
+
+    if (hasError) {
         return;
     }
 
-   
-    const ticketRequests = Array.from({ length: tickets }, () => ({
-        ageCategory: "ADULT"
-    }));
+
+     const ticketRequests = [];
+
+    for (let i = 0; i < type1Count; i++) {
+        ticketRequests.push({ ageCategory: "ADULT" });
+    }
+    for (let i = 0; i < type2Count; i++) {
+        ticketRequests.push({ ageCategory: "CHILD" });
+    }
+    for (let i = 0; i < type3Count; i++) {
+        ticketRequests.push({ ageCategory: "SENIOR" });
+    }
 
     const requestBody = {
         showId: showId,
@@ -52,32 +73,46 @@ confirmBtn.addEventListener("click", async () => {
     };
 
     try {
-        const res = await fetch(`${API_BASE}/api/bookings/start`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(requestBody)
-        });
+    const res = await fetch(`${API_BASE}/api/bookings/start`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody)
+    });
 
-        if (!res.ok) {
-            const errorText = await res.text();
-            throw new Error(errorText || "Error starting booking");
-        }
+    if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(errorText || "Error starting booking");
+    }
 
-        const data = await res.json(); 
-        const bookingId = data.bookingId;
+    const data = await res.json(); 
+    const bookingId = data.bookingId;
 
-        
-        window.location.href =
-            `seat-map.html?bookingId=${bookingId}` +
-            `&tickets=${tickets}` +
-            `&movie=${encodeURIComponent(movieTitle)}` +
-            `&time=${encodeURIComponent(showtimeText)}`;
+   
+    window.location.href =
+        `seat-map.html?bookingId=${bookingId}` +
+        `&tickets=${totalTickets}` +
+        `&movie=${encodeURIComponent(movieTitle)}` +
+        `&time=${encodeURIComponent(showtimeText)}`;
     } catch (err) {
         console.error(err);
         alert("Error: " + err.message);
     }
 
 });
+
+function setError(id, message) {
+    const el = document.getElementById(id);
+    el.textContent = message;
+    el.style.display = "block";
+}
+
+function clearErrors() {
+    document.querySelectorAll('.error-message').forEach(el => {
+        el.style.display = "none";
+    });
+}
+
+
 async function loadSeatPreview() {
     if (!showId || !seatPreviewContainer) return;
 

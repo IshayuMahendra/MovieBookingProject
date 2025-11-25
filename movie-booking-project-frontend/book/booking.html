@@ -14,18 +14,28 @@
 
         <label for="name">Your Name</label>
         <input type="text" id="name" placeholder="Enter your name">
+        <p id="nameError" class="error-message"></p>
 
         <label for="email">Email</label>
         <input type="email" id="email" placeholder="Enter your email">
+        <p id="emailError" class="error-message"></p>
 
-        <label for="tickets">Number of Tickets</label>
-        <input type="number" id="tickets" min="1" max="10" value="1">
+        <h2>Tickets</h2>
 
+        <label for="ticketType1">Adult</label>
+        <input type="number" id="ticketType1" min="0" max="10" value="0">
+
+        <label for="ticketType2">Child</label>
+        <input type="number" id="ticketType2" min="0" max="10" value="0">
+
+        <label for="ticketType3">Senior</label>
+        <input type="number" id="ticketType3" min="0" max="10" value="0">
+        <p id="ticketsError" class="error-message"></p>
         <button id="confirmBtn">Confirm Booking</button>
     </div>
     
     <div id="seatPreviewContainer">
-    <h2>Seat Map (Preview)</h2>
+    <h2>Seat Map </h2>
     <div id="seatPreview"></div>
     <p class="legend">
       <span class="legend-box available"></span> Available

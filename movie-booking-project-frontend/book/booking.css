@@ -132,3 +132,10 @@ h1 {
 .legend-box.taken {
   background-color: #f5b7b1;
 }
+.error-message {
+    color: #c62828;
+    font-size: 0.9em;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    display: none;
+}
