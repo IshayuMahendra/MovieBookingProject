@@ -13,9 +13,9 @@ if (addCardBtn) {
         const div = document.createElement('div');
         div.className = 'card-entry';
         div.innerHTML = `
-            <input type="text" class="cardNumber" placeholder="Card Number" required>
-            <input type="text" class="expirationDate" placeholder="MM/YY" required>
-            <input type="text" class="billingAddress" placeholder="Billing Address" required>
+            <input type="text" class="cardNumber" placeholder="Card Number*" required>
+            <input type="text" class="expirationDate" placeholder="MM/YY*" required>
+            <input type="text" class="billingAddress" placeholder="Billing Address*" required>
             <button type="button" class="deleteCardBtn">Delete</button>
         `;
         div.querySelector('.deleteCardBtn').addEventListener('click', () => div.remove());

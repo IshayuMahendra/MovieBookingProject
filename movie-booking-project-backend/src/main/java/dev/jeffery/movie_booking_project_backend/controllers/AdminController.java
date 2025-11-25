@@ -57,6 +57,7 @@ public class AdminController {
             List<Showroom> showrooms = movieService.getShowrooms();
             return ResponseEntity.ok(showrooms);
         } catch (Exception e) {
+            System.out.println("Error getting showrooms: " + e.getMessage());
             return ResponseEntity.badRequest().body("Error getting showrooms: " + e.getMessage());
         }
     }

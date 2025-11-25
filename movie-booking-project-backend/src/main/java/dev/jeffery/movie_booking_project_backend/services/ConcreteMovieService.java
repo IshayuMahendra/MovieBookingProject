@@ -1,6 +1,7 @@
 package dev.jeffery.movie_booking_project_backend.services;
 
 import dev.jeffery.movie_booking_project_backend.data.*;
+import dev.jeffery.movie_booking_project_backend.repositories.SeatRepository;
 import dev.jeffery.movie_booking_project_backend.repositories.ShowroomRepository;
 import dev.jeffery.movie_booking_project_backend.services.MovieService;
 import dev.jeffery.movie_booking_project_backend.builders.ConcreteMovieDTOBuilder;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 @Service
 public class ConcreteMovieService implements MovieService{
 
-    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm EEE MM/dd/yyyy");
 
     @Autowired
     private MovieRepository movieRepository;
@@ -36,6 +37,9 @@ public class ConcreteMovieService implements MovieService{
 
     @Autowired
     private ShowroomRepository showroomRepository;
+
+    @Autowired
+    private SeatRepository seatRepository;
 
     @Autowired
     public MovieDomainFactory factory;
@@ -60,6 +64,9 @@ public class ConcreteMovieService implements MovieService{
 
     // Add showtimes for a movie based on admin input
     public String addShowtime(Show showtime){
+        if (movieRepository.findById(showtime.getMovieID()).isEmpty()) {
+            return "This movie id does not exist. Please enter a valid movie id.";
+        }
         List<Show> otherShowtimes = showRepository.findByShowroomID(showtime.getShowroomID());
         boolean conflicts = false;
         for (Show s : otherShowtimes){
@@ -72,6 +79,7 @@ public class ConcreteMovieService implements MovieService{
         if(conflicts){
             return "This time conflicts with another movie!";
         } else{
+            System.out.println(showtime.getMovieID());
             showRepository.save(showtime);
             return "Showtime has been added!";
         }
@@ -113,6 +121,78 @@ public class ConcreteMovieService implements MovieService{
 //        } catch(Exception e){
 //            System.out.println(e.getMessage());
 //        }
+
+//        List<Seat> seats = List.of(
+//               // Row A
+//               new Seat("A", 1, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("A", 2, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("A", 3, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("A", 4, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("A", 5, new ObjectId("6924f93b983df7b84237fff7")),
+//
+//               // Row B
+//               new Seat("B", 1, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("B", 2, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("B", 3, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("B", 4, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("B", 5, new ObjectId("6924f93b983df7b84237fff7")),
+//
+//               // Row C
+//               new Seat("C", 1, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("C", 2, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("C", 3, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("C", 4, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("C", 5, new ObjectId("6924f93b983df7b84237fff7")),
+//
+//               // Row D
+//               new Seat("D", 1, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("D", 2, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("D", 3, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("D", 4, new ObjectId("6924f93b983df7b84237fff7")),
+//               new Seat("D", 5, new ObjectId("6924f93b983df7b84237fff7"))
+//       );
+//       seatRepository.saveAll(seats);
+//
+//        List<Seat> seats1 = List.of(
+//                // Row A
+//                new Seat("A", 1, new ObjectId("6924f93b983df7b84237fff6")),
+//                new Seat("A", 2, new ObjectId("6924f93b983df7b84237fff6")),
+//                new Seat("A", 3, new ObjectId("6924f93b983df7b84237fff6")),
+//                new Seat("A", 4, new ObjectId("6924f93b983df7b84237fff6")),
+//                new Seat("A", 5, new ObjectId("6924f93b983df7b84237fff6")),
+//
+//                // Row B
+//                new Seat("B", 1, new ObjectId("6924f93b983df7b84237fff6")),
+//                new Seat("B", 2, new ObjectId("6924f93b983df7b84237fff6")),
+//                new Seat("B", 3, new ObjectId("6924f93b983df7b84237fff6")),
+//                new Seat("B", 4, new ObjectId("6924f93b983df7b84237fff6")),
+//                new Seat("B", 5, new ObjectId("6924f93b983df7b84237fff6")),
+//
+//                // Row C
+//                new Seat("C", 1, new ObjectId("6924f93b983df7b84237fff6")),
+//                new Seat("C", 2, new ObjectId("6924f93b983df7b84237fff6")),
+//                new Seat("C", 3, new ObjectId("6924f93b983df7b84237fff6")),
+//                new Seat("C", 4, new ObjectId("6924f93b983df7b84237fff6")),
+//                new Seat("C", 5, new ObjectId("6924f93b983df7b84237fff6"))
+//        );
+//        seatRepository.saveAll(seats1);
+//
+//        List<Seat> seats2 = List.of(
+//                // Row A
+//                new Seat("A", 1, new ObjectId("6924f93b983df7b84237fff5")),
+//                new Seat("A", 2, new ObjectId("6924f93b983df7b84237fff5")),
+//                new Seat("A", 3, new ObjectId("6924f93b983df7b84237fff5")),
+//                new Seat("A", 4, new ObjectId("6924f93b983df7b84237fff5")),
+//                new Seat("A", 5, new ObjectId("6924f93b983df7b84237fff5")),
+//
+//                // Row B
+//                new Seat("B", 1, new ObjectId("6924f93b983df7b84237fff5")),
+//                new Seat("B", 2, new ObjectId("6924f93b983df7b84237fff5")),
+//                new Seat("B", 3, new ObjectId("6924f93b983df7b84237fff5")),
+//                new Seat("B", 4, new ObjectId("6924f93b983df7b84237fff5")),
+//                new Seat("B", 5, new ObjectId("6924f93b983df7b84237fff5"))
+//        );
+//        seatRepository.saveAll(seats2);
 
         List<ConcreteMovie> movies = movieRepository.findAll();
         return movies.stream().map(movie -> {
