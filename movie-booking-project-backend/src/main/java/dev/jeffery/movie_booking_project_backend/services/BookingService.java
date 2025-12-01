@@ -5,7 +5,6 @@ import dev.jeffery.movie_booking_project_backend.data.Seat;
 import dev.jeffery.movie_booking_project_backend.data.Show;
 import dev.jeffery.movie_booking_project_backend.data.Ticket;
 import dev.jeffery.movie_booking_project_backend.dto.SeatAvailabilityDTO;
-import dev.jeffery.movie_booking_project_backend.dto.SelectSeatsRequest;
 import dev.jeffery.movie_booking_project_backend.dto.StartBookingRequest;
 import dev.jeffery.movie_booking_project_backend.repositories.BookingRepository;
 import dev.jeffery.movie_booking_project_backend.repositories.SeatRepository;
@@ -14,17 +13,11 @@ import dev.jeffery.movie_booking_project_backend.repositories.TicketRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-
 
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -165,7 +158,7 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
-        public List<SeatAvailabilityDTO> getSeatMap(String bookingId) {
+    public List<SeatAvailabilityDTO> getSeatMap(String bookingId) {
         Booking booking = bookingRepository.findById(new ObjectId(bookingId))
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
@@ -175,13 +168,13 @@ public class BookingService {
 
         ObjectId showroomId = show.getShowroomID();
 
-        
+
         List<Seat> allSeats = seatRepository.findAll()
                 .stream()
                 .filter(s -> s.getShowroomID().equals(showroomId))
                 .toList();
 
-        
+
         List<String> takenSeatIds = ticketRepository.findAll()
                 .stream()
                 .filter(t -> t.getShowID().equals(showId))
@@ -196,9 +189,9 @@ public class BookingService {
                         !takenSeatIds.contains(seat.getId().toHexString())
                 ))
                 .toList();
-        }
+    }
 
-        public List<SeatAvailabilityDTO> getSeatMapByShow(String showIdStr) {
+    public List<SeatAvailabilityDTO> getSeatMapByShow(String showIdStr) {
         ObjectId showId = new ObjectId(showIdStr);
 
             Show show = showRepository.findById(showId)
@@ -224,7 +217,9 @@ public class BookingService {
                         !takenSeatIds.contains(seat.getId().toHexString())
                 ))
                 .toList();
-        }
+    }
 
-     
+    public List<Booking> getBookingsByUser(String userID) {
+        return bookingRepository.findByUserID(new ObjectId(userID));
+    }
 }

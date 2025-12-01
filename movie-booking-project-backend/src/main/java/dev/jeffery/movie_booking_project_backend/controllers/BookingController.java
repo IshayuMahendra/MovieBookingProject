@@ -55,6 +55,11 @@ public class BookingController {
         return bookingService.getSeatMap(bookingId);
     }
 
+    @GetMapping("/{userId}/seat-map")
+    public List<Booking> getBookingsByUser(@PathVariable String userId) {
+        return bookingService.getBookingsByUser(userId);
+    }
+
     
     
 
