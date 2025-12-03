@@ -1,5 +1,6 @@
 package dev.jeffery.movie_booking_project_backend.services;
 
+import dev.jeffery.movie_booking_project_backend.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,11 +8,6 @@ import dev.jeffery.movie_booking_project_backend.dto.CheckoutConfirmationDTO;
 import dev.jeffery.movie_booking_project_backend.dto.CheckoutInfoDTO;
 import dev.jeffery.movie_booking_project_backend.dto.ConfirmCheckoutRequest;
 import dev.jeffery.movie_booking_project_backend.dto.SavedCardDTO;
-import dev.jeffery.movie_booking_project_backend.repositories.BookingRepository;
-import dev.jeffery.movie_booking_project_backend.repositories.PaymentCardRepository;
-import dev.jeffery.movie_booking_project_backend.repositories.PromotionRepository;
-import dev.jeffery.movie_booking_project_backend.repositories.TicketRepository;
-import dev.jeffery.movie_booking_project_backend.repositories.UserRepository;
 import dev.jeffery.movie_booking_project_backend.data.Booking;
 import dev.jeffery.movie_booking_project_backend.data.PaymentCard;
 import dev.jeffery.movie_booking_project_backend.data.Promotion;
@@ -42,7 +38,15 @@ public  class CheckoutService {
 
     @Autowired
     private PaymentCardRepository paymentCardRepository;
-    
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private ShowRepository showRepository;
+
+    @Autowired
+    private MovieRepository movieRepository;
 
     // Building checkoutInfo, use to display initial information.
     public CheckoutInfoDTO getcheckoutInfoDTO (String userId, String bookingId) {
@@ -151,12 +155,35 @@ public  class CheckoutService {
 
         bookingRepository.save(booking);
 
-       
         CheckoutConfirmationDTO dto = new CheckoutConfirmationDTO();
         dto.setBookingId(bookingId);
         dto.setSubtotal(subtotal);
         dto.setDiscount(discountAmount);
         dto.setTotal(total);
+
+        User user = userRepository.findById(new ObjectId(userId))
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        var show = showRepository.findById(booking.getShowId())
+                .orElseThrow(() -> new RuntimeException("Show not found"));
+
+        var movie = movieRepository.findById(show.getMovieID())
+                .orElseThrow(() -> new RuntimeException("Movie not found"));
+
+        String seats = String.join(", ", booking.getSelectedSeats());
+
+        String showTime = show.getShowTime() != null
+                ? show.getShowTime().toString()
+                : "N/A";
+
+        emailService.sendOrderConfirmationEmail(
+                user.getEmail(),
+                movie.getTitle(),
+                showTime,
+                seats,
+                total,
+                booking.getId().toHexString()
+        );
 
         return dto;
     }
