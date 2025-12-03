@@ -96,4 +96,12 @@ public class Booking {
 
     public void setStatus(String status) { this.status = status;}
 
+    public void setUserObjectID(ObjectId userObjectID) {
+        this.userObjectID = userObjectID;
+    }
+
+    public void setPaymentCardID(ObjectId paymentCardID) {
+        this.paymentCardID = paymentCardID;
+    }
+
 }
