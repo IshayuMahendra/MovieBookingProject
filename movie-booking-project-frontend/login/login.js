@@ -84,7 +84,7 @@ adminLoginBtn.addEventListener('click', async () => {
             // Save admin info in session
             sessionStorage.setItem('loggedInAdmin', JSON.stringify({ userID }));
             // Redirect to home
-            window.location.href = '../home/index.html';
+            window.location.href = '../admin/admin.html';
         } else {
             alert(text);
         }

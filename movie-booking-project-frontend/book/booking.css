@@ -67,3 +67,75 @@ h1 {
         padding: 20px;
     }
 }
+
+#seatPreviewContainer {
+  margin-top: 24px;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+#seatPreview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.seat-row {
+  display: flex;
+  gap: 6px;
+}
+
+.row-label {
+  width: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seat {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seat.available {
+  background-color: #c8f7c5;
+}
+.seat.taken {
+  background-color: #f5b7b1;
+}
+
+.legend {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+.legend-box {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  margin-right: 4px;
+  border: 1px solid #ccc;
+}
+.legend-box.available {
+  background-color: #c8f7c5;
+}
+.legend-box.taken {
+  background-color: #f5b7b1;
+}
+.error-message {
+    color: #c62828;
+    font-size: 0.9em;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    display: none;
+}

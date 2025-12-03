@@ -2,6 +2,7 @@ package dev.jeffery.movie_booking_project_backend.services;
 
 import dev.jeffery.movie_booking_project_backend.data.Movie;
 import dev.jeffery.movie_booking_project_backend.data.Show;
+import dev.jeffery.movie_booking_project_backend.data.Showroom;
 import dev.jeffery.movie_booking_project_backend.dto.MovieDTO;
 
 import java.util.List;
@@ -11,7 +12,11 @@ public interface MovieService {
 
     public Movie createMovie(Movie movie);
 
-    public String addShowtimes(List<Show> showtimes);
+    public List<Showroom> getShowrooms();
+
+    public String addShowtime(Show showtime);
+
+    public boolean conflicts(Show existingShow, Show newShow);
 
     public List<? extends Movie> allMovies();
 

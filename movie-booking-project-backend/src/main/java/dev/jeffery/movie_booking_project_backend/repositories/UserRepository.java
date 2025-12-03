@@ -13,6 +13,6 @@ public interface UserRepository extends MongoRepository<User, ObjectId> {
 
     Optional<User> findByEmail(String email);
     Optional<User> findByEmailVerificationToken(String token);
-
+    List<User> findUserByPromotions(boolean promotions);
 
 }

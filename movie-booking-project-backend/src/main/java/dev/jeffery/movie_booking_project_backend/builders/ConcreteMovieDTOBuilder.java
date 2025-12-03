@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dev.jeffery.movie_booking_project_backend.dto.ConcreteMovieDTO;
+import dev.jeffery.movie_booking_project_backend.dto.ShowtimeDTO;
 
 public class ConcreteMovieDTOBuilder implements MovieDTOBuilder {
     private String id;
@@ -14,7 +15,7 @@ public class ConcreteMovieDTOBuilder implements MovieDTOBuilder {
     private String description;
     private int rating;
     private boolean running;
-    private List<String> showtimes = new ArrayList<>();
+    private List<ShowtimeDTO> showtimes = new ArrayList<>();
 
     public ConcreteMovieDTOBuilder id(String id) {
         this.id = id;
@@ -56,7 +57,7 @@ public class ConcreteMovieDTOBuilder implements MovieDTOBuilder {
         return this;
     }
 
-    public ConcreteMovieDTOBuilder showtimes(List<String> showtimes) {
+    public ConcreteMovieDTOBuilder showtimes(List<ShowtimeDTO> showtimes) {
         this.showtimes = showtimes;
         return this;
     }

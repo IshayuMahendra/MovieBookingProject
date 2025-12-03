@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.List;
 
 @Document(collection = "Booking")
 @Data
@@ -20,6 +21,12 @@ public class Booking {
     private double total;
     private ObjectId userObjectID;
     private ObjectId paymentCardID;
+    private ObjectId showId;
+    private List<String> selectedSeats;
+    private List<String> ageCategories;
+    private String status;
+    private List<ObjectId> ticketIds;
+
 
     public Booking(Date dateCreated, String typeOfPayment, double total, ObjectId userObjectID, ObjectId paymentCardID) {
         this.dateCreated = dateCreated;
@@ -28,6 +35,10 @@ public class Booking {
         this.userObjectID = userObjectID;
         this.paymentCardID = paymentCardID;
     }
+
+    public List<ObjectId> getTicketIds() { return ticketIds; }
+
+    public void setTicketIds(List<ObjectId> ticketIds) { this.ticketIds = ticketIds; }
 
     public ObjectId getId() {
         return id;
@@ -68,4 +79,21 @@ public class Booking {
     public ObjectId getPaymentCardID() {
         return paymentCardID;
     }
+
+    public ObjectId getShowId() {return showId; }
+
+    public void setShowId(ObjectId showId) { this.showId = showId; }
+
+    public List<String> getSelectedSeats() { return selectedSeats; }
+
+    public void setSelectedSeats(List<String> selectedSeats) { this.selectedSeats = selectedSeats; }
+
+    public List<String> getAgeCategories() { return ageCategories; }
+
+    public void setAgeCategories(List<String> ageCategories) { this.ageCategories = ageCategories; }
+
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status;}
+
 }

@@ -1,5 +1,7 @@
 package dev.jeffery.movie_booking_project_backend.data;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,9 +18,14 @@ public class Showroom {
     private int seatCount;
     private ObjectId theaterID;
 
-    public Showroom(int setaCount, ObjectId theaterID) {
-        this.seatCount = setaCount;
+    public Showroom(int seatCount, ObjectId theaterID) {
+        this.seatCount = seatCount;
         this.theaterID = theaterID;
+    }
+
+    @JsonProperty("id")
+    public String getIdAsString() {
+        return id.toHexString();
     }
 
     public ObjectId getId() {
@@ -29,11 +36,11 @@ public class Showroom {
         this.id = id;
     }
 
-    public int getSetaCount() {
+    public int getSeatCount() {
         return seatCount;
     }
 
-    public void setSetaCount(int seatCount) {
+    public void setSeatCount(int seatCount) {
         this.seatCount = seatCount;
     }
 

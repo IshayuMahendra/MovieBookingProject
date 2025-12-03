@@ -18,13 +18,13 @@ public class ConcreteMovieDTO implements MovieDTO{
     private String description;
     private int rating;
     private boolean running;
-    private List<String> showtimes;
+    private List<ShowtimeDTO> showtimes;
 
 
 
     public ConcreteMovieDTO(String id, String title, List<String> genre, String poster,
                     String trailer, String description, int rating,
-                    boolean running, List<String> showtimes) {
+                    boolean running, List<ShowtimeDTO> showtimes) {
         this.id = id;
         this.title = title;
         this.genre = genre;
@@ -60,6 +60,6 @@ public class ConcreteMovieDTO implements MovieDTO{
     public boolean isRunning() { return running; }
     public void setRunning(boolean running) { this.running = running; }
 
-    public List<String> getShowtimes() { return showtimes; }
-    public void setShowtimes(List<String> showtimes) { this.showtimes = showtimes; }
+    public List<ShowtimeDTO> getShowtimes() { return showtimes; }
+    public void setShowtimes(List<ShowtimeDTO> showtimes) { this.showtimes = showtimes; }
 }
