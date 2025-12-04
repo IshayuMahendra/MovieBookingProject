@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface TicketRepository extends MongoRepository<Ticket, ObjectId> {
     List<Ticket> findByShowID(ObjectId showID);
+    List<Ticket> findByBookingID(ObjectId bookingID);
 }

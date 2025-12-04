@@ -149,4 +149,58 @@ public class EmailService {
         }
     }
 
+    public void sendOrderConfirmationEmail(
+            String email,
+            String movieTitle,
+            String showTime,
+            String seats,
+            double total,
+            String bookingId
+    ) {
+        try {
+            String subject = "Your Movie Booking Confirmation";
+
+            String content = """
+            <div style="font-family: Arial, sans-serif; max-width:600px;margin:auto;padding:20px;border-radius:8px;background:#f9f9f9;">
+              <h2 style="color:#333;">Your Booking is Confirmed!</h2>
+
+              <p style="font-size:15px;color:#444;">
+                Thank you for booking with Movie Booker. Here are your order details:
+              </p>
+
+              <div style="text-align:left;margin:20px 0;">
+                <p><strong>Movie:</strong> %s</p>
+                <p><strong>Show Time:</strong> %s</p>
+                <p><strong>Seats:</strong> %s</p>
+                <p><strong>Total Paid:</strong> $%.2f</p>
+                <p><strong>Booking ID:</strong> %s</p>
+              </div>
+
+              <p style="font-size:13px;color:#666;">
+                Please keep this email for your records. Enjoy the movie!
+              </p>
+
+              <p style="font-size:12px;color:#999;margin-top:20px;">This is an automated message.</p>
+            </div>
+        """.formatted(
+                    movieTitle,
+                    showTime,
+                    seats,
+                    total,
+                    bookingId
+            );
+            MimeMessage msg = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
+            helper.setTo(email);
+            helper.setSubject(subject);
+            helper.setFrom(from);
+            helper.setText(content, true);
+
+            mailSender.send(msg);
+            System.out.println("Order confirmation email sent to " + email);
+        } catch (Exception e) {
+            System.err.println("Failed to send order confirmation email: " + e.getMessage());
+        }
+    }
+
 }

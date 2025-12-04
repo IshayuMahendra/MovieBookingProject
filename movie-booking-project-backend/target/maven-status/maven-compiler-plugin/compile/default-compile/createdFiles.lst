@@ -16,6 +16,7 @@ dev\jeffery\movie_booking_project_backend\repositories\MovieRepository.class
 dev\jeffery\movie_booking_project_backend\dto\ForgotPasswordRequest.class
 dev\jeffery\movie_booking_project_backend\controllers\ShowtimeController.class
 dev\jeffery\movie_booking_project_backend\data\Promotion.class
+dev\jeffery\movie_booking_project_backend\dto\ConfirmCheckoutRequest.class
 dev\jeffery\movie_booking_project_backend\data\Booking.class
 dev\jeffery\movie_booking_project_backend\data\Theater.class
 dev\jeffery\movie_booking_project_backend\controllers\MovieController.class
@@ -41,9 +42,12 @@ dev\jeffery\movie_booking_project_backend\data\Movie.class
 dev\jeffery\movie_booking_project_backend\dto\ConcreteMovieDTO.class
 dev\jeffery\movie_booking_project_backend\MovieBookingProjectBackendApplication.class
 dev\jeffery\movie_booking_project_backend\dto\ShowtimeDTO.class
+dev\jeffery\movie_booking_project_backend\dto\CheckoutConfirmationDTO.class
 dev\jeffery\movie_booking_project_backend\repositories\AdminRepository.class
 dev\jeffery\movie_booking_project_backend\services\BookingService.class
 dev\jeffery\movie_booking_project_backend\data\Admin.class
+dev\jeffery\movie_booking_project_backend\dto\SavedCardDTO.class
+dev\jeffery\movie_booking_project_backend\dto\CheckoutInfoDTO.class
 dev\jeffery\movie_booking_project_backend\data\ConcreteMovie.class
 dev\jeffery\movie_booking_project_backend\dto\SeatAvailabilityDTO.class
 dev\jeffery\movie_booking_project_backend\repositories\SeatRepository.class
@@ -51,6 +55,7 @@ dev\jeffery\movie_booking_project_backend\security\SecurityConfig.class
 dev\jeffery\movie_booking_project_backend\controllers\AdminController$AdminLoginRequest.class
 dev\jeffery\movie_booking_project_backend\data\Showroom.class
 dev\jeffery\movie_booking_project_backend\services\PasswordResetService.class
+dev\jeffery\movie_booking_project_backend\controllers\CheckoutController.class
 dev\jeffery\movie_booking_project_backend\services\PaymentCardService.class
 dev\jeffery\movie_booking_project_backend\repositories\TicketRepository.class
 dev\jeffery\movie_booking_project_backend\services\VerificationService.class
@@ -61,6 +66,7 @@ dev\jeffery\movie_booking_project_backend\data\Seat.class
 dev\jeffery\movie_booking_project_backend\services\AdminService.class
 dev\jeffery\movie_booking_project_backend\repositories\PromotionRepository.class
 dev\jeffery\movie_booking_project_backend\repositories\BookingRepository.class
+dev\jeffery\movie_booking_project_backend\services\CheckoutService.class
 dev\jeffery\movie_booking_project_backend\repositories\CinemaRepository.class
 dev\jeffery\movie_booking_project_backend\controllers\UserController$1.class
 dev\jeffery\movie_booking_project_backend\factories\ConcreteMovieDomainFactory.class

@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface BookingRepository extends MongoRepository<Booking, ObjectId> {
-    List<Booking> findByUserID(ObjectId userID);
+    List<Booking> findByUserObjectID(ObjectId userObjectID);
 }

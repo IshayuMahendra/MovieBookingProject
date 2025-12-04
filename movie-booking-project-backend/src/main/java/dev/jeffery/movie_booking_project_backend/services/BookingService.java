@@ -220,6 +220,6 @@ public class BookingService {
     }
 
     public List<Booking> getBookingsByUser(String userID) {
-        return bookingRepository.findByUserID(new ObjectId(userID));
+        return bookingRepository.findByUserObjectID(new ObjectId(userID));
     }
 }
