@@ -136,8 +136,8 @@ async function searchMovies() {
 
 async function fetchOrderHistory() {
     const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
-    if (!loggedInUser || !loggedInUser.id) {
-        console.error('No valid user ID found in sessionStorage');
+    if (!loggedInUser || !loggedInUser.email) {
+        console.error('No valid user email found in sessionStorage');
         return;
     }
 
