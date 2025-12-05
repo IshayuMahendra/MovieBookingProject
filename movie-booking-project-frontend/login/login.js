@@ -1,3 +1,7 @@
+const urlParams = new URLSearchParams(window.location.search);
+const redirectParam = urlParams.get('redirect');
+const redirectTarget = redirectParam ? decodeURIComponent(redirectParam) : '../home/index.html';
+
 const loginForm = document.getElementById('loginForm');
 const errorBox = document.getElementById('errorBox');
 const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
@@ -46,7 +50,7 @@ loginForm.addEventListener('submit', async (e) => {
     }
 
     // Redirect to home
-    window.location.href = '../home/index.html';
+    window.location.href = redirectTarget;
 } else {
     errorBox.textContent = text;
     errorBox.classList.remove('hidden');
