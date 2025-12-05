@@ -142,7 +142,7 @@ async function fetchOrderHistory() {
     }
 
     try {
-        const res = await fetch(`http://localhost:8080/api/bookings/${encodeURIComponent(loggedInUser.id)}/order-history`);
+        const res = await fetch(`http://localhost:8080/api/bookings/email/${encodeURIComponent(loggedInUser.email)}/order-history`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const bookings = await res.json();
 
