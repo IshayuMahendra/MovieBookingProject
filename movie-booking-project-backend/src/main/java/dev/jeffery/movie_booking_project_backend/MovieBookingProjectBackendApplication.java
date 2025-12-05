@@ -30,133 +30,133 @@ public class MovieBookingProjectBackendApplication // implements CommandLineRunn
         SpringApplication.run(MovieBookingProjectBackendApplication.class, args);
 	}
 
-//   private static final ConcreteMovieDomainFactory factory = new ConcreteMovieDomainFactory();
-//
-//   @Autowired
-//   private UserRepository userRepository;
-//
-//   @Autowired
-//   private AdminRepository adminRepository;
-//
-//   @Autowired
-//   private MovieRepository movieRepository;
-//
-//   @Autowired
-//   private CinemaRepository cinemaRepository;
-//
-//   @Autowired
-//   private TheaterRepository theaterRepository;
-//
-//   @Autowired
-//   private TicketRepository ticketRepository;
-//
-//   @Autowired
-//   private ShowRepository showRepository;
-//
-//   @Autowired
-//   private SeatRepository seatRepository;
-//
-//   @Autowired
-//   private ShowroomRepository showroomRepository;
-//
-//   @Autowired
-//   private PromotionRepository promotionRepository;
-//
-//   @Autowired
-//   private BookingRepository bookingRepository;
-//
-//   @Autowired
-//   private UserService userService;
-//
-//   @Autowired
-//   private AdminService adminService;
-//
-//   @Autowired
-//   private PaymentCardService paymentCardService;
+  private static final ConcreteMovieDomainFactory factory = new ConcreteMovieDomainFactory();
 
-//   public void run(String... args) throws Exception {
-//
-//
-//       Cinema AMC = new Cinema("AMC");
-//       cinemaRepository.save(AMC);
-//
-//       Theater atlantaTheater = new Theater("Atlanta TheaterRepository", "909 Ponce De Leon",
-//               "404-111-1111", AMC.getId());
-//
-//       theaterRepository.save(atlantaTheater);
-//
-//       Showroom twenty = new Showroom(20, atlantaTheater.getId());
-//       showroomRepository.save(twenty);
-//
-//       List<Seat> seats = List.of(
-//               // Row A
-//               new Seat("A", 1, twenty.getId()),
-//               new Seat("A", 2, twenty.getId()),
-//               new Seat("A", 3, twenty.getId()),
-//               new Seat("A", 4, twenty.getId()),
-//               new Seat("A", 5, twenty.getId()),
-//
-//               // Row B
-//               new Seat("B", 1, twenty.getId()),
-//               new Seat("B", 2, twenty.getId()),
-//               new Seat("B", 3, twenty.getId()),
-//               new Seat("B", 4, twenty.getId()),
-//               new Seat("B", 5, twenty.getId()),
-//
-//               // Row C
-//               new Seat("C", 1, twenty.getId()),
-//               new Seat("C", 2, twenty.getId()),
-//               new Seat("C", 3, twenty.getId()),
-//               new Seat("C", 4, twenty.getId()),
-//               new Seat("C", 5, twenty.getId()),
-//
-//               // Row D
-//               new Seat("D", 1, twenty.getId()),
-//               new Seat("D", 2, twenty.getId()),
-//               new Seat("D", 3, twenty.getId()),
-//               new Seat("D", 4, twenty.getId()),
-//               new Seat("D", 5, twenty.getId())
-//       );
-//       seatRepository.saveAll(seats);
-//
-//       ConcreteMovieBuilder builder = (ConcreteMovieBuilder) factory.createMovieBuilder();
-//       ConcreteMovie godfather = builder.title("The Godfather")
-//                        .genre(List.of("Crime", "Drama"))
-//                        .poster("https://media.themoviedb.org/t/p/original/3bhkrj58Vtu7enYsRolD1fZdja1.jpg")
-//                        .trailer("https://www.youtube.com/watch?v=UaVTIH8mujA")
-//                        .description("Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.")
-//                        .rating(87)
-//                        .isRunning(true)
-//                        .build();
-//       movieRepository.save(godfather);
-//
-//       Calendar cal = Calendar.getInstance();
-//       cal.set(2025, Calendar.OCTOBER, 25, 20, 0, 0); // Year, Month (0-based), Day, Hour, Minute, Second
-//       cal.set(Calendar.MILLISECOND, 0);
-//       Show godfatherAt8 = new Show(cal.getTime(), 175, twenty.getId(), godfather.getId());
-//       showRepository.save(godfatherAt8);
-//
-//       User user = userService.createNewUser("jfelshaw", "jf123", "jefferyfelshaw777@gmail.com",
-//               "jeffery", "felshaw", "123 broad street", "marietta", "ga",
-//               "30068", true);
-//
-//       PaymentCard newCard = paymentCardService.createNewPaymentCard("123456789", "10/29",
-//               "123 braod street", user.getId());
-//
-//       Admin admin = adminService.createNewAdmin("admin3", "123");
-//	   Admin shuAdmin = adminService.createNewAdmin("shuAdmins", "shu");
-//
-//
-//       Booking godfatherBooking = new Booking(new Date(), "Card", 24, user.getId(), newCard.getId());
-//
-//       Ticket jeffTicket = new Ticket(Ticket.TicketType.ADULT, godfatherBooking.getId(), seats.get(12).getId(),
-//               godfatherAt8.getId());
-//       ticketRepository.save(jeffTicket);
-//
-//       Ticket abbyTicket = new Ticket(Ticket.TicketType.ADULT, godfatherBooking.getId(), seats.get(13).getId(),
-//               godfatherAt8.getId());
-//       ticketRepository.save(abbyTicket);
-//
-//
-//   }
+  @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
+  private AdminRepository adminRepository;
+
+  @Autowired
+  private MovieRepository movieRepository;
+
+  @Autowired
+  private CinemaRepository cinemaRepository;
+
+  @Autowired
+  private TheaterRepository theaterRepository;
+
+  @Autowired
+  private TicketRepository ticketRepository;
+
+  @Autowired
+  private ShowRepository showRepository;
+
+  @Autowired
+  private SeatRepository seatRepository;
+
+  @Autowired
+  private ShowroomRepository showroomRepository;
+
+  @Autowired
+  private PromotionRepository promotionRepository;
+
+  @Autowired
+  private BookingRepository bookingRepository;
+
+  @Autowired
+  private UserService userService;
+
+  @Autowired
+  private AdminService adminService;
+
+  @Autowired
+  private PaymentCardService paymentCardService;
+
+  public void run(String... args) throws Exception {
+
+
+      Cinema AMC = new Cinema("AMC");
+      cinemaRepository.save(AMC);
+
+      Theater atlantaTheater = new Theater("Atlanta TheaterRepository", "909 Ponce De Leon",
+              "404-111-1111", AMC.getId());
+
+      theaterRepository.save(atlantaTheater);
+
+      Showroom twenty = new Showroom(20, atlantaTheater.getId());
+      showroomRepository.save(twenty);
+
+      List<Seat> seats = List.of(
+              // Row A
+              new Seat("A", 1, twenty.getId()),
+              new Seat("A", 2, twenty.getId()),
+              new Seat("A", 3, twenty.getId()),
+              new Seat("A", 4, twenty.getId()),
+              new Seat("A", 5, twenty.getId()),
+
+              // Row B
+              new Seat("B", 1, twenty.getId()),
+              new Seat("B", 2, twenty.getId()),
+              new Seat("B", 3, twenty.getId()),
+              new Seat("B", 4, twenty.getId()),
+              new Seat("B", 5, twenty.getId()),
+
+              // Row C
+              new Seat("C", 1, twenty.getId()),
+              new Seat("C", 2, twenty.getId()),
+              new Seat("C", 3, twenty.getId()),
+              new Seat("C", 4, twenty.getId()),
+              new Seat("C", 5, twenty.getId()),
+
+              // Row D
+              new Seat("D", 1, twenty.getId()),
+              new Seat("D", 2, twenty.getId()),
+              new Seat("D", 3, twenty.getId()),
+              new Seat("D", 4, twenty.getId()),
+              new Seat("D", 5, twenty.getId())
+      );
+      seatRepository.saveAll(seats);
+
+      ConcreteMovieBuilder builder = (ConcreteMovieBuilder) factory.createMovieBuilder();
+      ConcreteMovie godfather = builder.title("The Godfather")
+                       .genre(List.of("Crime", "Drama"))
+                       .poster("https://media.themoviedb.org/t/p/original/3bhkrj58Vtu7enYsRolD1fZdja1.jpg")
+                       .trailer("https://www.youtube.com/watch?v=UaVTIH8mujA")
+                       .description("Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.")
+                       .rating(87)
+                       .isRunning(true)
+                       .build();
+      movieRepository.save(godfather);
+
+      Calendar cal = Calendar.getInstance();
+      cal.set(2025, Calendar.OCTOBER, 25, 20, 0, 0); // Year, Month (0-based), Day, Hour, Minute, Second
+      cal.set(Calendar.MILLISECOND, 0);
+      Show godfatherAt8 = new Show(cal.getTime(), 175, twenty.getId(), godfather.getId());
+      showRepository.save(godfatherAt8);
+
+      User user = userService.createNewUser("jfelshaw", "jf123", "jefferyfelshaw777@gmail.com",
+              "jeffery", "felshaw", "123 broad street", "marietta", "ga",
+              "30068", true);
+
+      PaymentCard newCard = paymentCardService.createNewPaymentCard("123456789", "10/29",
+              "123 braod street", user.getId());
+
+      Admin admin = adminService.createNewAdmin("admin3", "123");
+	   Admin shuAdmin = adminService.createNewAdmin("shuAdmins", "shu");
+
+
+      Booking godfatherBooking = new Booking(new Date(), "Card", 24, user.getId(), newCard.getId());
+
+      Ticket jeffTicket = new Ticket(Ticket.TicketType.ADULT, godfatherBooking.getId(), seats.get(12).getId(),
+              godfatherAt8.getId());
+      ticketRepository.save(jeffTicket);
+
+      Ticket abbyTicket = new Ticket(Ticket.TicketType.ADULT, godfatherBooking.getId(), seats.get(13).getId(),
+              godfatherAt8.getId());
+      ticketRepository.save(abbyTicket);
+
+
+  }
 } 		

@@ -47,6 +47,10 @@ async function loadCheckout() {
     totalEl.textContent = data.total.toFixed(2);
 
     savedCardsContainer.innerHTML = "";
+
+    if (data.savedCards.length === 0) {
+  savedCardsContainer.textContent = "No saved cards found.";
+} else {
     data.savedCards.forEach(card => {
       const div = document.createElement("div");
       div.innerHTML = `
@@ -55,6 +59,7 @@ async function loadCheckout() {
       `;
       savedCardsContainer.appendChild(div);
     });
+  }
   } catch (err) {
     console.error(err);
     messageEl.textContent = "Failed to load checkout: " + err.message;
