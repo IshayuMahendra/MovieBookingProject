@@ -153,7 +153,8 @@ public  class CheckoutService {
 //            }
 
         }
-       
+
+        booking.setEmail(email);
         booking.setStatus("CONFIRMED");
         booking.setTotal(total);
         booking.setTypeOfPayment("CARD");

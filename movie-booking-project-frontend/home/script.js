@@ -153,7 +153,7 @@ async function fetchOrderHistory() {
             bookings.forEach(b => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${b.bookingId}</td>
+                    <td>${b.id}</td>
                     <td>${b.movieTitle}</td>
                     <td>${b.showTime}</td>
                     <td>${b.selectedSeats.join(', ')}</td>
