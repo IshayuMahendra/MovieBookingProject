@@ -54,9 +54,12 @@ signupForm.addEventListener('submit', async (e) => {
         const cardNumber = div.querySelector('.cardNumber')?.value.trim();
         const expirationDate = div.querySelector('.expirationDate')?.value.trim();
         const billingAddress = div.querySelector('.billingAddress')?.value.trim();
-        if (cardNumber && expirationDate && billingAddress) {
-            cards.push({ cardNumber, expirationDate, billingAddress });
-        }
+        if (!cardNumber || !expirationDate || !billingAddress)  return;
+        if (cardNumber.length != 16) return;
+        if (expirationDate[2] != "/") return;
+        const splicedDate = expirationDate.slice(0, 2) + expirationDate.slice(3);
+        if (splicedDate.length != 4 || !parseInt(splicedDate, 10)) return;
+        cards.push({ cardNumber, expirationDate, billingAddress });
     });
 
     const payload = {

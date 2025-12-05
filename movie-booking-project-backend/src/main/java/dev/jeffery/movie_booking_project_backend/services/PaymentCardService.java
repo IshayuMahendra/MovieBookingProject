@@ -11,7 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PaymentCardService {
@@ -56,6 +58,14 @@ public class PaymentCardService {
         int incoming = (newCards != null) ? newCards.size() : 0;
         if (incoming > 3) {
             throw new IllegalArgumentException("Cannot store more than 3 payment cards total.");
+        }
+        
+        Set<String> seen = new HashSet<>();
+        for (PaymentCard card : newCards) {
+            String key = card.getCardNumber() + "|" + card.getExpirationDate();
+            if (!seen.add(key)) {
+                throw new IllegalArgumentException("Cannot store multiple payment cards with the same card number and expiration date");
+            }
         }
 
         boolean unassociateUser;

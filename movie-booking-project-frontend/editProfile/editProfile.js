@@ -130,9 +130,12 @@ if (editProfileForm) {
                 const cardNumber = cardDiv.querySelector('.cardNumber')?.value.trim();
                 const expirationDate = cardDiv.querySelector('.expirationDate')?.value.trim();
                 const billingAddress = cardDiv.querySelector('.billingAddress')?.value.trim();
-                if (cardNumber && expirationDate && billingAddress) {
-                    cards.push({ cardNumber, expirationDate, billingAddress });
-                }
+                if (!cardNumber || !expirationDate || !billingAddress)  return;
+                if (cardNumber.length != 16) return;
+                if (expirationDate[2] != "/") return;
+                const splicedDate = expirationDate.slice(0, 2) + expirationDate.slice(3);
+                if (splicedDate.length != 4 || !parseInt(splicedDate, 10)) return;
+                cards.push({ cardNumber, expirationDate, billingAddress });
             });
         }
 
@@ -157,6 +160,7 @@ if (editProfileForm) {
             const currentPassword = currentPasswordInput?.value.trim();
             const newPassword = newPasswordInput?.value.trim();
             const confirmPassword = confirmPasswordInput?.value.trim();
+            const errorFlag = false;
 
             if (currentPassword || newPassword || confirmPassword) {
 
@@ -185,12 +189,13 @@ if (editProfileForm) {
                     if (statusMessage) statusMessage.textContent = 'Profile and password updated successfully!';
                 } catch (err) {
                     console.error(err);
+                    errorFlag = true;
                     if (statusMessage) statusMessage.textContent = 'Error changing password: ' + err.message;
                 }
             }
 
 
-            if (statusMessage) statusMessage.textContent = 'Profile updated successfully!';
+            if (statusMessage && !errorFlag) statusMessage.textContent = 'Profile updated successfully!';
         } catch (err) {
             console.error(err);
             if (statusMessage) statusMessage.textContent = 'Error updating profile';
