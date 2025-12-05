@@ -139,3 +139,17 @@ async function confirmOrder() {
 
 confirmBtn.addEventListener("click", confirmOrder);
 loadCheckout();
+
+let timeLeft = 300; // 5 minutes in seconds
+const timerEl = document.getElementById("timer");
+
+const interval = setInterval(() => {
+    timeLeft--;
+    timerEl.textContent = `Time remaining: ${Math.floor(timeLeft/60)}:${timeLeft%60 < 10 ? '0'+timeLeft%60 : timeLeft%60}`;
+
+    if (timeLeft <= 0) {
+        clearInterval(interval);
+        alert("Your checkout session expired. Please reselect your seats.");
+        window.location.href = "../book/seat-map.html";
+    }
+}, 1000);
