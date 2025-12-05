@@ -90,9 +90,12 @@ public  class CheckoutService {
         CheckoutInfoDTO dto = new CheckoutInfoDTO();
         dto.setBookingId(bookingId);
         dto.setEmail(user.getEmail());
+        //attaching email to booking
+        booking.setEmail(email);
         dto.setSubtotal(subtotal);
         dto.setSavedCards(savedCardDTOs);
-        return dto; 
+        bookingRepository.save(booking);
+        return dto;
     }
 
     // Method use after user clicks "pay". Updates booking status/total with promotion/
