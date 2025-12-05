@@ -8,7 +8,6 @@ const ticketCount = parseInt(params.get("tickets") || "1", 10);
 const movieTitle = params.get("movie") || "Unknown";
 const showtimeText = params.get("time") || "Unknown";
 
-
 document.getElementById("movieTitle").textContent = movieTitle;
 document.getElementById("showtime").textContent = showtimeText;
 document.getElementById("ticketCount").textContent = ticketCount;
@@ -20,6 +19,11 @@ const messageEl = document.getElementById("message");
 let seatMap = [];
 let selectedSeatIds = [];
 
+// Check login status
+function getLoggedInUser() {
+  const user = sessionStorage.getItem("loggedInUser");
+  return user ? JSON.parse(user) : null;
+}
 
 async function loadSeatMap() {
   if (!bookingId) {
@@ -44,7 +48,6 @@ async function loadSeatMap() {
 function renderSeatMap() {
   seatMapContainer.innerHTML = "";
 
-  // group by row
   const rows = {};
   seatMap.forEach((seat) => {
     if (!rows[seat.row]) rows[seat.row] = [];
@@ -90,7 +93,6 @@ function toggleSeatSelection(seatId, element) {
   const index = selectedSeatIds.indexOf(seatId);
 
   if (index === -1) {
-    
     if (selectedSeatIds.length >= ticketCount) {
       messageEl.textContent = `You can only select ${ticketCount} seat(s).`;
       return;
@@ -98,7 +100,6 @@ function toggleSeatSelection(seatId, element) {
     selectedSeatIds.push(seatId);
     element.classList.add("selected");
   } else {
-    
     selectedSeatIds.splice(index, 1);
     element.classList.remove("selected");
   }
@@ -111,6 +112,14 @@ function toggleSeatSelection(seatId, element) {
 async function confirmSeats() {
   if (selectedSeatIds.length !== ticketCount) {
     messageEl.textContent = `Please select exactly ${ticketCount} seat(s).`;
+    return;
+  }
+
+  const loggedInUser = getLoggedInUser();
+  if (!loggedInUser) {
+    // redirect to login if not logged in
+    const redirectUrl = encodeURIComponent(window.location.href);
+    window.location.href = `../login/login.html?redirect=${redirectUrl}`;
     return;
   }
 
@@ -131,7 +140,15 @@ async function confirmSeats() {
 
     const data = await res.json(); 
     messageEl.textContent = "Seats confirmed! Status: " + data.status;
-    
+
+    // Store for checkout
+    sessionStorage.setItem("currentBookingId", bookingId);
+    // Use email as user identifier for now
+    sessionStorage.setItem("currentUserEmail", loggedInUser.email);
+
+    // Redirect to checkout page
+    window.location.href = "../checkout/checkout.html";
+
   } catch (err) {
     console.error(err);
     messageEl.textContent = "Error confirming seats: " + err.message;

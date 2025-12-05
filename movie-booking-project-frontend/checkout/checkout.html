@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="checkout.css">
+</head>
+<body>
+    <h1>Checkout</h1>
+
+    <div id="checkoutSummary">
+        <p><strong>Booking ID:</strong> <span id="bookingId"></span></p>
+        <p><strong>Subtotal:</strong> $<span id="subtotal"></span></p>
+        <p><strong>Discount:</strong> $<span id="discount"></span></p>
+        <p><strong>Total:</strong> $<span id="total"></span></p>
+    </div>
+
+    <h2>Payment</h2>
+    <div id="savedCardsContainer"></div>
+
+    <h3>Or enter new card:</h3>
+    <input type="text" id="cardNumber" placeholder="Card number">
+    <input type="text" id="expirationDate" placeholder="MM/YY">
+    <input type="text" id="billingAddress" placeholder="Billing address">
+    <label>
+        <input type="checkbox" id="saveCard"> Save this card
+    </label>
+
+    <h3>Promotion code</h3>
+    <input type="text" id="promoCode" placeholder="Promotion code">
+
+    <button id="confirmOrderBtn">Confirm Order</button>
+    <p id="message"></p>
+
+    <script src="checkout.js"></script>
+</body>
+</html>

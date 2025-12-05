@@ -29,7 +29,6 @@
         </div>
     </header>
 
-
     <main>
         <section>
             <h2>Currently Running</h2>
@@ -39,6 +38,26 @@
         <section>
             <h2>Coming Soon</h2>
             <div id="comingSoonMovies" class="movies-container"></div>
+        </section>
+
+        <!-- Order History Section (only for logged-in users) -->
+        <section id="orderHistorySection" style="display:none;">
+            <h2>Your Order History</h2>
+            <table id="orderHistoryTable">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Movie</th>
+                        <th>Showtime</th>
+                        <th>Seats</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Orders will be injected here via JS -->
+                </tbody>
+            </table>
         </section>
     </main>
 

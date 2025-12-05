@@ -26,21 +26,32 @@ loginForm.addEventListener('submit', async (e) => {
 
         const text = await res.text(); // parse plain text
 
-        if (res.ok) {
-            // Save minimal user info in sessionStorage
-            sessionStorage.setItem('loggedInUser', JSON.stringify({ email }));
-            
-            // Optionally remember user across sessions
-            if (rememberMe) {
-                localStorage.setItem('rememberedEmail', email);
-            }
+    if (res.ok) {
+    // Fetch full user object by email
+    const userRes = await fetch(`http://localhost:8080/user/${encodeURIComponent(email)}`);
+    
+    if (!userRes.ok) throw new Error("Failed to fetch user data");
 
-            // Redirect to home
-            window.location.href = '../home/index.html';
-        } else {
-            errorBox.textContent = text;
-            errorBox.classList.remove('hidden');
-        }
+    const userData = await userRes.json();
+
+    // Save userID and email in sessionStorage
+    sessionStorage.setItem('loggedInUser', JSON.stringify({
+        id: userData.ObjectId,   // must match Booking.userID
+        email: userData.email
+    }));
+
+    // Optionally remember email
+    if (rememberMe) {
+        localStorage.setItem('rememberedEmail', email);
+    }
+
+    // Redirect to home
+    window.location.href = '../home/index.html';
+} else {
+    errorBox.textContent = text;
+    errorBox.classList.remove('hidden');
+}
+
     } catch (err) {
         errorBox.textContent = "Login failed. Try again later.";
         errorBox.classList.remove('hidden');

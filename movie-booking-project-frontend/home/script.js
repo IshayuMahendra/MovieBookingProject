@@ -5,6 +5,9 @@ const searchBtn = document.getElementById('searchBtn');
 const genreFilter = document.getElementById('genreFilter');
 const userControls = document.getElementById('userControls');
 const loginBtn = document.getElementById('loginBtn');
+const orderHistorySection = document.getElementById('orderHistorySection');
+const orderHistoryTableBody = document.querySelector('#orderHistoryTable tbody');
+
 
 // --- Update header for user or admin ---
 function updateHeaderForUserOrAdmin() {
@@ -25,6 +28,9 @@ function updateHeaderForUserOrAdmin() {
             <button id="logoutBtn">Logout</button>
             <button id="profileBtn">My Profile</button>
         `;
+
+        fetchOrderHistory();
+
     } else {
         // Not logged in
         if (loginBtn) {
@@ -127,6 +133,44 @@ async function searchMovies() {
         console.error('Failed to fetch movies:', err);
     }
 }
+
+async function fetchOrderHistory() {
+    const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+    if (!loggedInUser || !loggedInUser.id) {
+        console.error('No valid user ID found in sessionStorage');
+        return;
+    }
+
+    try {
+        const res = await fetch(`http://localhost:8080/api/bookings/${encodeURIComponent(loggedInUser.id)}/order-history`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const bookings = await res.json();
+
+        if (bookings.length === 0) {
+            orderHistoryTableBody.innerHTML = '<tr><td colspan="6">No previous orders found.</td></tr>';
+        } else {
+            orderHistoryTableBody.innerHTML = '';
+            bookings.forEach(b => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${b.bookingId}</td>
+                    <td>${b.movieTitle}</td>
+                    <td>${b.showTime}</td>
+                    <td>${b.selectedSeats.join(', ')}</td>
+                    <td>$${b.total.toFixed(2)}</td>
+                    <td>${b.status}</td>
+                `;
+                orderHistoryTableBody.appendChild(row);
+            });
+        }
+
+        orderHistorySection.style.display = 'block';
+    } catch (err) {
+        console.error('Failed to fetch order history:', err);
+    }
+}
+
+
 
 // --- Event listeners ---
 if (searchBtn) searchBtn.addEventListener('click', searchMovies);

@@ -1,0 +1,76 @@
+/* checkout.css */
+
+/* Reset some basics */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+h1, h2, h3 {
+    color: #222;
+}
+
+#checkoutSummary, #savedCardsContainer {
+    background-color: #fff;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+#checkoutSummary p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+#savedCardsContainer div {
+    margin: 8px 0;
+    padding: 6px 10px;
+    background-color: #f0f0f0;
+    border-radius: 6px;
+}
+
+input[type="text"], input[type="checkbox"] {
+    display: block;
+    margin: 8px 0 16px 0;
+    padding: 8px 10px;
+    width: 300px;
+    max-width: 100%;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+label input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#message {
+    margin-top: 12px;
+    font-weight: bold;
+    color: red;
+}
