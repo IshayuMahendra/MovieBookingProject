@@ -44,7 +44,7 @@ public class AdminController {
     }
 
     @PostMapping("/add-movie")
-    public ResponseEntity<?> createMovie(@RequestBody @JsonDeserialize(as = ConcreteMovie.class) Movie movie) {
+    public ResponseEntity<?> createMovie(@RequestBody @JsonDeserialize(as = ConcreteMovie.class) ConcreteMovie movie) {
         try {
             Movie newMovie = movieService.createMovie(movie);
 
