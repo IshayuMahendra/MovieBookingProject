@@ -21,9 +21,9 @@ public class CheckoutController {
     @GetMapping("/{bookingId}")
     public ResponseEntity<CheckoutInfoDTO> getCheckoutInfo(
             @PathVariable String bookingId,
-            @RequestParam String userId   
+            @RequestParam String email  
     ) {
-        CheckoutInfoDTO dto = checkoutService.getcheckoutInfoDTO(userId, bookingId);
+        CheckoutInfoDTO dto = checkoutService.getcheckoutInfoDTO(email, bookingId);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
@@ -31,10 +31,10 @@ public class CheckoutController {
     @PostMapping("/{bookingId}/confirm")
     public ResponseEntity<CheckoutConfirmationDTO> confirmCheckout(
             @PathVariable String bookingId,
-            @RequestParam String userId,  
+            @RequestParam String email,  
             @RequestBody ConfirmCheckoutRequest request
     ) {
-        CheckoutConfirmationDTO dto = checkoutService.confirmCheckout(userId, bookingId, request);
+        CheckoutConfirmationDTO dto = checkoutService.confirmCheckout(email, bookingId, request);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 }

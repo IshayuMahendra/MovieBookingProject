@@ -1,8 +1,9 @@
+
 const API_BASE = "http://localhost:8080";
 
 // Get booking info and user info from sessionStorage
 const bookingId = sessionStorage.getItem("currentBookingId");
-let loggedInUserId = sessionStorage.getItem("currentUserId"); // MongoDB ObjectId string
+
 const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
 
 const bookingIdEl = document.getElementById("bookingId");
@@ -26,28 +27,16 @@ if (!bookingId || !loggedInUser) {
   const redirectUrl = encodeURIComponent(window.location.href);
   window.location.href = `../login/login.html?redirect=${redirectUrl}`;
 }
-
-// Fetch user ObjectId if missing
-async function ensureUserId() {
-  if (!loggedInUserId) {
-    try {
-      const res = await fetch(`${API_BASE}/user/by-email?email=${encodeURIComponent(loggedInUser.email)}`);
-      if (!res.ok) throw new Error(await res.text());
-      const data = await res.json();
-      loggedInUserId = data._id;
-      sessionStorage.setItem("currentUserId", loggedInUserId);
-    } catch (err) {
-      console.error(err);
-      messageEl.textContent = "Failed to get user info: " + err.message;
-    }
-  }
-}
+console.log("bookingId from sessionStorage:", bookingId);
+console.log("loggedInUser from sessionStorage:", loggedInUser);
 
 // --- Load checkout info ---
 async function loadCheckout() {
-  await ensureUserId();
+  
   try {
-    const res = await fetch(`${API_BASE}/checkout/${bookingId}?userId=${encodeURIComponent(loggedInUserId)}`);
+     const res = await fetch(
+      `${API_BASE}/checkout/${bookingId}?email=${encodeURIComponent(loggedInUser.email)}`
+    );
     if (!res.ok) throw new Error(await res.text());
     const data = await res.json();
 
@@ -73,7 +62,7 @@ async function loadCheckout() {
 
 // --- Confirm order ---
 async function confirmOrder() {
-  await ensureUserId();
+  
   messageEl.textContent = "";
 
   let savedCardId = null;
@@ -90,7 +79,7 @@ async function confirmOrder() {
   };
 
   try {
-    const res = await fetch(`${API_BASE}/checkout/${bookingId}/confirm?userId=${encodeURIComponent(loggedInUserId)}`, {
+    const res = await fetch(`${API_BASE}/checkout/${bookingId}/confirm?email=${encodeURIComponent(loggedInUser.email)}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestBody)

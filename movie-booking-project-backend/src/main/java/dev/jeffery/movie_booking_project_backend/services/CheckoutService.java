@@ -49,18 +49,23 @@ public  class CheckoutService {
     private MovieRepository movieRepository;
 
     // Building checkoutInfo, use to display initial information.
-    public CheckoutInfoDTO getcheckoutInfoDTO (String userId, String bookingId) {
+    public CheckoutInfoDTO getcheckoutInfoDTO (String email, String bookingId) {
 
+          User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+                ObjectId userObjectId = user.getId();
+        
+        
         Booking booking = bookingRepository.findById(new ObjectId(bookingId))
                     .orElseThrow(() -> new RuntimeException("Booking not found"));
      
         
         if (booking.getUserObjectID() == null) {
-           booking.setUserObjectID(new ObjectId(userId));
+           booking.setUserObjectID(userObjectId);
             bookingRepository.save(booking);
         }
 
-        var cards = paymentCardService.getCardsByUser(new ObjectId(userId));
+        var cards = paymentCardService.getCardsByUser(userObjectId);
         
         var savedCardDTOs = cards.stream()
             .map(card -> {
@@ -84,14 +89,18 @@ public  class CheckoutService {
 
         CheckoutInfoDTO dto = new CheckoutInfoDTO();
         dto.setBookingId(bookingId);
-        dto.setUserId(userId);
-        dto.setTotal(subtotal);
+        dto.setEmail(user.getEmail());
+        dto.setSubtotal(subtotal);
         dto.setSavedCards(savedCardDTOs);
         return dto; 
     }
 
     // Method use after user clicks "pay". Updates booking status/total with promotion/
-    public CheckoutConfirmationDTO confirmCheckout(String userId, String bookingId, ConfirmCheckoutRequest request) {
+    public CheckoutConfirmationDTO confirmCheckout(String email, String bookingId, ConfirmCheckoutRequest request) {
+        
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+                ObjectId userObjectId = user.getId();
 
         Booking booking = bookingRepository.findById(new ObjectId(bookingId))
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
@@ -137,7 +146,7 @@ public  class CheckoutService {
                         request.getCardNumber(),
                         request.getExpirationDate(),
                         request.getBillingAddress(),
-                        new ObjectId(userId)
+                        userObjectId
                 );
             } else {
                 usedCard = null; 
@@ -160,9 +169,6 @@ public  class CheckoutService {
         dto.setSubtotal(subtotal);
         dto.setDiscount(discountAmount);
         dto.setTotal(total);
-
-        User user = userRepository.findById(new ObjectId(userId))
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
         var show = showRepository.findById(booking.getShowId())
                 .orElseThrow(() -> new RuntimeException("Show not found"));
