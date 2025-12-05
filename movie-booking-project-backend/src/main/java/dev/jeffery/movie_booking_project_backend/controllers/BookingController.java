@@ -2,6 +2,7 @@ package dev.jeffery.movie_booking_project_backend.controllers;
 
 import dev.jeffery.movie_booking_project_backend.data.Booking;
 import dev.jeffery.movie_booking_project_backend.data.Seat;
+import dev.jeffery.movie_booking_project_backend.dto.OrderHistoryDTO;
 import dev.jeffery.movie_booking_project_backend.dto.SeatAvailabilityDTO;
 import dev.jeffery.movie_booking_project_backend.dto.SelectSeatsRequest;
 import dev.jeffery.movie_booking_project_backend.dto.StartBookingRequest;
@@ -61,7 +62,7 @@ public class BookingController {
     }
 
     @GetMapping("/email/{email}/order-history")
-    public List<Booking> getBookingsByEmail(@PathVariable String email) {
+    public List<OrderHistoryDTO> getBookingsByEmail(@PathVariable String email) {
         return bookingService.getBookingsByEmail(email);
     }
 

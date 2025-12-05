@@ -153,12 +153,11 @@ async function fetchOrderHistory() {
             bookings.forEach(b => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${b.id}</td>
+                    <td>${b.bookingID}</td>
                     <td>${b.movieTitle}</td>
                     <td>${b.showTime}</td>
-                    <td>${b.selectedSeats.join(', ')}</td>
-                    <td>$${b.total.toFixed(2)}</td>
-                    <td>${b.status}</td>
+                    <td>${b.ticketCount}</td>
+                    <td>$${b.total}</td>
                 `;
                 orderHistoryTableBody.appendChild(row);
             });

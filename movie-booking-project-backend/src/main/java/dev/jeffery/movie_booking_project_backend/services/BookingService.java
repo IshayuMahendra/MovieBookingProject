@@ -1,15 +1,10 @@
 package dev.jeffery.movie_booking_project_backend.services;
 
-import dev.jeffery.movie_booking_project_backend.data.Booking;
-import dev.jeffery.movie_booking_project_backend.data.Seat;
-import dev.jeffery.movie_booking_project_backend.data.Show;
-import dev.jeffery.movie_booking_project_backend.data.Ticket;
+import dev.jeffery.movie_booking_project_backend.data.*;
+import dev.jeffery.movie_booking_project_backend.dto.OrderHistoryDTO;
 import dev.jeffery.movie_booking_project_backend.dto.SeatAvailabilityDTO;
 import dev.jeffery.movie_booking_project_backend.dto.StartBookingRequest;
-import dev.jeffery.movie_booking_project_backend.repositories.BookingRepository;
-import dev.jeffery.movie_booking_project_backend.repositories.SeatRepository;
-import dev.jeffery.movie_booking_project_backend.repositories.ShowRepository;
-import dev.jeffery.movie_booking_project_backend.repositories.TicketRepository;
+import dev.jeffery.movie_booking_project_backend.repositories.*;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +27,9 @@ public class BookingService {
 
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private MovieRepository movieRepository;
 
     private final BookingRepository bookingRepository;
 
@@ -223,8 +222,22 @@ public class BookingService {
         return bookingRepository.findByUserObjectID(new ObjectId(userID));
     }
 
-    public List<Booking> getBookingsByEmail(String email) {
-        return bookingRepository.findByEmail(email);
+    public List<OrderHistoryDTO> getBookingsByEmail(String email) {
+        List<Booking> bookings = bookingRepository.findByEmail(email);
+
+        List<OrderHistoryDTO> orders = new ArrayList<>();
+        for(Booking b : bookings){
+            OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
+            orderHistoryDTO.setBookingID(b.getId().toString());
+            orderHistoryDTO.setTicketCount(b.getTicketIds().size());
+            orderHistoryDTO.setTotal(b.getTotal());
+            Optional<Show> show = showRepository.findById(b.getShowId());
+            orderHistoryDTO.setShowTime(show.get().getShowTime().toString());
+            Optional<ConcreteMovie> movie = movieRepository.findById(show.get().getMovieID());
+            orderHistoryDTO.setMovieTitle(movie.get().getTitle());
+            orders.add(orderHistoryDTO);
+        }
+        return orders;
     }
 
 }
