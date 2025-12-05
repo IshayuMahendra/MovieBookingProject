@@ -195,6 +195,44 @@ public  class CheckoutService {
     }
 
 
+    public CheckoutConfirmationDTO previewTotal(String email, String bookingId, String promotionCode) {
+
+        // Validate user exists
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Load booking
+        Booking booking = bookingRepository.findById(new ObjectId(bookingId))
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        double subtotal = calculateSubtotal(booking);
+        double discountAmount = 0.0;
+
+        // If user typed a promo code (long id string), try to apply it
+        if (promotionCode != null && !promotionCode.isBlank()) {
+            Promotion promo = promotionRepository.findById(new ObjectId(promotionCode))
+                    .orElseThrow(() -> new RuntimeException("Promotion not found"));
+
+            Date now = new Date();
+            if (promo.getExpirationDate() != null && promo.getExpirationDate().before(now)) {
+                throw new RuntimeException("Promotion has expired.");
+            }
+
+            int percentage = promo.getDiscountPercentage();
+            discountAmount = subtotal * (percentage / 100.0);
+        }
+
+        double total = Math.max(subtotal - discountAmount, 0.0);
+
+        CheckoutConfirmationDTO dto = new CheckoutConfirmationDTO();
+        dto.setBookingId(bookingId);
+        dto.setSubtotal(subtotal);
+        dto.setDiscount(discountAmount);
+        dto.setTotal(total);
+
+        return dto;
+    }
+
     //Method to get the sum of all tickets
     private double calculateSubtotal(Booking booking) {
 

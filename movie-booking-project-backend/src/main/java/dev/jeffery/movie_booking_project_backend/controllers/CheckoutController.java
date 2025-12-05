@@ -38,4 +38,13 @@ public class CheckoutController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    @GetMapping("/{bookingId}/preview")
+    public ResponseEntity<CheckoutConfirmationDTO> previewTotal(
+            @PathVariable String bookingId,
+            @RequestParam String email,
+            @RequestParam(required = false) String promotionCode
+    ) {
+        CheckoutConfirmationDTO dto = checkoutService.previewTotal(email, bookingId, promotionCode);
+        return ResponseEntity.ok(dto);
+    }
 }

@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    text-align: center;
+    padding: 40px;
+}
+
+#container {
+    background: white;
+    padding: 30px;
+    max-width: 400px;
+    margin: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}
+
+#summaryBox {
+    text-align: left;
+    margin-top: 20px;
+}
+
+button {
+    margin-top: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: royalblue;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.85;
+}

@@ -19,6 +19,7 @@ const billingEl = document.getElementById("billingAddress");
 const saveCardEl = document.getElementById("saveCard");
 
 const promoCodeEl = document.getElementById("promoCode");
+const applyPromoBtn = document.getElementById("applyPromoBtn");
 const confirmBtn = document.getElementById("confirmOrderBtn");
 const messageEl = document.getElementById("message");
 
@@ -60,6 +61,45 @@ async function loadCheckout() {
   }
 }
 
+async function applyPromo() {
+  messageEl.textContent = "";
+  const code = promoCodeEl.value.trim(); // this is your long ObjectId string
+
+  if (!code) {
+    messageEl.textContent = "Please enter a promotion code.";
+    return;
+  }
+
+  try {
+    const url = `${API_BASE}/checkout/${bookingId}/preview?email=${encodeURIComponent(
+      loggedInUser.email
+    )}&promotionCode=${encodeURIComponent(code)}`;
+
+    console.log("Applying promo with URL:", url);
+
+    const res = await fetch(url);
+    console.log("GET /preview status:", res.status);
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(text);
+    }
+
+    const data = await res.json();
+    console.log("Preview totals:", data);
+
+    // Update displayed prices
+    subtotalEl.textContent = data.subtotal.toFixed(2);
+    discountEl.textContent = data.discount.toFixed(2);
+    totalEl.textContent = data.total.toFixed(2);
+
+  } catch (err) {
+    console.error("Error applying promo:", err);
+    messageEl.textContent = "Failed to apply promo: " + err.message;
+  }
+}
+
+applyPromoBtn.addEventListener("click", applyPromo);
 // --- Confirm order ---
 async function confirmOrder() {
   
