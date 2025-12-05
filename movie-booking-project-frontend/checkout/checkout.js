@@ -16,7 +16,7 @@ const savedCardsContainer = document.getElementById("savedCardsContainer");
 const cardNumberEl = document.getElementById("cardNumber");
 const expirationEl = document.getElementById("expirationDate");
 const billingEl = document.getElementById("billingAddress");
-const saveCardEl = document.getElementById("saveCard");
+//const saveCardEl = document.getElementById("saveCard");
 
 const promoCodeEl = document.getElementById("promoCode");
 const applyPromoBtn = document.getElementById("applyPromoBtn");
@@ -95,7 +95,7 @@ async function applyPromo() {
 
   } catch (err) {
     console.error("Error applying promo:", err);
-    messageEl.textContent = "Failed to apply promo: " + err.message;
+    messageEl.textContent = "Please enter a valid promo code.";
   }
 }
 
@@ -114,7 +114,7 @@ async function confirmOrder() {
     cardNumber: cardNumberEl.value.trim(),
     expirationDate: expirationEl.value.trim(),
     billingAddress: billingEl.value.trim(),
-    saveCard: saveCardEl.checked,
+    //saveCard: saveCardEl.checked,
     promotionCode: promoCodeEl.value.trim()
   };
 
@@ -133,7 +133,7 @@ async function confirmOrder() {
     window.location.href = "../checkout/confirmation.html";
   } catch (err) {
     console.error(err);
-    messageEl.textContent = "Failed to confirm order: " + err.message;
+    messageEl.textContent = "Please select a saved card or input new card info. If you have already done this, then you have entered an invalid promo code.";
   }
 }
 

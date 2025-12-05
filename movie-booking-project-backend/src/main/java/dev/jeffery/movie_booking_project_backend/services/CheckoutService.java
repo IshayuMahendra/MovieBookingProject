@@ -140,17 +140,17 @@ public  class CheckoutService {
                 throw new RuntimeException("Card number is required for payment.");           
             }
 
-            // saves card if request it
-            if (request.isSaveCard()) {
-                usedCard = paymentCardService.createNewPaymentCard(
-                        request.getCardNumber(),
-                        request.getExpirationDate(),
-                        request.getBillingAddress(),
-                        userObjectId
-                );
-            } else {
-                usedCard = null; 
-            }
+//            // saves card if request it
+//            if (request.isSaveCard()) {
+//                usedCard = paymentCardService.createNewPaymentCard(
+//                        request.getCardNumber(),
+//                        request.getExpirationDate(),
+//                        request.getBillingAddress(),
+//                        userObjectId
+//                );
+//            } else {
+//                usedCard = null;
+//            }
 
         }
        
