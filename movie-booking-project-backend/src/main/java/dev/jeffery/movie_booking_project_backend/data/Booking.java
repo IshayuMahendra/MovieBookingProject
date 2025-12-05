@@ -26,6 +26,8 @@ public class Booking {
     private List<String> ageCategories;
     private String status;
     private List<ObjectId> ticketIds;
+    private String email;
+
 
 
     public Booking(Date dateCreated, String typeOfPayment, double total, ObjectId userObjectID, ObjectId paymentCardID) {
@@ -103,5 +105,9 @@ public class Booking {
     public void setPaymentCardID(ObjectId paymentCardID) {
         this.paymentCardID = paymentCardID;
     }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
 
 }
