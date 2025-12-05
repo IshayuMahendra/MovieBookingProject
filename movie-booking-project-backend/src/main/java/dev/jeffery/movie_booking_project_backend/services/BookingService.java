@@ -222,4 +222,9 @@ public class BookingService {
     public List<Booking> getBookingsByUser(String userID) {
         return bookingRepository.findByUserObjectID(new ObjectId(userID));
     }
+
+    public List<Booking> getBookingsByEmail(String email) {
+        return bookingRepository.findByEmail(email);
+    }
+
 }

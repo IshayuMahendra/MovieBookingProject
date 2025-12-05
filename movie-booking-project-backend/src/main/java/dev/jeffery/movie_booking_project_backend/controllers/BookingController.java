@@ -60,6 +60,12 @@ public class BookingController {
         return bookingService.getBookingsByUser(userId);
     }
 
+    @GetMapping("/email/{email}/order-history")
+    public List<Booking> getBookingsByEmail(@PathVariable String email) {
+        return bookingService.getBookingsByEmail(email);
+    }
+
+
 }
 
 
